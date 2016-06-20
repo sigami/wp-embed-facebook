@@ -181,8 +181,8 @@ module.exports = function (grunt) {
         'shell:svn_clean',
         'clean:svn_trunk',
         'copy:svn_trunk',
-        //'shell:git',
-        //'shell:svn'
+        'shell:git',
+        'shell:svn'
     ]);
 
     // major . minor . patch . prerelease
@@ -196,8 +196,8 @@ module.exports = function (grunt) {
         'clean:svn_tag',
         'copy:svn_trunk',
         'shell:svn_tag',
-        //'shell:git',
-        //'shell:svn'
+        'shell:git',
+        'shell:svn'
     ]);
 
 
