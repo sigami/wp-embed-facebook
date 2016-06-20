@@ -8,10 +8,15 @@ If you found a bug or wish to add an extra features, this is the place just make
 
 Run `npm install` then `grunt`
 
-use the default task to create css,js and pot files.
+The *default* task will create css, js and pot files.
 
-to automatically copy your chances to a test folder first create a variables.json file like this:
+To automatically copy your changes to a test folder first create a **variables.json** file like this:
 
-````json
+``````json
+{
+  "test_dir" : "/full-path/to/localhost/wp-content/plugins/wp-embed-facebook/"
+}
+``````
 
-````
+Then use `grunt dev` now whenever you change a file it will be automatically copied to your localhost.
+

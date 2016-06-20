@@ -41,7 +41,7 @@ Alternatively you can use the [facebook url] shortcode.
 Read more about the shortcodes on [this](http://www.wpembedfb.com/shortcode-attributes-and-examples/) page.
 
 = Contributing =
-If you found a bug or want to add an extra feature create a pull request on https://github.com/sigmai/wp-embed-facebook
+If you found a bug or want to add an extra feature create a pull request on https://github.com/sigami/wp-embed-facebook
 
 
 = Premium extension =

@@ -179,7 +179,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev-update', [
         'default',
         'shell:svn_clean',
-        'clean:svn_trunk',
+        //'clean:svn_trunk',
         'copy:svn_trunk',
         'shell:git',
         'shell:svn'
