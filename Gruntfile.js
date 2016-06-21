@@ -3,11 +3,10 @@
  */
 'use strict';
 module.exports = function (grunt) {
-    var slug = ['wp-embed-facebook'];
     grunt.initConfig({
+        slug: 'wp-embed-facebook',
         variables: grunt.file.readJSON('variables.json'),
         package_json: grunt.file.readJSON('package.json'),
-        slug: slug,
         sass: {
             main: {
                 options: {
@@ -21,7 +20,7 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            dist: {
+            main: {
                 files: {
                     '<%= slug %>/lib/js/fb.min.js': ['<%= slug %>/lib/js/fb.js'],
                     '<%= slug %>/lib/js/wpembedfb.min.js': ['<%= slug %>/lib/js/wpembedfb.js'],
@@ -32,8 +31,23 @@ module.exports = function (grunt) {
                 }
             }
         },
+        copy: {
+            main: {
+                dest: '<%= variables.test_dir %>',
+                expand: true,
+                //nonull: true,
+                cwd: '<%= slug %>/',
+                src: '**'
+            }
+        },
+        clean: {
+            options: {force: true},
+            main: [
+                '<%= variables.test_dir %>'
+            ]
+        },
         makepot: {
-            target: {
+            main: {
                 options: {
                     cwd: '<%= slug %>/',
                     domainPath: 'lang',
@@ -60,6 +74,10 @@ module.exports = function (grunt) {
                 files: '<%= slug %>/**/*.sass',
                 tasks: ['sass']
             },
+            js: {
+                files: '<%= slug %>/**/*.js',
+                tasks: ['uglify']
+            },
             pot: {
                 files: '<%= slug %>/**/*.php',
                 tasks: ['makepot']
@@ -69,68 +87,101 @@ module.exports = function (grunt) {
                 tasks: ['copy:test_dir']
             }
         },
-        copy: {
-            test_dir: {
-                dest: '<%= variables.test_dir %>',
-                expand: true,
-                nonull: true,
-                cwd: '<%= slug %>/',
-                src: '**'
-            },
-            svn_trunk: {
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-wp-i18n');
+
+
+    //grunt
+    grunt.registerTask('default', [
+        'sass',
+        'uglify',
+        'makepot'
+    ]);
+
+    //grunt dev
+    grunt.registerTask('dev', [
+        'default',
+        'clean:main',
+        'copy:main',
+        'watch'
+    ]);
+
+    // ---------------------------------
+    //       Deployment only.
+    // ---------------------------------
+
+    grunt.loadNpmTasks('grunt-confirm');
+    grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-version');
+
+
+    var commands = {
+        //add and commit
+        git: 'git add --all && git commit -m "<%= commit_msg %>" && git push',
+        //add and commit
+        svn: 'cd svn && svn add --force * --auto-props --parents --depth infinity -q && svn ci -m "<%= commit_msg %>"',
+        //remove files not added to svn
+        svn_clean: "cd svn && svn revert -R . && svn up && svn status | grep ^? | awk '{print $2}' | xargs rm -r",
+        //remove un-present files in svn
+        svn_clean2: "cd svn && svn revert -R . && svn up && svn status | grep ^! | awk '{print $2}' | xargs svn rm",
+        //start svn repository
+        svn_start: 'svn co https://plugins.svn.wordpress.org/<%= slug %>/ svn'
+    };
+
+    grunt.config.set('exec', commands);
+
+    // grunt dev-update --commit="Future things"
+    grunt.registerTask('dev-push', function () {
+        grunt.config.set('commit_msg', (grunt.option('commit') || 'Dev Update v<%= package_json.version %>'));
+        grunt.config.set('clean', {
+            dev: ['svn/trunk/*','!svn/trunk/readme.txt']
+        });
+        grunt.config.set('copy', {
+            trunk: {
                 dest: 'svn/trunk/',
                 expand: true,
-                nonull: true,
+                //nonull: true,
                 cwd: '<%= slug %>/',
-                src: ['<%= slug %>/**','!<%= slug %>/readme.txt']
-            },
-            svn_tag: {
-                dest: 'svn/tags/' + '<%= package_json.version %>' + '/',
-                expand: true,
-                nonull: true,
-                cwd: '<%= slug %>/',
-                src: '**'
-            },
-            bump: {
-                nonull: true,
-                src:'<%= slug %>/readme.txt',
-                dest: 'svn/trunk/readme.txt'
+                src: ['**', '!readme.txt']
             }
-        },
-        clean: {
-            options: {force: true},
-            test_dir: [
-                '<%= variables.test_dir %>'
-            ],
-            svn_trunk: [
-                'svn/trunk/'
-            ],
-            svn_tag: [
-                'svn/tags/<%= package_json.version %>/'
-            ]
-        },
+        });
+        grunt.config.set('confirm', {
+            "Development Update": {
+                options: {
+                    question: 'Development update continue? v<%= package_json.version %>\nCommit msg: <%= commit_msg %>\n',
+                    input: '_key:y'
+                }
+            }
+        });
+        grunt.task.run([
+            'default',
+            'exec:svn_clean',
+            'confirm',
+            'clean',
+            'copy'
+        ]);
+        grunt.task.run(['exec:git','exec:svn']);
+    });
 
-        commit_msg: (grunt.option('commit') || 'Update v<%= package_json.version %>'),
-        shell: {
-            git: {//add and commit
-                command: 'git add --all && git commit -m "<%= commit_msg %>" && git push'
-            },
-            svn: {//add and commit
-                command: 'cd svn && svn add --force * --auto-props --parents --depth infinity -q && svn ci -m "<%= commit_msg %>"'
-            },
-            svn_clean: {//remove files not added to svn
-                command: "cd svn && svn revert -R . && svn up && svn status | grep ^? | awk '{print $2}' | xargs rm -r"
-            },
-            svn_start: {//get svn repository
-                command: 'svn co https://plugins.svn.wordpress.org/<%= slug %>/ svn'
-            },
-            svn_tag: {//copy trunk to new tag//TODO error here
-                command: 'cd svn && svn cp trunk/ tags/' + grunt.config('version')
-            }
-        },
-        version: {
+    //grunt bump --type=major|minor|patch|prerelease(default=patch) --commit="Awesome things"
+    grunt.registerTask('bump', function () {
+        var semver = require('semver'),
+            newVersion = semver.inc(grunt.config.get('package_json.version'), (grunt.option('type') || 'patch'));
+
+        grunt.config.set('commit_msg', (grunt.option('commit') || 'Update v' + newVersion));
+
+        grunt.config.set('clean', {
+            bump: ['svn/trunk/', 'svn/tags/' + newVersion + '/']
+        });
+        grunt.config.set('version', {
             options: {
-                release: (grunt.option('type') || 'patch')
+                release: newVersion
             },
             plugin_file: {
                 options: {
@@ -147,84 +198,40 @@ module.exports = function (grunt) {
             package_json: {
                 src: ['package.json']
             }
-        },
-        confirm: {
-            deploy: {
+        });
+        grunt.config.set('copy', {
+            trunk: {
+                dest: 'svn/trunk/',
+                expand: true,
+                //nonull: true,
+                cwd: '<%= slug %>/',
+                src: '**'
+            },
+            tag: {
+                dest: 'svn/tags/' + newVersion + '/',
+                expand: true,
+                cwd: '<%= slug %>/',
+                src: '**'
+            }
+        });
+        grunt.config.set('confirm', {
+            "New version deployment": {
                 options: {
-                    question: '100% sure?',
+                    question: 'Update from v<%= package_json.version %> to v'+newVersion+'\nCommit msg: <%= commit_msg %>\n',
                     input: '_key:y'
                 }
             }
-        }
+        });
+        grunt.task.run([
+            'default',
+            'exec:svn_clean',
+            'confirm',
+            'clean',
+            'version',
+            'copy'
+        ]);
+        grunt.task.run(['exec:git','exec:svn']);
     });
-
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
-    grunt.loadNpmTasks('grunt-wp-i18n');
-
-    grunt.loadNpmTasks('grunt-confirm');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-version');
-
-
-    //grunt
-    grunt.registerTask('default', [
-        'sass',
-        'uglify',
-        'makepot'
-    ]);
-
-    //
-    grunt.registerTask('dev', [
-        'default',
-        'clean:test_dir',
-        'copy:test_dir',
-        'watch'
-    ]);
-
-    // Deployment only.
-    // ---------------------------------
-
-    // grunt dev-update --commit="Future things"
-    grunt.registerTask('dev-update', [
-        'default',
-        'shell:svn_clean',
-        'clean:svn_trunk',
-        'copy:svn_trunk',
-        'shell:git',
-        'shell:svn'
-    ]);
-
-
-    grunt.registerTask('svn_tag',function(){
-        var package_json = grunt.file.readJSON('package.json');
-        grunt.config.set('version',package_json.version);//TODO think this better
-        grunt.task.run('shell:svn_tag');
-    });
-
-    // major . minor . patch . prerelease
-    //grunt bump --type=major|minor|patch|prerelease(default=patch) --commit="Awesome things"
-    grunt.registerTask('bump', [
-        'default',
-        'confirm',
-        'version',
-        'shell:svn_clean',
-
-        'clean:svn_trunk',
-        'clean:svn_tag',
-
-        'copy:svn_trunk',
-
-        'svn_tag',
-
-        'shell:git',
-        'shell:svn'
-    ]);
-
 
 
 };

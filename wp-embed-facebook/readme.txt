@@ -40,10 +40,6 @@ Alternatively you can use the [facebook url] shortcode.
 
 Read more about the shortcodes on [this](http://www.wpembedfb.com/shortcode-attributes-and-examples/) page.
 
-= Contributing =
-If you found a bug or want to add an extra feature create a pull request on https://github.com/sigami/wp-embed-facebook
-
-
 = Premium extension =
 * Embed full event shortcode
 * Embed full fan page shortcode
@@ -55,6 +51,8 @@ If you found a bug or want to add an extra feature create a pull request on http
     * Shortcode creator
     * Special templates for albums and pages
 
+= Contributing =
+If you found a bug or want to add an extra feature create a pull request [here](https://github.com/sigami/wp-embed-facebook)
 
 == Installation ==
 
@@ -105,12 +103,15 @@ This can only be achieved using the premium version
 == Changelog ==
 
 = 2.1.1 =
+* Updated: social plugins embed
+
+= 2.1.0 =
 * Fixed: Shortcode [facebook object_id]
 * Fixed: Error for uls https://www.facebook.com/something-3423223
 * Fixed: Readme typo
 * Added: Uglyfied scripts
 * Added: Extra FAQ
-* Added: Github for development https://github.com/sigmai/wp-embed-facebook
+* Added: Github for development https://github.com/sigami/wp-embed-facebook
 
 
 = 2.1 =
