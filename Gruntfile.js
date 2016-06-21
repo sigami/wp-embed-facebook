@@ -72,15 +72,29 @@ module.exports = function (grunt) {
         copy: {
             test_dir: {
                 dest: '<%= variables.test_dir %>',
-                src: '<%= slug %>/**'
+                expand: true,
+                nonull: true,
+                cwd: '<%= slug %>/',
+                src: '**'
             },
             svn_trunk: {
                 dest: 'svn/trunk/',
+                expand: true,
+                nonull: true,
+                cwd: '<%= slug %>/',
                 src: ['<%= slug %>/**','!<%= slug %>/readme.txt']
             },
             svn_tag: {
                 dest: 'svn/tags/' + '<%= package_json.version %>' + '/',
-                src: '<%= slug %>/**'
+                expand: true,
+                nonull: true,
+                cwd: '<%= slug %>/',
+                src: '**'
+            },
+            bump: {
+                nonull: true,
+                src:'<%= slug %>/readme.txt',
+                dest: 'svn/trunk/readme.txt'
             }
         },
         clean: {
@@ -89,7 +103,7 @@ module.exports = function (grunt) {
                 '<%= variables.test_dir %>'
             ],
             svn_trunk: [
-                'svn/trunk'
+                'svn/trunk/'
             ],
             svn_tag: [
                 'svn/tags/<%= package_json.version %>/'
