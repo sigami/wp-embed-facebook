@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
 Tested up to: 4.5.2
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,11 +72,11 @@ You can override the embed template with a custom one. More information on http:
 
 = How can I make my page load faster ? =
 
-Use any kind of page cache. W3 Total Cache or WP Super Cache
+Use any kind of page cache. W3 Total Cache or WP Super Cache are known to be the best ones.
 
 = I cannot embed my photo stream =
 
-This plugin only works for embedding **albums**. The premium version will allow you embed all. (Feature available mid July 2016)
+This plugin only works for embedding **albums**. The premium version will allow you to embed all. (Feature available mid July 2016)
 
 = Is there a way to embed an album with more than 100 photos ? =
 
@@ -104,11 +104,14 @@ This can only be achieved using the premium version
 
 == Changelog ==
 
-= 2.1.0 =
-* Fixed: [facebook object_id] shortcode
-* Fixed: error for uls something-3423223
-* Added: Github release https://github.com/sigmai/wp-embed-facebook
+= 2.1.1 =
+* Fixed: Shortcode [facebook object_id]
+* Fixed: Error for uls https://www.facebook.com/something-3423223
+* Fixed: Readme typo
+* Added: Uglyfied scripts
 * Added: Extra FAQ
+* Added: Github for development https://github.com/sigmai/wp-embed-facebook
+
 
 = 2.1 =
 * Removed: all options and moved them to a single one 'wpemfb_options'
@@ -345,5 +348,5 @@ This can only be achieved using the premium version
 
 == Upgrade Notice ==
 
-= 2.1.0 =
+= 2.1.1 =
 Fixes: error for uls something-3423223, [facebook object_id] shortcode

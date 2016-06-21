@@ -25,7 +25,7 @@ module.exports = function (grunt) {
                 files: {
                     '<%= slug %>/lib/js/fb.min.js': ['<%= slug %>/lib/js/fb.js'],
                     '<%= slug %>/lib/js/wpembedfb.min.js': ['<%= slug %>/lib/js/wpembedfb.js'],
-                    '<%= slug %>/lib/lightbox2/js/lightbox.js': ['<%= slug %>/lib/lightbox2/js/lightbox.min.js']
+                    '<%= slug %>/lib/lightbox2/js/lightbox.min.js': ['<%= slug %>/lib/lightbox2/js/lightbox.js']
                 },
                 options: {
                     sourceMap: false
@@ -104,14 +104,14 @@ module.exports = function (grunt) {
             svn: {//add and commit
                 command: 'cd svn && svn add --force * --auto-props --parents --depth infinity -q && svn ci -m "<%= commit_msg %>"'
             },
-            svn_clean: {//revert all, update and remove files not added to svn
+            svn_clean: {//remove files not added to svn
                 command: "cd svn && svn revert -R . && svn up && svn status | grep ^? | awk '{print $2}' | xargs rm -r"
             },
             svn_start: {//get svn repository
                 command: 'svn co https://plugins.svn.wordpress.org/<%= slug %>/ svn'
             },
             svn_tag: {//copy trunk to new tag
-                command: 'cd svn && svn cp trunk tags/<%= package_json.version %>'
+                command: 'cd svn && svn cp trunk/ tags/' + grunt.config('version')
             }
         },
         version: {
@@ -185,6 +185,13 @@ module.exports = function (grunt) {
         'shell:svn'
     ]);
 
+
+    grunt.registerTask('svn_tag',function(){
+        var package_json = grunt.file.readJSON('package.json');
+        grunt.config.set('version',package_json.version);
+        grunt.task.run('shell:svn_tag');
+    });
+
     // major . minor . patch . prerelease
     //grunt bump --type=major|minor|patch|prerelease(default=patch) --commit="Awesome things"
     grunt.registerTask('bump', [
@@ -192,13 +199,18 @@ module.exports = function (grunt) {
         'confirm',
         'version',
         'shell:svn_clean',
+
         'clean:svn_trunk',
         'clean:svn_tag',
+
         'copy:svn_trunk',
-        'shell:svn_tag',
+
+        'svn_tag',
+
         'shell:git',
         'shell:svn'
     ]);
+
 
 
 };
