@@ -110,7 +110,7 @@ module.exports = function (grunt) {
             svn_start: {//get svn repository
                 command: 'svn co https://plugins.svn.wordpress.org/<%= slug %>/ svn'
             },
-            svn_tag: {//copy trunk to new tag
+            svn_tag: {//copy trunk to new tag//TODO error here
                 command: 'cd svn && svn cp trunk/ tags/' + grunt.config('version')
             }
         },
@@ -188,7 +188,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('svn_tag',function(){
         var package_json = grunt.file.readJSON('package.json');
-        grunt.config.set('version',package_json.version);
+        grunt.config.set('version',package_json.version);//TODO think this better
         grunt.task.run('shell:svn_tag');
     });
 
