@@ -32,7 +32,7 @@ module.exports = function (grunt) {
         },
         copy: {
             main: {
-                dest: '<%= variables.test_dir %>',
+                dest: '<%= vars.test_dir %>',
                 expand: true,
                 //nonull: true,
                 cwd: '<%= pkg.name %>/',
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
         clean: {
             options: {force: true},
             main: [
-                '<%= variables.test_dir %>'
+                '<%= vars.test_dir %>'
             ]
         },
         makepot: {
