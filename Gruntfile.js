@@ -5,8 +5,8 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         slug: 'wp-embed-facebook',
-        variables: grunt.file.readJSON('variables.json'),
         package_json: grunt.file.readJSON('package.json'),
+        variables: grunt.file.readJSON('variables.json'),
         sass: {
             main: {
                 options: {
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
             },
             test_dir: {
                 files: ['<%= slug %>/**', '!*'],
-                tasks: ['copy:test_dir']
+                tasks: ['copy']
             }
         },
     });
@@ -116,122 +116,7 @@ module.exports = function (grunt) {
     //       Deployment only.
     // ---------------------------------
 
-    grunt.loadNpmTasks('grunt-confirm');
-    grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-version');
-
-
-    var commands = {
-        //add and commit
-        git: 'git add --all && git commit -m "<%= commit_msg %>" && git push',
-        //add and commit
-        svn: 'cd svn && svn add --force * --auto-props --parents --depth infinity -q && svn ci -m "<%= commit_msg %>"',
-        //remove files not added to svn
-        svn_clean: "cd svn && svn revert -R . && svn up && svn status | grep ^? | awk '{print $2}' | xargs rm -r",
-        //remove un-present files in svn
-        svn_clean2: "cd svn && svn revert -R . && svn up && svn status | grep ^! | awk '{print $2}' | xargs svn rm",
-        //start svn repository
-        svn_start: 'svn co https://plugins.svn.wordpress.org/<%= slug %>/ svn'
-    };
-
-    grunt.config.set('exec', commands);
-
-    // grunt dev-update --commit="Future things"
-    grunt.registerTask('dev-push', function () {
-        grunt.config.set('commit_msg', (grunt.option('commit') || 'Dev Update v<%= package_json.version %>'));
-        grunt.config.set('clean', {
-            dev: ['svn/trunk/*','!svn/trunk/readme.txt']
-        });
-        grunt.config.set('copy', {
-            trunk: {
-                dest: 'svn/trunk/',
-                expand: true,
-                //nonull: true,
-                cwd: '<%= slug %>/',
-                src: ['**', '!readme.txt']
-            }
-        });
-        grunt.config.set('confirm', {
-            "Development Update": {
-                options: {
-                    question: 'Development update continue? v<%= package_json.version %>\nCommit msg: <%= commit_msg %>\n',
-                    input: '_key:y'
-                }
-            }
-        });
-        grunt.task.run([
-            'default',
-            'exec:svn_clean',
-            'confirm',
-            'clean',
-            'copy'
-        ]);
-        grunt.task.run(['exec:git','exec:svn']);
-    });
-
-    //grunt bump --type=major|minor|patch|prerelease(default=patch) --commit="Awesome things"
-    grunt.registerTask('bump', function () {
-        var semver = require('semver'),
-            newVersion = semver.inc(grunt.config.get('package_json.version'), (grunt.option('type') || 'patch'));
-
-        grunt.config.set('commit_msg', (grunt.option('commit') || 'Update v' + newVersion));
-
-        grunt.config.set('clean', {
-            bump: ['svn/trunk/', 'svn/tags/' + newVersion + '/']
-        });
-        grunt.config.set('version', {
-            options: {
-                release: newVersion
-            },
-            plugin_file: {
-                options: {
-                    prefix: '[^\\-]tag:\\s*'
-                },
-                src: ['<%= slug %>/readme.txt']
-            },
-            stable_tag: {
-                options: {
-                    prefix: '[^\\-]Version:\\s*'
-                },
-                src: ['<%= slug %>/<%= slug %>.php']
-            },
-            package_json: {
-                src: ['package.json']
-            }
-        });
-        grunt.config.set('copy', {
-            trunk: {
-                dest: 'svn/trunk/',
-                expand: true,
-                //nonull: true,
-                cwd: '<%= slug %>/',
-                src: '**'
-            },
-            tag: {
-                dest: 'svn/tags/' + newVersion + '/',
-                expand: true,
-                cwd: '<%= slug %>/',
-                src: '**'
-            }
-        });
-        grunt.config.set('confirm', {
-            "New version deployment": {
-                options: {
-                    question: 'Update from v<%= package_json.version %> to v'+newVersion+'\nCommit msg: <%= commit_msg %>\n',
-                    input: '_key:y'
-                }
-            }
-        });
-        grunt.task.run([
-            'default',
-            'exec:svn_clean',
-            'confirm',
-            'clean',
-            'version',
-            'copy'
-        ]);
-        grunt.task.run(['exec:git','exec:svn']);
-    });
+    grunt.loadTasks("../grunt-helpers");
 
 
 };

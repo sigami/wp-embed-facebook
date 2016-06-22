@@ -99,9 +99,11 @@ class WEF_Social_Plugins {
 	 * @param int $width
 	 *
 	 * @return string
+	 * style="border:none;overflow:hidden"
 	 */
 	static function embedded_video( $href, $width ) {
-		return '<div class="fb-video" data-href="' . $href . '" data-width="' . $width . '"></div>';
+		return '<iframe src="https://www.facebook.com/plugins/video.php?href=' . $href . '&show_text=0&width=560" width="' . $width . '" scrolling="no" frameborder="0" allowTransparency="true" allowFullScreen="true"></iframe>';
+		//return '<div class="fb-video" data-href="' . $href . '" data-width="' . $width . '"></div>';
 	}
 
 	/**
