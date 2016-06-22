@@ -4,27 +4,26 @@
 'use strict';
 module.exports = function (grunt) {
     grunt.initConfig({
-        slug: 'wp-embed-facebook',
-        package_json: grunt.file.readJSON('package.json'),
-        variables: grunt.file.readJSON('variables.json'),
+        pkg: grunt.file.readJSON('package.json'),
+        vars: grunt.file.readJSON('variables.json'),
         sass: {
             main: {
                 options: {
                     style: 'compressed'
                 },
                 files: {
-                    '<%= slug %>/lib/lightbox2/css/lightbox.css': '<%= slug %>/lib/lightbox2/css/lightbox.sass',
-                    '<%= slug %>/templates/classic/classic.css': '<%= slug %>/templates/classic/classic.sass',
-                    '<%= slug %>/templates/default/default.css': '<%= slug %>/templates/default/default.sass'
+                    '<%= pkg.name %>/lib/lightbox2/css/lightbox.css': '<%= pkg.name %>/lib/lightbox2/css/lightbox.sass',
+                    '<%= pkg.name %>/templates/classic/classic.css': '<%= pkg.name %>/templates/classic/classic.sass',
+                    '<%= pkg.name %>/templates/default/default.css': '<%= pkg.name %>/templates/default/default.sass'
                 }
             }
         },
         uglify: {
             main: {
                 files: {
-                    '<%= slug %>/lib/js/fb.min.js': ['<%= slug %>/lib/js/fb.js'],
-                    '<%= slug %>/lib/js/wpembedfb.min.js': ['<%= slug %>/lib/js/wpembedfb.js'],
-                    '<%= slug %>/lib/lightbox2/js/lightbox.min.js': ['<%= slug %>/lib/lightbox2/js/lightbox.js']
+                    '<%= pkg.name %>/lib/js/fb.min.js': ['<%= pkg.name %>/lib/js/fb.js'],
+                    '<%= pkg.name %>/lib/js/wpembedfb.min.js': ['<%= pkg.name %>/lib/js/wpembedfb.js'],
+                    '<%= pkg.name %>/lib/lightbox2/js/lightbox.min.js': ['<%= pkg.name %>/lib/lightbox2/js/lightbox.js']
                 },
                 options: {
                     sourceMap: false
@@ -36,7 +35,7 @@ module.exports = function (grunt) {
                 dest: '<%= variables.test_dir %>',
                 expand: true,
                 //nonull: true,
-                cwd: '<%= slug %>/',
+                cwd: '<%= pkg.name %>/',
                 src: '**'
             }
         },
@@ -49,41 +48,41 @@ module.exports = function (grunt) {
         makepot: {
             main: {
                 options: {
-                    cwd: '<%= slug %>/',
+                    cwd: '<%= pkg.name %>/',
                     domainPath: 'lang',
                     exclude: ['node_modules', '.sass-cache', 'svn'],
-                    mainFile: '<%= slug %>.php',
-                    potFilename: '<%= slug %>.pot',
+                    mainFile: '<%= pkg.name %>.php',
+                    potFilename: '<%= pkg.name %>.pot',
                     potHeaders: {
                         poedit: true,
                         'x-poedit-keywordslist': true,
-                        'last-translator': '<%= package_json.author %>',
-                        'language-team': '<%= package_json.author %>',
+                        'last-translator': '<%= pkg.author %>',
+                        'language-team': '<%= pkg.author %>',
                         'X-Poedit-Basepath': '..',
                         'X-Poedit-SearchPathExcluded-0': '*.js',
-                        'X-Poedit-WPHeader': '<%= slug %>/.php'
+                        'X-Poedit-WPHeader': '<%= pkg.name %>/.php'
                     },
                     type: 'wp-plugin',
-                    updateTimestamp: true,
+                    updateTimestamp: false,
                     updatePoFiles: true
                 }
             }
         },
         watch: {
             css: {
-                files: '<%= slug %>/**/*.sass',
+                files: '<%= pkg.name %>/**/*.sass',
                 tasks: ['sass']
             },
             js: {
-                files: '<%= slug %>/**/*.js',
+                files: '<%= pkg.name %>/**/*.js',
                 tasks: ['uglify']
             },
             pot: {
-                files: '<%= slug %>/**/*.php',
+                files: '<%= pkg.name %>/**/*.php',
                 tasks: ['makepot']
             },
             test_dir: {
-                files: ['<%= slug %>/**', '!*'],
+                files: ['<%= pkg.name %>/**', '!*'],
                 tasks: ['copy']
             }
         },
