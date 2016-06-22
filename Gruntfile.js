@@ -98,19 +98,10 @@ module.exports = function (grunt) {
 
 
     //grunt
-    grunt.registerTask('default', [
-        'sass',
-        'uglify',
-        'makepot'
-    ]);
+    grunt.registerTask('default', ['sass', 'uglify', 'makepot']);
 
     //grunt dev
-    grunt.registerTask('dev', [
-        'default',
-        'clean:main',
-        'copy:main',
-        'watch'
-    ]);
+    grunt.registerTask('dev', ['default', 'clean', 'copy', 'watch']);
 
     // ---------------------------------
     //       Deployment only.
