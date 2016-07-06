@@ -6,6 +6,47 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         vars: grunt.file.readJSON('variables.json'),
+        copy: {
+            main: {
+                dest: '<%= vars.test_dir %>',
+                expand: true,
+                //nonull: true,
+                cwd: '<%= pkg.name %>/',
+                src: '**'
+            }
+        },
+        clean: {
+            options: {force: true},
+            main: [
+                '<%= vars.test_dir %>'
+            ]
+        },
+        watch: {
+            sass: {
+                files: '<%= pkg.name %>/**/*.sass',
+                tasks: ['sass']
+            },
+            uglify: {
+                files: '<%= pkg.name %>/**/*.js',
+                tasks: ['uglify']
+            },
+            //makepot: {
+            //    files: '<%= pkg.name %>/**/*.php',
+            //    tasks: ['makepot']
+            //},
+            copy: {
+                files: ['<%= pkg.name %>/**', '!*'],
+                tasks: ['copy']
+            },
+            livereload: {
+                options: {
+                    livereload: true
+                },
+                files: [
+                    '<%= pkg.name %>/**'
+                ]
+            }
+        },
         sass: {
             main: {
                 options: {
@@ -30,21 +71,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        copy: {
-            main: {
-                dest: '<%= vars.test_dir %>',
-                expand: true,
-                //nonull: true,
-                cwd: '<%= pkg.name %>/',
-                src: '**'
-            }
-        },
-        clean: {
-            options: {force: true},
-            main: [
-                '<%= vars.test_dir %>'
-            ]
-        },
         makepot: {
             main: {
                 options: {
@@ -67,25 +93,8 @@ module.exports = function (grunt) {
                     updatePoFiles: true
                 }
             }
-        },
-        watch: {
-            css: {
-                files: '<%= pkg.name %>/**/*.sass',
-                tasks: ['sass']
-            },
-            js: {
-                files: '<%= pkg.name %>/**/*.js',
-                tasks: ['uglify']
-            },
-            pot: {
-                files: '<%= pkg.name %>/**/*.php',
-                tasks: ['makepot']
-            },
-            test_dir: {
-                files: ['<%= pkg.name %>/**', '!*'],
-                tasks: ['copy']
-            }
-        },
+        }
+
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');

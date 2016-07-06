@@ -151,6 +151,17 @@ class  WP_Embed_FB {
 				$fb_id    = $setArray[1];
 				$type     = 'album';
 			}
+
+			if ( isset( $vars['album_id'] ) ) {
+				$fb_id    = $vars['album_id'];
+				$type     = 'album';
+			}
+
+			if ( isset( $vars['story_fbid'] ) ) {
+				$fb_id    = $vars['story_fbid'];
+				$type     = 'post';
+			}
+
 			$juice = substr( $juice, 0, $pos );
 		}
 		$juiceArray = explode( '/', trim( $juice, '/' ) );
@@ -186,7 +197,7 @@ class  WP_Embed_FB {
 			$type = 'photo';
 		} elseif ( in_array( 'events', $juiceArray ) ) {
 			$type = 'event';
-		} elseif ( in_array( 'videos', $juiceArray ) ) {
+		} elseif ( in_array( 'videos', $juiceArray ) || in_array( 'video.php', $juiceArray ) ) {
 			$type = 'video';
 		}
 		/**
@@ -560,7 +571,4 @@ class  WP_Embed_FB {
 			add_filter('jetpack_photon_skip_image','__return_true');
 	}
 
-	static function fb_root( $content ) {
-		return '<div id="fb-root"></div>' . PHP_EOL . $content;
-	}
 }
