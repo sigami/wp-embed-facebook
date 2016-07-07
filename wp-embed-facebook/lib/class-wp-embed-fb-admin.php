@@ -278,6 +278,7 @@ class WP_Embed_FB_Admin {
 		if ( isset( $_POST['restore-data'] ) && wp_verify_nonce( $_POST['restore-data'], 'W7ziLKoLojka' ) ) {
 			WP_Embed_FB_Plugin::set_options( WP_Embed_FB_Plugin::get_defaults() );
 		}
+		$options = WP_Embed_FB_Plugin::get_option();
 		?>
 		<div class="wrap">
 			<h2>WP Embed Facebook</h2>
@@ -288,7 +289,7 @@ class WP_Embed_FB_Admin {
 					<?php
 					$has_app            = WP_Embed_FB_Plugin::has_fb_app();
 					$tabs               = array(
-						__( 'Magic embeds', 'wp-embed-facebook' ),
+						__( 'Magic Embeds', 'wp-embed-facebook' ),
 						__( 'Social Plugins', 'wp-embed-facebook' ),
 						__( 'Custom Embeds', 'wp-embed-facebook' ),
 						__( 'Lightbox', 'wp-embed-facebook' ),
@@ -308,42 +309,50 @@ class WP_Embed_FB_Admin {
 						<?php
 						self::section( true );
 						self::field( 'string',
-							sprintf( __( 'Auto embeds understand the url you are entering and return a social plugin or custom embed. <br>They can be activated by pasting the url on the editor or by the [facebook url ] shortcode. <a href="%s" target="_blank">Read more.</a>', 'wp-embed-facebook' ), 'http://www.wpembedfb.com/shortcode-attributes-and-examples/' ),
+							sprintf( __( 'Auto embeds understand the url you are entering and return a social plugin or a custom embed. <br>They can be activated by <a href="https://codex.wordpress.org/Embeds" title="WordPress Embeds" target="_blank">pasting the url on the editor</a> or by the [facebook url ] <a href="%s" title="[facebook] Shortcode attributes and examples" target="_blank">shortcode</a>.', 'wp-embed-facebook' ), 'http://www.wpembedfb.com/shortcode-attributes-and-examples/' ),
 							'<h3>' . __( 'Auto Embeds', 'wp-embed-facebook' ) . '</h3>' );
 						self::field( 'checkbox', 'auto_embed_active', __( 'Auto embed url\'s on editor ', 'wp-embed-facebook' ) );
 						self::field( 'number', 'max_width', __( 'Maximum width in pixels', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 						self::field( 'checkbox', 'video_as_post', __( 'Embed video as post', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'video_download', sprintf( __( '%sDownload link under video', 'wp-embed-facebook' ), '<img style="display:block;float:left;padding-right:5px;" width="25px" height="auto" src="' . WP_Embed_FB_Plugin::get_url() . 'lib/admin/ic_image_settings.png">' ) );
 
+						self::field( 'string', sprintf(__('The quote plugin lets people select text on your page and add it to their share.<br><a href="%s" target="_blank" title="WP Embed Facebook">Demo</a>','wp-embed-facebook'),'http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/'), '<h3>' . __( 'Quote Plugin', 'wp-embed-facebook' ) . '</h3>' );
+						self::field( 'checkbox', 'quote_plugin_active', __( 'Active', 'wp-embed-facebook' ) );
+						self::field( 'text', 'quote_post_types', __( 'Post types', 'wp-embed-facebook' ) );
+						self::field( 'string', __( 'Coma separated post types i.e. post,page,attachment', 'wp-embed-facebook' ) );
+
+						if(!empty($options['app_id']) && ( $options['auto_comments_active'] == 'true')){
+							self::field( 'string', '<a title="Facebook comments moderation" target="_blank" href="https://developers.facebook.com/tools/comments/">Moderate Comments</a>' , '<h3>' . __( 'Comments', 'wp-embed-facebook' ) . '</h3>' );
+						} else {
+							self::field( 'string', 'Replace WP comments for FB comments on selected post types', '<h3>' . __( 'Comments', 'wp-embed-facebook' ) . '</h3>' );
+						}
+						self::field( 'checkbox', 'auto_comments_active', __( 'Active', 'wp-embed-facebook' ) );
+						self::field( 'text', 'auto_comments_post_types', __( 'Post types', 'wp-embed-facebook' ) );
+						self::field( 'string', __( 'Coma separated post types i.e. post,page,attachment', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'comments_count_active', __( 'Sync comment count', 'wp-embed-facebook' ) );
+						self::field( 'string', '<small>Comments count get stored on _wef_comments_count post meta.<br>You can refresh the comment count by updating the post</small>' );
+
+						self::field( 'checkbox', 'comments_open_graph', __( 'Add open graph meta', 'wp-embed-facebook' ) );
+						self::field( 'string', 'This will enable you to moderate comments.<br> <small>Disable it if you already have another plugin adding the fb:app_id meta.</small>' );
+
+
+						self::field( 'string', __('To enable comments moderation setup your app below','wp-embed-facebook'), 'Notes:' );
+
 						self::field( 'string','', '<h3>' . __( 'Facebook settings', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'select', 'sdk_lang', __( 'Like Buttons Language', 'wp-embed-facebook' ), WP_Embed_FB_Plugin::get_fb_locales() );
+						self::field( 'select', 'sdk_lang', __( 'Social Plugins Language', 'wp-embed-facebook' ), WP_Embed_FB_Plugin::get_fb_locales() );
 						self::field( 'string',
 							sprintf(
-								__( 'Creating a Facebook app is easy view <a href="%s" target="_blank">the step by step guide</a> or view <a href="%s" target="_blank">your apps</a>.'
+								__( 'Creating a Facebook app is easy view <a href="%s" target="_blank" title="WP Embed Facebook">the step by step guide</a> or view <a href="%s" target="_blank" title="Facebook Apps">your apps</a>.'
 									, 'wp-embed-facebok'
 								),
 								'http://www.wpembedfb.com/blog/creating-a-facebook-app-the-step-by-step-guide/',
 								'https://developers.facebook.com/apps'
 							),
 							'' );
-
 						self::field( 'text', 'app_id', __( 'App ID', 'wp-embed-facebook' ) );
 						self::field( 'string', 'Needed for comments moderation and custom embeds' );
 						self::field( 'text', 'app_secret', __( 'App Secret', 'wp-embed-facebook' ) );
 						self::field( 'string', 'Needed for custom embeds' );
-
-						self::field( 'string', 'Replace WP comments for FB comments on selected post types', '<h3>' . __( 'Comments', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'auto_comments_active', __( 'Active', 'wp-embed-facebook' ) );
-						self::field( 'text', 'auto_comments_post_types', __( 'Post types', 'wp-embed-facebook' ) );
-						self::field( 'string', __( 'Coma separated post types i.e. post,page,attachment', 'wp-embed-facebook' ) );
-						self::field( 'checkbox', 'comments_count_active', __( 'Sync comment count', 'wp-embed-facebook' ) );
-						self::field( 'string', '<small>Comments count get stored on _wef_comments_count post meta.<br>You can refresh the comment count by updating the post</small>', '' );
-
-
-						self::field( 'string', sprintf(__('The quote plugin lets people select text on your page and add it to their share.<br><a href="%s" target="_blank">Demo</a>','wp-embed-facebook'),'http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/'), '<h3>' . __( 'Quote Plugin', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'quote_plugin_active', __( 'Active', 'wp-embed-facebook' ) );
-						self::field( 'text', 'quote_post_types', __( 'Post types', 'wp-embed-facebook' ) );
-						self::field( 'string', __( 'Coma separated post types i.e. post,page,attachment', 'wp-embed-facebook' ) );
 
 						self::section();
 						?>
@@ -454,16 +463,6 @@ class WP_Embed_FB_Admin {
 						<?php if ( ! $has_app ) : ?>
 							<div style="display: none">
 						<?php endif; ?>
-						<p>
-							<?php _e('Custom embeds can be accessed using the [facebook url] or [embed] shortcodes also by activating "auto embeds" on Magic Embed section.','wp-embed-facebook') ?>
-							<br>
-							<strong><?php _e('Example:','wp-embed-facebook') ?></strong>
-							<br>
-							Page custom embed<br>
-							[facebook https://www.facebook.com/sydneyoperahouse/ social_plugin=false posts=2]
-							<br>
-							<?php printf(__('<a href="%s" target="_blank">Read More</a>','wp-embed-facebook'),'http://www.wpembedfb.com/shortcode-attributes-and-examples/') ?>
-						</p>
 						<?php
 						self::section( __( "General", 'wp-embed-facebook' ) );
 						/**
@@ -481,27 +480,39 @@ class WP_Embed_FB_Admin {
 						self::field( 'number', 'max_photos', __( 'Number of Photos', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Events', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'ev_local_tz', __( 'Use WP time calculate the date', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'ev_local_tz', __( 'Use WP time to calculate the date', 'wp-embed-facebook' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Pages', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'raw_page', __( 'Enable by default', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'raw_page', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'show_like', __( 'Show like button', 'wp-embed-facebook' ) );
 						self::field( 'number', 'max_posts', __( 'Number of posts', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Photos', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'raw_photo', __( 'Enable by default', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'raw_photo', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Posts', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'raw_post', __( 'Enable by default', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'raw_post', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Videos', 'wp-embed-facebook' ) . '</h3>' );
-						self::field( 'checkbox', 'raw_video', __( 'Enable by default', 'wp-embed-facebook' ) );
+						self::field( 'checkbox', 'raw_video', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'video_ratio', __( 'Force 16:9 ratio', 'wp-embed-facebook' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Profiles', 'wp-embed-facebook' ) . '</h3>' );
 						self::field( 'checkbox', 'show_follow', __( 'Show follow button', 'wp-embed-facebook' ) );
 
 						self::section();
+						?>
+						<p>
+							<?php _e('Custom embeds can be accessed using the [facebook url] or [embed] shortcodes also by activating "Auto Embeds" on Magic Embeds section.','wp-embed-facebook') ?>
+							<br>
+							<strong><?php _e('Example:','wp-embed-facebook') ?></strong>
+							<br>
+							Page custom embed<br>
+							[facebook https://www.facebook.com/sydneyoperahouse/ social_plugin=false posts=2]
+							<br>
+							<?php printf(__('<a href="%s" target="_blank">Read More</a>','wp-embed-facebook'),'http://www.wpembedfb.com/shortcode-attributes-and-examples/') ?>
+						</p>
+						<?php
 						if ( ! $has_app ) :
 							?>
 							</div>
@@ -606,7 +617,7 @@ class WP_Embed_FB_Admin {
 					<p><?php _e( 'One Year Premium Support', 'wp-embed-facebook' ) ?></p>
 
 					<p>
-						<a class="button button-red"
+						<a class="button button-red" title="Premium extension" target="_blank"
 						   href="http://www.wpembedfb.com/premium"><?php _e( 'Check it out', 'wp-embed-facebook' ) ?></a>
 					</p>
 
@@ -619,22 +630,22 @@ class WP_Embed_FB_Admin {
 					</p>
 				</div>
 				<hr>
-				<h4><?php _e( "Keep this plugin free and accessible to all.", 'wp-embed-facebook' ) ?></h4>
+				<h4><?php _e( "This free plugin has taken thousands of hours to maintain and develop", 'wp-embed-facebook' ) ?></h4>
 
 				<p>
 					<strong>
-						<a href="http://wordpress.org/plugins/wp-embed-facebook"><?php _e( "Rate it", 'wp-embed-facebook' ) ?>
+						<a href="http://wordpress.org/plugins/wp-embed-facebook" title="wordpress.org" target="_blank"><?php _e( "Rate it", 'wp-embed-facebook' ) ?>
 							<br>
 							<span style="color: gold;"> &#9733;&#9733;&#9733;&#9733;&#9733; </span>
 						</a>
 					</strong>
 				</p>
 
-				<p><strong><a target="_blank"
-							href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26"><?php _e( 'Donate now', 'wp-embed-facebook' ) ?></a></strong>
+				<p><strong><a target="_blank" title="paypal"
+							href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26">👾<?php _e( 'Donate', 'wp-embed-facebook' ) ?>👾</a></strong>
 				</p>
 				<hr>
-				<p><a href="http://www.wpembedfb.com">
+				<p><a href="http://www.wpembedfb.com" title="plugin website" target="_blank">
 						<small><?php _e( 'More information', 'wp-embed-facebook' ) ?></small>
 					</a></p>
 				<?php echo apply_filters( 'wpemfb_admin', ob_get_clean() ); ?>

@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Embed Facebook
 Plugin URI: http://www.wpembedfb.com
-Description: Embed any public Facebook video, photo, album, event, page, profile, or post. Copy the facebook url to a single line on your post, or use shortcode [facebook url ] more information at <a href="http://www.wpembedfb.com" title="plugin website">www.wpembedfb.com</a>
+Description: Embed any public Facebook video, photo, album, event, page, comment, profile, or post. Add Facebook comments to all your site, insert facebook social plugins (like, save, send, share, follow, quote, comments) anywhere on your site. View the <a href="http://www.wpembedfb.com/demo-site/" title="plugin website" target="_blank">demo site</a>.
 Author: Miguel Sirvent
 Version: 2.1.0
 Author URI: http://www.wpembedfb.com
@@ -62,6 +62,9 @@ if ( WP_Embed_FB_Plugin::get_option( 'auto_comments_active' ) === 'true' ) {
 		add_filter( 'wp_ajax_nopriv_wpemfb_comments', 'WEF_Social_Plugins::wpemfb_comments' );
 		add_action( 'pre_get_posts', 'WEF_Social_Plugins::pre_get_posts' );
 	}
+	if(WP_Embed_FB_Plugin::get_option( 'comments_open_graph' ) === 'true'){
+		add_action( 'wp_head', 'WEF_Social_Plugins::wp_head' );
+	}
 }
 
 //Magic here
@@ -70,7 +73,5 @@ add_shortcode( 'facebook', 'WP_Embed_FB::shortcode' );
 //Official magic very powerful since v2.1.1
 add_shortcode( 'fb_plugin', 'WEF_Social_Plugins::shortcode' );
 
-
-
 //TODO add content filter and option to force embed when it fails for weirb reasons
-
+//TODO do some magic with [facebook] JetPack shortcode.

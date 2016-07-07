@@ -581,6 +581,7 @@ class WEF_Social_Plugins {
 		}
 		$options = WP_Embed_FB_Plugin::get_option();
 		$array   = WP_Embed_FB_Plugin::string_to_array( $options['auto_comments_post_types'] );
+		//https://graph.facebook.com/?id=http://t-underboot.sigami.net/?p=4
 		if ( in_array( $post->post_type, $array ) ) {
 			$args     = array(
 				'fields' => 'share{comment_count}',
@@ -639,6 +640,13 @@ class WEF_Social_Plugins {
 		}
 
 		return $query;
+	}
+
+	static function wp_head(){
+		$app_id = WP_Embed_FB_Plugin::get_option('app_id');
+		if(!empty($app_id)){
+			echo '<meta property="fb:app_id" content="'.$app_id.'" />'.PHP_EOL;
+		}
 	}
 
 	/* UTILITIES */

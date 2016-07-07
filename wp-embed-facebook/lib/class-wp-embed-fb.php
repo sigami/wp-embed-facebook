@@ -360,11 +360,11 @@ class  WP_Embed_FB {
 			try {
 				switch ( $type ) {
 					case 'album' :
-						self::$num_photos = is_int( self::$num_photos ) ? self::$num_photos : WP_Embed_FB_Plugin::get_option( 'max_photos' );
+						self::$num_photos = is_numeric( self::$num_photos ) ? self::$num_photos : WP_Embed_FB_Plugin::get_option( 'max_photos' );
 						$api_string       = $fb_id . '?fields=name,id,from,description,count,photos.fields(name,picture,source,id).limit(' . self::$num_photos . ')';
 						break;
 					case 'page' :
-						$num_posts  = is_int( self::$num_posts ) ? self::$num_posts : WP_Embed_FB_Plugin::get_option( 'max_posts' );
+						$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : WP_Embed_FB_Plugin::get_option( 'max_posts' );
 						$api_string = $fb_id . '?fields=name,picture,is_community_page,link,id,cover,category,website,likes,genre';
 						if ( intval( $num_posts ) > 0 ) {
 							$api_string .= ',posts.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
@@ -510,10 +510,8 @@ class  WP_Embed_FB {
 		return '';
 	}
 
-	static function embed_register_handler(
-		$match, /** @noinspection PhpUnusedParameterInspection */
-		$attr = null, $url = null, $atts = null
-	) {
+	static function embed_register_handler( $match, $attr = null, $url = null, $atts = null ) {
+		$attr .= '';
 		return self::fb_embed( $match, $url, $atts );
 	}
 
