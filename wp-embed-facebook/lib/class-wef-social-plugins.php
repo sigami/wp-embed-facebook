@@ -392,9 +392,9 @@ class WEF_Social_Plugins {
 		$ret = '';
 		if ( isset( self::$links[ $type ] ) ) {
 			if ( $link ) {
-				$ret = '<br><small>';
+				$ret = '<small>';
 				$ret .= '<a href="' . self::$links[ $type ]['demo'] . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
-				$ret .= '<a href="' . self::$links[ $type ]['docs'] . '" target="_blank" title="Official FB documentation">Info</a> ';
+				$ret .= '<a href="' . self::$links[ $type ]['docs'] . '" target="_blank" title="Official FB documentation">Info</a>';
 				$ret .= '</small>';
 			} else {
 				$ret = self::$links[ $type ];
@@ -454,71 +454,46 @@ class WEF_Social_Plugins {
 		} else {
 			$type_clean = $type;
 		}
+
 		do_action( 'wef_sp_get_action' );
 
-		$defaults = self::get_defaults();
-		$def_type = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
-//		$options  = wp_parse_args( $def_type, $options );/TODO URGENT FIX This
-//		print_r( $defaults[ $type ] );
-//		print_r( $def_type );
-//		print_r( $options );
-//		print_r( WP_Embed_FB_Plugin::get_option() );
-		$extra       = '';
-		$extra_array = array();
-		foreach ( $def_type as $key => $value ) {
-			if ( $value !== $defaults[ $type ][$key] ) {
-				$extra .= "data-$key=\"$value\" ";
-				$extra_array[ $key ] = $value;
+		$defaults         = self::get_defaults();
+		$filtered_options = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
+		$extra            = '';
+		$real_options     = array();
+		foreach ( $defaults[ $type ] as $option => $def_value ) {
+			if ( isset( $options[ $option ] ) && ( $options[ $option ] != $def_value ) ) {
+				$real_options[ $option ] = $options[ $option ];
+			} elseif ( isset( $filtered_options[ $option ] ) && ( $filtered_options[ $option ] != $def_value ) ) {
+				$real_options[ $option ] = $filtered_options[ $option ];
 			}
+			if ( isset( $real_options[ $option ] ) && ( $real_options[ $option ] == $def_value ) ) {
+				unset( $real_options[ $option ] );
+			}
+		}
 
-
+		foreach ( $real_options as $option => $value ) {
+			$extra .= "data-$option=\"$value\" ";
 		}
 
 		return apply_filters( 'wef_sp_get_filter', "<div class=\"fb-$type_clean\" $extra></div>", $type, $options, $defaults );
 	}
 
 	static function shortcode( $atts = array() ) {
-		$type     = array_shift( $atts );
-		$type_raw = $type;
+		$type = array_shift( $atts );
 		if ( $type == 'comments-count' ) {
 			$type = 'comments_count';
 		}
 		$defaults = self::get_defaults();
+
 		if ( isset( $defaults[ $type ] ) ) {
-			$atts_raw = $atts;
 
 			$data = shortcode_atts( $defaults[ $type ], $atts );
-			$ret  = self::get( $type, $data );
 
-			if ( isset( $atts['debug'] ) ) {
-				$debug           = '';
-				$atts_raw_string = '';
-				unset( $atts_raw['debug'] );
-				foreach ( $atts_raw as $key => $value ) {
-					$atts_raw_string .= "$key=$value ";
-				}
-				$debug .= '<br><pre>';
-				$debug .= '<strong>';
-				$debug .= __( 'Shortcode used:', 'wp-embed-facebook' ) . "<br>";
-				$debug .= '</strong>';
-				$debug .= esc_html( htmlentities( "[fb_plugin $type_raw $atts_raw_string]" ) );
-				$debug .= '<br>';
-				$debug .= '<strong>';
-				$debug .= __( 'Final code:', 'wp-embed-facebook' ) . "<br>";
-				$debug .= '</strong>';
-				$debug .= esc_html( htmlentities( $ret, ENT_QUOTES ) );
-				$debug .= '<br>';
-				$debug .= '<strong>';
-				$debug .= __( 'More information:', 'wp-embed-facebook' );
-				$debug .= '</strong>';
-				$debug .= self::get_links( $type );
-				$debug .= '</pre>';
-				$ret .= $debug;
-			}
+			$ret = self::get( $type, $data );
 
 			do_action( 'wef_sp_shortcode_action' );
 
-//			return print_r($data,true);
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
 		}
 

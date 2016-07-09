@@ -171,6 +171,7 @@ class WP_Embed_FB_Plugin {
 				                  'comments_count_active'          => 'true',
 				                  'comments_open_graph'            => 'true',
 //				                  'scrape_open_graph'              => 'true',
+				                  'lightbox_att'                   => 'data-lightbox="roadtrip"',
 			                  ) + $social_options;
 		}
 

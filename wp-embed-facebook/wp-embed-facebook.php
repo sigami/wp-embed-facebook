@@ -4,7 +4,7 @@ Plugin Name: WP Embed Facebook
 Plugin URI: http://www.wpembedfb.com
 Description: Embed any public Facebook video, photo, album, event, page, comment, profile, or post. Add Facebook comments to all your site, insert facebook social plugins (like, save, send, share, follow, quote, comments) anywhere on your site. View the <a href="http://www.wpembedfb.com/demo-site/" title="plugin website" target="_blank">demo site</a>.
 Author: Miguel Sirvent
-Version: 2.1.0
+Version: 2.1.1
 Author URI: http://www.wpembedfb.com
 Text Domain: wp-embed-facebook
 Domain Path: /lang
@@ -17,8 +17,10 @@ WP_Embed_FB_Plugin::hooks();
 
 /** @see WP_Embed_FB_Plugin::install */
 register_activation_hook( __FILE__, 'WP_Embed_FB_Plugin::install' );
+
 /** @see WP_Embed_FB_Plugin::uninstall */
 register_uninstall_hook( __FILE__, 'WP_Embed_FB_Plugin::uninstall' );
+
 /** @see WP_Embed_FB_Plugin::deactivate */
 register_deactivation_hook( __FILE__, 'WP_Embed_FB_Plugin::deactivate' );
 

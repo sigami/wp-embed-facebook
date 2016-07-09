@@ -87,7 +87,33 @@ class  WEF_Magic_Embeds extends WP_Embed_FB_Plugin {
 				$ret .= self::add_adaptive( $default_width, $atts );
 			}
 		}
-		return $ret.print_r(self::get_option(),true);
+		if ( isset( $atts['debug'] ) ) {
+			$atts_raw = $atts;
+			$debug           = '';
+			$atts_raw_string = '';
+			unset( $atts_raw['debug'] );
+			foreach ( $atts_raw as $key => $value ) {
+				$atts_raw_string .= "$key=$value ";
+			}
+			$debug .= '<br><pre>';
+			$debug .= '<strong>';
+			$debug .= __( 'Shortcode used:', 'wp-embed-facebook' ) . "<br>";
+			$debug .= '</strong>';
+			$debug .= esc_html( htmlentities( "[fb_plugin $type $atts_raw_string]" ) );
+			$debug .= '<br>';
+			$debug .= '<strong>';
+			$debug .= __( 'Final code:', 'wp-embed-facebook' ) . "<br>";
+			$debug .= '</strong>';
+			$debug .= esc_html( htmlentities( $ret, ENT_QUOTES ) );
+			$debug .= '<br>';
+			$debug .= '<strong>';
+			$debug .= __( 'More information:', 'wp-embed-facebook' );
+			$debug .= '</strong>';
+			$debug .= WEF_Social_Plugins::get_links( $type );
+			$debug .= '</pre>';
+			$ret .= $debug;
+		}
+		return $ret;
 	}
 	static function wef_sp_shortcode_action() {
 		if ( ( self::get_option( 'enq_when_needed' ) == 'true' ) && ( self::get_option( 'enq_fbjs' ) == 'true' ) ) {

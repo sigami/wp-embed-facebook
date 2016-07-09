@@ -176,7 +176,8 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	 * @param array  $atts  Embed attributes
 	 */
 	static function field( $type, $name = '', $label = '', $args = array(), $atts = array() ) {
-		$options    = self::get_option();
+		/** @since 2.1.1 */
+		$options    = apply_filters('wpemfb_field_options',self::get_option());
 		$attsString = '';
 		if ( ! empty( $atts ) ) {
 			foreach ( $atts as $att => $val ) {
@@ -208,7 +209,12 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 					<th><label for="<?php echo $name ?>"><?php echo $label ?></label></th>
 					<td>
 						<select name="<?php echo $name ?>" <?php echo $attsString ?>>
-							<?php foreach ( $args as $value => $name ) : ?>
+							<?php
+								foreach ( $args as $value => $name ) :
+									if ( is_numeric( $value ) ) {
+										$value = $name;
+									}
+							?>
 								<option
 									value="<?php echo $value ?>" <?php echo $option == $value ? 'selected' : '' ?>><?php echo $name ?></option>
 							<?php endforeach; ?>
@@ -254,7 +260,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						<input id="<?php echo $name ?>"
 						       type="<?php echo $type ?>"
 						       name="<?php echo $name ?>" <?php echo isset( $args['required'] ) ? 'required' : '' ?>
-						       value="<?php echo $options[ $name ] ?>" <?php echo $attsString ?>
+						       value="<?php echo esc_attr($options[ $name ]) ?>" <?php echo $attsString ?>
 						       class="regular-text"/>
 					</td>
 				</tr>
@@ -267,7 +273,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	/**
 	 * Gets $_POST variables and saves them to the database
 	 */
-	private static function savedata() {
+	private static function save_data() {
 		$options = self::get_option();
 		foreach ( $options as $option => $value ) {
 			if ( $value == 'true' || $value == 'false' ) {
@@ -278,10 +284,14 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 				}
 			} else {
 				if ( isset( $_POST[ $option ] ) ) {
-					$options[ $option ] = sanitize_text_field( $_POST[ $option ] );
+					$sanitized = sanitize_text_field( $_POST[ $option ] );
+					$options[ $option ] = stripslashes($sanitized);
 				}
 			}
 		}
+		/** @since 2.1.1 */
+		do_action('wpemfb_save_data');
+
 		self::set_options( $options );
 	}
 
@@ -290,7 +300,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	 */
 	static function wpemfb_page() {
 		if ( isset( $_POST['save-data'] ) && wp_verify_nonce( $_POST['save-data'], 'W7ziLKoLoj' ) ) {
-			self::savedata();
+			self::save_data();
 		}
 		if ( isset( $_POST['restore-data'] ) && wp_verify_nonce( $_POST['restore-data'], 'W7ziLKoLojka' ) ) {
 			self::set_options( self::get_defaults() );
@@ -371,8 +381,8 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'text', 'app_secret', __( 'App Secret', 'wp-embed-facebook' ) );
 						self::field( 'string', 'Needed for custom embeds' );
 						//TODO auto scrape fb share using fb api on updated posts, filtered by post_type
-//						self::field( 'checkbox', 'scrape_open_graph', __( 'Scrape FB share data', 'wp-embed-facebook' ) );
-//						self::field( 'string', __( '<small>This will update the contents of the share every time you update a plublished post<br>You need a FB App for this.</small>', 'wp-embed-facebook' ), '<h4>Notes:</h4>' );
+						//						self::field( 'checkbox', 'scrape_open_graph', __( 'Scrape FB share data', 'wp-embed-facebook' ) );
+						//						self::field( 'string', __( '<small>This will update the contents of the share every time you update a plublished post<br>You need a FB App for this.</small>', 'wp-embed-facebook' ), '<h4>Notes:</h4>' );
 
 						self::section();
 						?>
@@ -394,7 +404,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						$vars = get_class_vars( 'WEF_Social_Plugins' );
 						self::section( true );
 
-						self::field( 'string', '[fb_plugin  page href=]', '<h3>' . __( 'Page plugin', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'page' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin  page href=]', '<h3>' . __( 'Page plugin', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'page' ) . '</h3>' );
 						self::field( 'number', 'page_width', 'width', array(), array(
 							'min' => '220',
 							'max' => '500'
@@ -408,38 +418,38 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'page_small-header', 'small-header' );
 						self::field( 'checkbox', 'page_adapt-container-width', 'adapt-container-width' );
 
-						self::field( 'string', '[fb_plugin post href=]', '<h3>' . __( 'Post plugin', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'post' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin post href=]', '<h3>' . __( 'Post plugin', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'post' ) . '</h3>' );
 						self::field( 'number', 'post_width', 'width', array(), array(
 							'min' => '350',
 							'max' => '750'
 						) );
 						self::field( 'checkbox', 'post_show-text', 'show-text' );
 
-						self::field( 'string', '[fb_plugin video href=]', '<h3>' . __( 'Video', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'video' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin video href=]', '<h3>' . __( 'Video', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'video' ) . '</h3>' );
 						self::field( 'checkbox', 'video_allowfullscreen', 'allowfullscreen' );
 						self::field( 'checkbox', 'video_autoplay', 'autoplay' );
 						self::field( 'checkbox', 'video_show-text', 'show-text' );
 						self::field( 'checkbox', 'video_show-captions', 'show-captions' );
 						self::field( 'number', 'video_width', 'width', array(), array( 'min' => '220' ) );
 
-						self::field( 'string', '[fb_plugin comment href=]', '<h3>' . __( 'Single comment', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'comment' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin comment href=]', '<h3>' . __( 'Single comment', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'comment' ) . '</h3>' );
 						self::field( 'number', 'comment_width', 'width', array(), array( 'min' => '220' ) );
 						self::field( 'checkbox', 'comment_include-parent', 'include-parent' );
 
-						self::field( 'string', '[fb_plugin comments]<br><small>' . __( 'Activate them on all your posts on the "Magic embeds" section', 'wp-embed-facebook' ) . '</small>', '<h3>' . __( 'Comments plugin', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'comments' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin comments]<br><small>' . __( 'Activate them on all your posts on the "Magic embeds" section', 'wp-embed-facebook' ) . '</small>', '<h3>' . __( 'Comments plugin', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'comments' ) . '</h3>' );
 						self::field( 'select', 'comments_colorscheme', 'colorscheme', $vars['comments']['colorscheme'] );
 						self::field( 'checkbox', 'comments_mobile', 'mobile' );
 						self::field( 'number', 'comments_num_posts', 'num_posts', array(), array( 'min' => '1' ) );
 						self::field( 'select', 'comments_order_by', 'order_by', $vars['comments']['order_by'] );
 						self::field( 'text', 'comments_width', 'width' );
 
-						self::field( 'string', '[fb_plugin quote]<br><small>' . __( 'Activate it on all your posts on the "Magic embeds" section', 'wp-embed-facebook' ) . '</small>', '<h3>' . __( 'Quote plugin', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'quote' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin quote]<br><small>' . __( 'Activate it on all your posts on the "Magic embeds" section', 'wp-embed-facebook' ) . '</small>', '<h3>' . __( 'Quote plugin', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'quote' ) . '</h3>' );
 						self::field( 'select', 'quote_layout', 'layout', $vars['quote']['layout'] );
 
-						self::field( 'string', '[fb_plugin save]', '<h3>' . __( 'Save button', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'save' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin save]', '<h3>' . __( 'Save button', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'save' ) . '</h3>' );
 						self::field( 'select', 'save_size', 'size', $vars['save']['size'] );
 
-						self::field( 'string', '[fb_plugin like]', '<h3>' . __( 'Like button', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'like' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin like]', '<h3>' . __( 'Like button', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'like' ) . '</h3>' );
 						self::field( 'select', 'like_action', 'action', $vars['like']['action'] );
 						self::field( 'select', 'like_colorscheme', 'colorscheme', $vars['like']['colorscheme'] );
 						self::field( 'checkbox', 'like_kid-directed-site', 'kid-directed-site' );
@@ -448,15 +458,15 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'like_show-faces', 'show-faces' );
 						self::field( 'number', 'like_width', 'width', array(), array( 'min' => '225' ) );
 
-						self::field( 'string', '[fb_plugin send]', '<h3>' . __( 'Send button', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'send' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin send]', '<h3>' . __( 'Send button', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'send' ) . '</h3>' );
 						self::field( 'select', 'send_colorscheme', 'colorscheme', $vars['send']['colorscheme'] );
 						self::field( 'checkbox', 'send_kid-directed-site', 'kid-directed-site' );
 
-						self::field( 'string', '[fb_plugin share]', '<h3>' . __( 'Share button', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'share' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin share]', '<h3>' . __( 'Share button', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'share' ) . '</h3>' );
 						self::field( 'select', 'share_layout', 'layout', $vars['share']['layout'] );
 						self::field( 'checkbox', 'share_mobile_iframe', 'mobile_iframe' );
 
-						self::field( 'string', '[fb_plugin follow href=]', '<h3>' . __( 'Follow button', 'wp-embed-facebook' ) . WEF_Social_Plugins::get_links( 'follow' ) . '</h3>' );
+						self::field( 'string', '[fb_plugin follow href=]', '<h3>' . __( 'Follow button', 'wp-embed-facebook' ). '<br>' . WEF_Social_Plugins::get_links( 'follow' ) . '</h3>' );
 						self::field( 'select', 'follow_colorscheme', 'colorscheme', $vars['follow']['colorscheme'] );
 						self::field( 'checkbox', 'follow_kid-directed-site', 'kid-directed-site' );
 						self::field( 'select', 'follow_layout', 'layout', $vars['follow']['layout'] );
@@ -557,6 +567,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 							self::field( 'checkbox', 'LB_fitImagesInViewport', __( 'Fit Images In Viewport', 'wp-embed-facebook' ) );
 							self::field( 'checkbox', 'LB_disableScrolling', __( 'Disable Scrolling', 'wp-embed-facebook' ) );
 							self::field( 'checkbox', 'LB_wrapAround', __( 'Loop Through Album', 'wp-embed-facebook' ) );
+
 							self::section();
 							if ( ! $has_app ) :
 							?>
@@ -581,7 +592,10 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'enq_fbjs', __( 'Facebook SDK', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'enqueue_style', __( 'Template Styles', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'enq_wpemfb', __( 'Adaptive social plugins script', 'wp-embed-facebook' ) );
-						self::field( 'checkbox', 'enq_lightbox', __( 'Lightbox Script', 'wp-embed-facebook' ) );
+
+						self::field( 'string', __('',''), '<h3>' . __( 'Lightbox', 'wp-embed-facebook' ) . '</h3>' );
+						self::field( 'checkbox', 'enq_lightbox', __( 'Enqueue script', 'wp-embed-facebook' ) );
+						self::field( 'text', 'lightbox_att', __( 'Attribute', 'wp-embed-facebook' ) );
 
 						self::field( 'string', '', '<h3>' . __( 'Other Options', 'wp-embed-facebook' ) . '</h3>' );
 						self::field( 'checkbox', 'fb_root', __( 'Add fb-root on top of content', 'wp-embed-facebook' ) );

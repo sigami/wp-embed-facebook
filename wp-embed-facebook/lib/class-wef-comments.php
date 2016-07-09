@@ -8,16 +8,21 @@
  */
 class  WEF_Comments extends WP_Embed_FB_Plugin {
 	static function hooks() {
+
+		/** @see WEF_Comments::comments_template */
 		add_filter( 'comments_template', __CLASS__ . '::comments_template' );
 
 		if ( self::get_option( 'comments_count_active' ) === 'true' ) {
 
 			/** @see WEF_Comments::get_comments_number */
 			add_filter( 'get_comments_number', __CLASS__ . '::get_comments_number', 10, 2 );
+
 			/** @see WEF_Comments::save_post */
 			add_filter( 'save_post', __CLASS__ . '::save_post', 10, 3 );
+
 			/** @see WEF_Comments::pre_get_posts */
 			add_action( 'pre_get_posts', __CLASS__ . '::pre_get_posts' );
+
 			/** @see WEF_Comments::wpemfb_comments */
 			add_filter( 'wp_ajax_wpemfb_comments', __CLASS__ . '::wpemfb_comments' );
 			add_filter( 'wp_ajax_nopriv_wpemfb_comments', __CLASS__ . '::wpemfb_comments' );
@@ -25,6 +30,7 @@ class  WEF_Comments extends WP_Embed_FB_Plugin {
 		}
 
 		if ( self::get_option( 'comments_open_graph' ) === 'true' ) {
+			/** @see WEF_Comments::wp_head */
 			add_action( 'wp_head', __CLASS__ . '::wp_head' );
 		}
 	}
