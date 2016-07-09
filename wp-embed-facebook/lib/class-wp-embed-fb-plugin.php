@@ -1,24 +1,34 @@
 <?php
 
+/**
+ * Main plugin file, stores defauls and utilities used along all the plugin.
+ *
+ */
 class WP_Embed_FB_Plugin {
-	/**
-	 * @var string Plugin directory
-	 */
+	const option_name = 'wpemfb_options';
 	private static $path = null;
-	/**
-	 * @var string Plugin url
-	 */
 	private static $url = null;
 	private static $options = null;
 	private static $defaults = null;
-	const option_name = 'wpemfb_options';
 	private static $lb_defaults = null;
 	private static $has_photon = null;
 	private static $wp_timezone = null;
+
 	/**
 	 * @var array $link_types Link fields needed for rendering a social plugin
 	 */
-	public static $link_types = array( 'href', 'uri' );
+	static $link_types = array( 'href', 'uri' );
+
+	static function hooks() {
+		//Session start when there is a facebook app
+		add_action( 'init', __CLASS__ . '::init', 999 );
+
+		//Translation string
+		add_action( 'plugins_loaded', __CLASS__ . '::plugins_loaded' );
+
+		//register all scripts and styles
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::wp_enqueue_scripts' );
+	}
 
 	static function install() {
 		$type = ( get_option( 'wpemfb_theme' ) || get_option( self::option_name ) ) ? 'reactivated' : 'activated';
@@ -32,14 +42,17 @@ class WP_Embed_FB_Plugin {
 	 */
 	static function uninstall() {
 		if ( is_multisite() ) {
+			//TODO deprecated for get_sites in WP v4.6
 			$sites = wp_get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site['blog_id'] );
 				delete_option( self::option_name );
+				delete_post_meta_by_key( '_wef_comment_count' );
 			}
 			restore_current_blog();
 		} else {
 			delete_option( self::option_name );
+			delete_post_meta_by_key( '_wef_comment_count' );
 		}
 
 		return self::whois( 'uninstalled' );
@@ -53,7 +66,7 @@ class WP_Embed_FB_Plugin {
 	 * @return array old options to be deleated since 2.1
 	 */
 	static function old_options() {
-		return apply_filters( 'wpemfb_old_options', array(
+		return array(
 			'show_posts',
 			'close_warning',
 			'height',
@@ -89,7 +102,7 @@ class WP_Embed_FB_Plugin {
 			'force_app_token',
 			'video_download',
 			'sdk_version'
-		) );
+		);
 	}
 
 	static function get_defaults() {
@@ -152,11 +165,12 @@ class WP_Embed_FB_Plugin {
 				                  'quote_plugin_active'            => 'false',
 				                  'quote_post_types'               => 'post,page',
 				                  'auto_embed_active'              => 'true',//
-				                  //'auto_embed_post_types'          => '',//TODO empty for all
+//				                  'auto_embed_post_types'          => '',//TODO filter embed register handler per post_type
 				                  'auto_comments_active'           => 'false',
 				                  'auto_comments_post_types'       => 'post',
 				                  'comments_count_active'          => 'true',
 				                  'comments_open_graph'            => 'true',
+//				                  'scrape_open_graph'              => 'true',
 			                  ) + $social_options;
 		}
 
@@ -188,15 +202,6 @@ class WP_Embed_FB_Plugin {
 		return self::$lb_defaults;
 	}
 
-	//("uninstalled","deactivated","activated","reactivated")
-	protected static function whois( $install ) {
-		$home = home_url();
-		$home = esc_url( $home );
-		@file_get_contents( "http://www.wpembedfb.com/api/?whois=$install&site_url=$home" );
-
-		return true;
-	}
-
 	/**
 	 * session start if necessary
 	 */
@@ -219,10 +224,6 @@ class WP_Embed_FB_Plugin {
 
 		load_plugin_textdomain( 'wp-embed-facebook', false, 'wp-embed-facebook/lang' );
 
-		if(self::get_option('auto_embed_active') == 'true'){
-			wp_embed_register_handler( "wpembedfb", "/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/", 'WP_Embed_FB::embed_register_handler');
-		}
-
 	}
 
 	/**
@@ -232,10 +233,7 @@ class WP_Embed_FB_Plugin {
 		wp_register_style( 'wpemfb-default', self::get_url() . 'templates/default/default.css', array(), false );
 		wp_register_style( 'wpemfb-classic', self::get_url() . 'templates/classic/classic.css', array(), false );
 		wp_register_style( 'wpemfb-lightbox', self::get_url() . 'lib/lightbox2/css/lightbox.css', array(), false );
-		wp_register_script(
-			'wpemfb-lightbox',
-			self::get_url() . 'lib/lightbox2/js/lightbox.min.js',
-			array( 'jquery' )
+		wp_register_script( 'wpemfb-lightbox', self::get_url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' )
 		);
 		$lb_defaults       = self::get_lb_defaults();
 		$options           = self::get_option();
@@ -246,6 +244,7 @@ class WP_Embed_FB_Plugin {
 			}
 		}
 		if ( ! empty( $translation_array ) ) {
+			//TODO use something like wp_add_inline_script('wpemfb-lightbox','new Lightbox(WEF_LB)') for LightBox options
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
 		wp_register_script(
@@ -259,36 +258,37 @@ class WP_Embed_FB_Plugin {
 			array( 'jquery' )
 		);
 		$translation_array = array(
-			'local'   => $options[ 'sdk_lang' ],
-			'version' => $options[ 'sdk_version' ],
-			'fb_id'   => $options[ 'app_id' ] == '0' ? '' : $options[ 'app_id' ]
+			'local'   => $options['sdk_lang'],
+			'version' => $options['sdk_version'],
+			'fb_id'   => $options['app_id'] == '0' ? '' : $options['app_id']
 		);
-		if($options['auto_comments_active'] == 'true' && $options['comments_count_active'] == 'true'){
+		if ( $options['auto_comments_active'] == 'true' && $options['comments_count_active'] == 'true' ) {
 			$translation_array = $translation_array + array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			);
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				);
 		}
+		//TODO use something like wp_add_inline_script('wpemfb-fbjs','new Wpemfb(WEF)') for LightBox options
 		wp_localize_script( 'wpemfb-fbjs', 'WEF', $translation_array );
-		if ( $options[ 'enq_when_needed' ] == 'false' ) {
-			if ( $options[ 'enq_lightbox' ] == 'true' ) {
+		if ( $options['enq_when_needed'] == 'false' ) {
+			if ( $options['enq_lightbox'] == 'true' ) {
 				wp_enqueue_script( 'wpemfb-lightbox' );
 				wp_enqueue_style( 'wpemfb-lightbox' );
 			}
-			if ( $options[ 'enq_wpemfb' ] == 'true' ) {
+			if ( $options['enq_wpemfb'] == 'true' ) {
 				wp_enqueue_script( 'wpemfb' );
 			}
-			if ( $options[ 'enq_fbjs' ] == 'true' ) {
+			if ( $options['enq_fbjs'] == 'true' ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 		}
-		if ( $options[ 'enq_fbjs_global' ] == 'true' ) {
+		if ( $options['enq_fbjs_global'] == 'true' ) {
 			wp_enqueue_script( 'wpemfb-fbjs' );
 		}
 
-		if( ( $options[ 'auto_comments_active' ] == 'true' ) && is_single()){
-			$array   = WP_Embed_FB_Plugin::string_to_array($options['auto_comments_post_types']);
+		if ( ( $options['auto_comments_active'] == 'true' ) && is_single() ) {
+			$array          = WP_Embed_FB_Plugin::string_to_array( $options['auto_comments_post_types'] );
 			$queried_object = get_queried_object();
-			if(in_array($queried_object->post_type,$array)){
+			if ( in_array( $queried_object->post_type, $array ) ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 		}
@@ -328,11 +328,11 @@ class WP_Embed_FB_Plugin {
 						$compare[ $default_key ] = isset( $options[ $default_key ] ) ? $options[ $default_key ] : $default_value;
 					}
 					if ( $compare !== $options ) {
-						if(isset($option['page_show_faces'])){
+						if ( isset( $option['page_show_faces'] ) ) {
 							$compare['page_show-facepile'] = $option['page_show_faces'];
-							$compare['page_small-header'] = $option['page_small_header'];
-							$compare['page_hide-cover'] = $option['page_hide_cover'];
-							if($option['page_show_posts'] == 'true'){
+							$compare['page_small-header']  = $option['page_small_header'];
+							$compare['page_hide-cover']    = $option['page_hide_cover'];
+							if ( $option['page_show_posts'] == 'true' ) {
 								$compare['page_tabs'] = 'timeline';
 							}
 						}
@@ -354,7 +354,7 @@ class WP_Embed_FB_Plugin {
 					self::set_options( $defaults );
 				} else {
 					//new instalation
-					//TODO get app id and secret from other plugins Jetpack and WP Social Login... one day...
+					//TODO get app id and secret from other plugins Jetpack or WP Social Login or... one day...
 					self::set_options( $defaults );
 				}
 			}
@@ -553,9 +553,19 @@ class WP_Embed_FB_Plugin {
 		return self::$wp_timezone;
 	}
 
-	static function string_to_array($string){
-		$array   = explode( ',', $string );
+	static function string_to_array( $string ) {
+		$array = explode( ',', $string );
+
 		return array_map( 'trim', $array );
+	}
+
+	//("uninstalled","deactivated","activated","reactivated")
+	protected static function whois( $install ) {
+		$home = home_url();
+		$home = esc_url( $home );
+		@file_get_contents( "http://www.wpembedfb.com/api/?whois=$install&site_url=$home" );
+
+		return true;
 	}
 
 }

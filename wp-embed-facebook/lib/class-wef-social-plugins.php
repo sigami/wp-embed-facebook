@@ -1,10 +1,9 @@
 <?php
 
 /**
- * Class WEF_Social_Plugin
+ * Group of static functions to render facebook social plugins on WordPress it has no dependencies.
  *
- * Group of static functions to render facebook social plugins on WordPress
- *
+ * @author Miguel Sirvent
  */
 class WEF_Social_Plugins {
 	/**
@@ -392,10 +391,10 @@ class WEF_Social_Plugins {
 	static function get_links( $type, $link = true ) {
 		$ret = '';
 		if ( isset( self::$links[ $type ] ) ) {
-			if($link){
+			if ( $link ) {
 				$ret = '<br><small>';
-				$ret .= '<a href="'.self::$links[ $type ]['demo'].'" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
-				$ret .= '<a href="'.self::$links[ $type ]['docs'].'" target="_blank" title="Official FB documentation">Info</a> ';
+				$ret .= '<a href="' . self::$links[ $type ]['demo'] . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
+				$ret .= '<a href="' . self::$links[ $type ]['docs'] . '" target="_blank" title="Official FB documentation">Info</a> ';
 				$ret .= '</small>';
 			} else {
 				$ret = self::$links[ $type ];
@@ -410,8 +409,8 @@ class WEF_Social_Plugins {
 
 		if ( self::$defaults === null ) {
 			$vars = get_class_vars( __CLASS__ );
-			unset($vars['defaults']);
-			unset($vars['links']);
+			unset( $vars['defaults'] );
+			unset( $vars['links'] );
 			foreach ( $vars as $type => $options ) {
 				foreach ( $options as $option => $default ) {
 					if ( is_array( $default ) ) {
@@ -455,24 +454,27 @@ class WEF_Social_Plugins {
 		} else {
 			$type_clean = $type;
 		}
-		$vars = self::get_defaults();
+		do_action( 'wef_sp_get_action' );
 
-		$defaults    = $vars[ $type ];
-		$options     = wp_parse_args( $options, $defaults );
+		$defaults = self::get_defaults();
+		$def_type = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
+//		$options  = wp_parse_args( $def_type, $options );/TODO URGENT FIX This
+//		print_r( $defaults[ $type ] );
+//		print_r( $def_type );
+//		print_r( $options );
+//		print_r( WP_Embed_FB_Plugin::get_option() );
 		$extra       = '';
 		$extra_array = array();
-		foreach ( $options as $key => $value ) {
-			if ( $type == 'comments' ) {
-
-			}
-			if ( $defaults[ $key ] != $value ) {
+		foreach ( $def_type as $key => $value ) {
+			if ( $value !== $defaults[ $type ][$key] ) {
 				$extra .= "data-$key=\"$value\" ";
+				$extra_array[ $key ] = $value;
 			}
-			$extra_array[ $key ] = $value;
+
 
 		}
 
-		return "<div class=\"fb-$type_clean\" $extra></div>";
+		return apply_filters( 'wef_sp_get_filter', "<div class=\"fb-$type_clean\" $extra></div>", $type, $options, $defaults );
 	}
 
 	static function shortcode( $atts = array() ) {
@@ -484,32 +486,9 @@ class WEF_Social_Plugins {
 		$defaults = self::get_defaults();
 		if ( isset( $defaults[ $type ] ) ) {
 			$atts_raw = $atts;
-			$ret      = '';
-			foreach ( WP_Embed_FB_Plugin::$link_types as $link_type ) {
-				if ( isset( $defaults[ $type ][ $link_type ] ) && ( ! isset( $atts[ $link_type ] ) || empty( $atts[ $link_type ] ) ) ) {
-					$atts[ $link_type ] = wp_get_shortlink( get_queried_object_id() );
-				}
-			}
 
-			if ( ( WP_Embed_FB_Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( WP_Embed_FB_Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
-				wp_enqueue_script( 'wpemfb-fbjs' );
-			}
-
-
-			if ( isset( $defaults[ $type ]['width'] ) && $type != 'comments' ) {
-				$default_width = $defaults[ $type ]['width'];
-				if ( isset( $atts['adaptive'] ) ) {
-					if ( $atts['adaptive'] == 'true' ) {
-						$ret .= self::add_adaptive( $default_width, $atts );
-					}
-				} elseif ( WP_Embed_FB_Plugin::get_option( 'adaptive_fb_plugin' ) == 'true' ) {
-					$ret .= self::add_adaptive( $default_width, $atts );
-				}
-			}
-
-			$data = shortcode_atts( self::get_options( $type, $defaults ), $atts );
-
-			$ret .= self::get( $type, $data );
+			$data = shortcode_atts( $defaults[ $type ], $atts );
+			$ret  = self::get( $type, $data );
 
 			if ( isset( $atts['debug'] ) ) {
 				$debug           = '';
@@ -528,154 +507,22 @@ class WEF_Social_Plugins {
 				$debug .= __( 'Final code:', 'wp-embed-facebook' ) . "<br>";
 				$debug .= '</strong>';
 				$debug .= esc_html( htmlentities( $ret, ENT_QUOTES ) );
+				$debug .= '<br>';
+				$debug .= '<strong>';
+				$debug .= __( 'More information:', 'wp-embed-facebook' );
+				$debug .= '</strong>';
+				$debug .= self::get_links( $type );
 				$debug .= '</pre>';
 				$ret .= $debug;
 			}
 
+			do_action( 'wef_sp_shortcode_action' );
 
 //			return print_r($data,true);
-			return $ret;
+			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
 		}
 
-		return __( 'Invalid FB Plugin type', 'wp-embed-facebook' );
-	}
-
-	static function the_content( $the_content ) {
-		if ( WP_Embed_FB_Plugin::get_option( 'fb_root' ) === 'true' ) {
-			$the_content = '<div id="fb-root"></div>' . PHP_EOL . $the_content;
-		}
-		if ( is_single() ) {
-			$array = WP_Embed_FB_Plugin::string_to_array( WP_Embed_FB_Plugin::get_option( 'quote_post_types' ) );
-			if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
-				$the_content .= WEF_Social_Plugins::get( 'quote' );
-			}
-		}
-
-		return $the_content;
-	}
-
-	/* COMMENTS */
-
-	static function comments_template( $template ) {
-		$array = WP_Embed_FB_Plugin::string_to_array( WP_Embed_FB_Plugin::get_option( 'auto_comments_post_types' ) );
-		if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
-			$template = WP_Embed_FB_Plugin::get_path() . 'templates/comments.php';
-		}
-
-		return $template;
-
-	}
-
-	static function get_comments_number( $number, $post_id ) {
-		$count = get_post_meta( $post_id, '_wef_comment_count', true );
-		if ( empty( $count ) ) {
-			$count = 0;
-		}
-
-		return $count;
-	}
-
-	static function save_post( $post_id, $post, $update ) {
-		if ( wp_is_post_revision( $post_id ) || ! $update ) {
-			return;
-		}
-		$options = WP_Embed_FB_Plugin::get_option();
-		$array   = WP_Embed_FB_Plugin::string_to_array( $options['auto_comments_post_types'] );
-		//https://graph.facebook.com/?id=http://t-underboot.sigami.net/?p=4
-		if ( in_array( $post->post_type, $array ) ) {
-			$args     = array(
-				'fields' => 'share{comment_count}',
-				'id'     => wp_get_shortlink( $post_id )
-			);
-			$url      = "https://graph.facebook.com/{$options[ 'sdk_version' ]}/?" . http_build_query( $args );
-			$request  = wp_remote_get( $url );
-			$response = wp_remote_retrieve_body( $request );
-			if ( ! is_wp_error( $request ) && ! empty( $response ) ) {
-				$data = json_decode( $response, true );
-//					print_r($data);die();
-				if ( is_array( $data ) && isset( $data['share'] ) && isset( $data['share']['comment_count'] ) ) {
-					update_post_meta( $post->ID, '_wef_comment_count', intval( $data['share']['comment_count'] ) );
-				}
-
-			}
-		}
-	}
-
-	static function wpemfb_comments() {
-		if ( isset( $_POST['response'] ) && isset( $_POST['response']['href'] ) ) {
-			$post_id = url_to_postid( $_POST['response']['href'] );
-			$count   = self::get_comments_number( '', $post_id );
-			if ( isset( $_POST['response']['message'] ) ) {
-				$count ++;
-			} else {
-				$count --;
-			}
-			update_post_meta( $post_id, '_wef_comment_count', intval( $count ) );
-		}
-		wp_die();
-	}
-
-	/**
-	 * @param WP_Query $query
-	 *
-	 * @return WP_Query
-	 */
-	static function pre_get_posts( $query ) {
-		if ( isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'comment_count' ) {
-			$query->set(
-				'meta_query',
-				array(
-					'relation' => 'OR',
-					array(
-						'key'     => '_wef_comment_count',
-						'compare' => 'NOT EXISTS'
-					),
-					array(
-						'key'     => '_wef_comment_count',
-						'compare' => 'EXISTS'
-					)
-				)
-			);
-			$query->set( 'orderby', 'meta_value_num' );
-		}
-
-		return $query;
-	}
-
-	static function wp_head(){
-		$app_id = WP_Embed_FB_Plugin::get_option('app_id');
-		if(!empty($app_id)){
-			echo '<meta property="fb:app_id" content="'.$app_id.'" />'.PHP_EOL;
-		}
-	}
-
-	/* UTILITIES */
-
-	private static function add_adaptive( $default_width, $atts ) {
-		$width = isset( $atts['width'] ) ? $atts['width'] : $default_width;
-		wp_enqueue_script( 'wpemfb' );
-		$ret = '';
-		$ret .= '<div class="wef-measure"';
-		if ( ! empty( $width ) ) {
-			$ret .= ' style="max-width: ' . $width . 'px;"';
-		}
-		$ret .= '></div>';
-
-		return $ret;
-	}
-
-	private static function get_options( $type, $defaults ) {
-		$options  = WP_Embed_FB_Plugin::get_option();
-		$vars_opt = array();
-		foreach ( $defaults[ $type ] as $key => $value ) {
-			if ( ! in_array( $key, WP_Embed_FB_Plugin::$link_types ) ) {
-				$vars_opt[ $key ] = $options["{$type}_$key"];
-			} else {
-				$vars_opt[ $key ] = '';
-			}
-		}
-
-		return $vars_opt;
+		return __( 'Invalid Facebook plugin type use it like this: [fb_plugin like]', 'wp-embed-facebook' );
 	}
 
 	/* DEPRECATED FUNCTIONS TO BE REMOVED ON v2.2 */
@@ -772,5 +619,3 @@ class WEF_Social_Plugins {
 		return self::get( 'video', array( 'href' => $href, 'width' => $width ) );
 	}
 }
-
-WEF_Social_Plugins::get_defaults();

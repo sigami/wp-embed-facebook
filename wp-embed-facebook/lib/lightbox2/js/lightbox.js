@@ -1,11 +1,11 @@
-/*!
+/**!
  * Lightbox v2.8.2
  * by Lokesh Dhakar
  * Adaptation for WordPress by Miguel Sirvent
  *
  * More info:
- * http://lokeshdhakar.com/projects/lightbox2/
- * http://wpembedfb.com
+ * @link http://lokeshdhakar.com/projects/lightbox2/
+ * @link http://wpembedfb.com
  *
  * Copyright 2007, 2015 Lokesh Dhakar
  * Released under the MIT license
