@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Embed Facebook package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Embed Facebook 2.1.0\n"
+"Project-Id-Version: WP Embed Facebook 2.1.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/wp-embed-facebook\n"
 "POT-Creation-Date: 2016-06-22 18:07:38+00:00\n"
@@ -512,24 +512,24 @@ msgstr ""
 msgid "More information"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:47
+#: lib/class-wp-embed-fb.php:48
 msgid "This is not a valid facebook url"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:173
+#: lib/class-wp-embed-fb.php:174
 msgid "Error: Try embedding this post as a social plugin (only visible to admins)"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:176 lib/class-wp-embed-fb.php:215
+#: lib/class-wp-embed-fb.php:177 lib/class-wp-embed-fb.php:216
 msgid "Code"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:178 lib/class-wp-embed-fb.php:217
-#: lib/class-wp-embed-fb.php:418
+#: lib/class-wp-embed-fb.php:179 lib/class-wp-embed-fb.php:218
+#: lib/class-wp-embed-fb.php:419
 msgid "Error"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:425
+#: lib/class-wp-embed-fb.php:426
 msgid ""
 "<small>To embed this type of content you need to setup a facebook app on <a "
 "href=\"%s\" title=\"WP Embed Facebook Settings\">settings</a></small>"

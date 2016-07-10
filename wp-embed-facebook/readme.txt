@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
 Tested up to: 4.5.3
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,6 +101,16 @@ This can only be achieved using the premium version
 
 
 == Changelog ==
+
+= 2.1.2 =
+* Added: [fb_plugin] shortcode to embed any type of social plugin
+* Added: Auto embed comments plugin to certain post types
+* Added: Auto embed quote plugin to certain post types
+* Added: Default options for all social plugins
+* Added: Advanced option to integrate other lightbox scripts to the album embeds
+* Improved: Admin area is more comprehensive with tons of examples
+* Improved: url recognition
+* Deprecated: Old functions on Wef_Social_Plugins class
 
 = 2.1.1 =
 * Updated: social plugins embed
@@ -350,4 +360,4 @@ This can only be achieved using the premium version
 == Upgrade Notice ==
 
 = 2.1.1 =
-Fixes: error for uls something-3423223, [facebook object_id] shortcode
+Auto comments, added all facebook plugins better url recognition, tons of new features. It is just the best yet! After update go to setting and see for yourself.

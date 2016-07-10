@@ -38,7 +38,8 @@ class  WP_Embed_FB {
 	 */
 	static function shortcode( $atts ) {
 		if ( ! empty( $atts ) && isset( $atts[0] ) ) {
-			$clean = trim( $atts[0], array( '=', 'href=', 'uri=', 'url=', 'src=', 'link=' ) );
+			$clean = trim( $atts[0], '=' );
+			//, 'href=', 'uri=', 'url=', 'src=', 'link=' )
 			if ( is_numeric( $clean ) ) {
 				$juice = $clean;
 				$clean = "https://www.facebook.com/$juice";
