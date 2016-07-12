@@ -511,9 +511,9 @@ class  WP_Embed_FB {
 			return self::$fbsdk;
 		} else {
 			if ( ! class_exists( 'FacebookApiException' ) ) {
-				require_once __DIR__ . "/base_facebook.php";
+				require_once(WP_Embed_FB_Plugin::path().'lib/base_facebook.php');
 			}
-			require_once __DIR__ . "/class-sigami-facebook.php";
+			require_once(WP_Embed_FB_Plugin::path().'lib/class-sigami-facebook.php');
 			$config           = array();
 			$config['appId']  = WP_Embed_FB_Plugin::get_option( 'app_id' );
 			$config['secret'] = WP_Embed_FB_Plugin::get_option( 'app_secret' );
@@ -539,7 +539,7 @@ class  WP_Embed_FB {
 		$located = locate_template( array( 'plugins/wp-embed-facebook/' . $theme . '/' . $template_name . '.php' ) );
 		$file    = 'templates/' . $theme . '/' . $template_name . '.php';
 		if ( empty( $located ) ) {
-			$located = WP_Embed_FB_Plugin::get_path() . $file;
+			$located = WP_Embed_FB_Plugin::path() . $file;
 		}
 
 		return $located;

@@ -231,10 +231,10 @@ class WP_Embed_FB_Plugin {
 	 * Enqueue wp embed facebook styles
 	 */
 	static function wp_enqueue_scripts() {
-		wp_register_style( 'wpemfb-default', self::get_url() . 'templates/default/default.css', array(), false );
-		wp_register_style( 'wpemfb-classic', self::get_url() . 'templates/classic/classic.css', array(), false );
-		wp_register_style( 'wpemfb-lightbox', self::get_url() . 'lib/lightbox2/css/lightbox.css', array(), false );
-		wp_register_script( 'wpemfb-lightbox', self::get_url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' )
+		wp_register_style( 'wpemfb-default', self::url() . 'templates/default/default.css', array(), false );
+		wp_register_style( 'wpemfb-classic', self::url() . 'templates/classic/classic.css', array(), false );
+		wp_register_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', array(), false );
+		wp_register_script( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' )
 		);
 		$lb_defaults       = self::get_lb_defaults();
 		$options           = self::get_option();
@@ -250,12 +250,12 @@ class WP_Embed_FB_Plugin {
 		}
 		wp_register_script(
 			'wpemfb',
-			self::get_url() . 'lib/js/wpembedfb.min.js',
+			self::url() . 'lib/js/wpembedfb.min.js',
 			array( 'jquery' )
 		);
 		wp_register_script(
 			'wpemfb-fbjs',
-			self::get_url() . 'lib/js/fb.min.js',
+			self::url() . 'lib/js/fb.min.js',
 			array( 'jquery' )
 		);
 		$translation_array = array(
@@ -295,24 +295,18 @@ class WP_Embed_FB_Plugin {
 		}
 	}
 
-	static function get_path() {
-		if ( self::$path ) {
-			return self::$path;
-		} else {
+	static function path() {
+		if ( self::$path == null ) {
 			self::$path = dirname( plugin_dir_path( __FILE__ ) ) . '/';
-
-			return self::$path;
 		}
+		return self::$path;
 	}
 
-	static function get_url() {
-		if ( self::$url ) {
-			return self::$url;
-		} else {
+	static function url() {
+		if ( self::$url == null ) {
 			self::$url = dirname( plugin_dir_url( __FILE__ ) ) . '/';
-
-			return self::$url;
 		}
+		return self::$url;
 	}
 
 	static function get_option( $option = null ) {

@@ -28,7 +28,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 				<p>Hey! The last step.</p>
 
 				<p><img style="position:relative; top: 5px;" height="20px" width="auto"
-				        src="<?php echo self::get_url() . 'lib/admin/ic_setting.png' ?>">&nbsp;Turn on <a
+				        src="<?php echo self::url() . 'lib/admin/ic_setting.png' ?>">&nbsp;Turn on <a
 						id="wef-video-down" href="<?php echo admin_url( "options-general.php?page=embedfacebook" ) ?>">Video
 						Download Option</a> in settings.</p>
 				<small>
@@ -83,11 +83,11 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	 */
 	static function admin_enqueue_scripts( $hook_suffix ) {
 		if ( $hook_suffix == 'settings_page_embedfacebook' ) {
-			wp_enqueue_style( 'wpemfb-admin-css', self::get_url() . 'lib/admin/admin.css' );
+			wp_enqueue_style( 'wpemfb-admin-css', self::url() . 'lib/admin/admin.css' );
 		}
-		wp_enqueue_style( 'wpemfb-default', self::get_url() . 'templates/default/default.css', array(), false );
-		wp_enqueue_style( 'wpemfb-classic', self::get_url() . 'templates/classic/classic.css', array(), false );
-		wp_enqueue_style( 'wpemfb-lightbox', self::get_url() . 'lib/lightbox2/css/lightbox.css', array(), false );
+		wp_enqueue_style( 'wpemfb-default', self::url() . 'templates/default/default.css', array(), false );
+		wp_enqueue_style( 'wpemfb-classic', self::url() . 'templates/classic/classic.css', array(), false );
+		wp_enqueue_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', array(), false );
 	}
 
 	static function in_admin_footer() {
@@ -132,7 +132,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	}
 
 	static function add_action_link( $links ) {
-		array_unshift( $links, '<a href="' . admin_url( "options-general.php?page=embedfacebook" ) . '">' . __( "Settings" ) . '</a>' );
+		array_unshift( $links, '<a title="WP Embed Facebook Settings" href="' . admin_url( "options-general.php?page=embedfacebook" ) . '">' . __( "Settings" ) . '</a>' );
 
 		return $links;
 	}
@@ -141,8 +141,8 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	 * Add template editor style to the embeds.
 	 */
 	static function admin_init() {
-		add_editor_style( self::get_url() . '/templates/default/default.css' );
-		add_editor_style( self::get_url() . '/templates/classic/classic.css' );
+		add_editor_style( self::url() . '/templates/default/default.css' );
+		add_editor_style( self::url() . '/templates/classic/classic.css' );
 	}
 
 	/**
@@ -340,7 +340,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'auto_embed_active', __( 'Auto embed url\'s on editor ', 'wp-embed-facebook' ) );
 						self::field( 'number', 'max_width', __( 'Maximum width in pixels', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 						self::field( 'checkbox', 'video_as_post', __( 'Embed video as post', 'wp-embed-facebook' ) );
-						self::field( 'checkbox', 'video_download', sprintf( __( '%sDownload link under video', 'wp-embed-facebook' ), '<img style="display:block;float:left;padding-right:5px;" width="25px" height="auto" src="' . self::get_url() . 'lib/admin/ic_image_settings.png">' ) );
+						self::field( 'checkbox', 'video_download', sprintf( __( '%sDownload link under video', 'wp-embed-facebook' ), '<img style="display:block;float:left;padding-right:5px;" width="25px" height="auto" src="' . self::url() . 'lib/admin/ic_image_settings.png">' ) );
 
 						self::field( 'string', sprintf( __( 'The quote plugin lets people select text on your page and add it to their share.<br><a href="%s" target="_blank" title="WP Embed Facebook">Demo</a>', 'wp-embed-facebook' ), 'http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/' ), '<h3>' . __( 'Quote Plugin', 'wp-embed-facebook' ) . '</h3>' );
 						self::field( 'checkbox', 'quote_plugin_active', __( 'Active', 'wp-embed-facebook' ) );

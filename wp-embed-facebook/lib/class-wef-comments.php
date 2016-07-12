@@ -55,7 +55,7 @@ class  WEF_Comments extends WP_Embed_FB_Plugin {
 	static function comments_template( $template ) {
 		$array = self::string_to_array( self::get_option( 'auto_comments_post_types' ) );
 		if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
-			$template = self::get_path() . 'templates/comments.php';
+			$template = self::path() . 'templates/comments.php';
 		}
 
 		return $template;
