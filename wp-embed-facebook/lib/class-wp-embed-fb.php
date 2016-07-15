@@ -37,9 +37,17 @@ class  WP_Embed_FB {
 	 * @return string
 	 */
 	static function shortcode( $atts ) {
+		$compat = array('href','uri','src','url','link');
+		foreach($compat as $com){
+			if(isset($atts[$com])){
+				$atts[0] = $atts[$com];
+				unset($atts[$com]);
+			}
+		}
 		if ( ! empty( $atts ) && isset( $atts[0] ) ) {
 			$clean = trim( $atts[0], '=' );
-			//, 'href=', 'uri=', 'url=', 'src=', 'link=' )
+			$clean = html_entity_decode($clean);
+
 			if ( is_numeric( $clean ) ) {
 				$juice = $clean;
 				$clean = "https://www.facebook.com/$juice";
@@ -60,7 +68,7 @@ class  WP_Embed_FB {
 			return $embed;
 		}
 
-		return '';
+		return sprintf(__('You are using the [facebook] shortcode wrong. See examples <a title="Examples" target="_blank" href="%s" >here</a>.','wp-embed-facebook'),'http://www.wpembedfb.com/demo-site/category/custom-embeds/');
 	}
 
 	static function embed_register_handler(
@@ -104,6 +112,7 @@ class  WP_Embed_FB {
 		if ( self::is_raw( $type_and_id['type'] ) ) {
 			wp_enqueue_style( 'wpemfb-' . self::get_theme() );
 		}
+		do_action('wp_embed_fb');
 		$return = self::print_embed( $type_and_id['fb_id'], $type_and_id['type'], $juice );
 		self::clear_atts();
 

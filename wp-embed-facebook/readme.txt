@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
 Tested up to: 4.5.3
-Stable tag: 2.1.3
+Stable tag: 2.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -101,6 +101,12 @@ This can only be achieved using the premium version
 
 
 == Changelog ==
+
+= 2.1.4 =
+* Added: new action 'wp_embed_fb' on WP_Embed_FB class
+* Added: compatibility for using href=, url=, uri=, link=, on [facebook] shortcode
+* Fixed: shortcode not running when text changed for htmlentities
+* Added: warning when shortcode in badly used.
 
 = 2.1.3 =
 * Fixed: includes giving problems in some sites.

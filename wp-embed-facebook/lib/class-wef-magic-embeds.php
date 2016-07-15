@@ -134,4 +134,3 @@ class  WEF_Magic_Embeds extends WP_Embed_FB_Plugin {
 	}
 
 }
-//delete_option('wpemfb_options');

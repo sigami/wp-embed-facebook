@@ -1,6 +1,6 @@
 <div class="wef-measure" style="max-width: <?php echo $width ?>px;"></div>
 <?php
-switch($type){
+switch ( $type ) {
 	case 'page' :
 		/** @noinspection PhpUndefinedVariableInspection */
 		echo WEF_Social_Plugins::get('page',array('href'=>'https://www.facebook.com/' . $fb_data['link'],'width'=>$width));
