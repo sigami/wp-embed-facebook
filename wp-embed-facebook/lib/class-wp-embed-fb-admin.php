@@ -84,6 +84,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	static function admin_enqueue_scripts( $hook_suffix ) {
 		if ( $hook_suffix == 'settings_page_embedfacebook' ) {
 			wp_enqueue_style( 'wpemfb-admin-css', self::url() . 'lib/admin/admin.css' );
+			add_thickbox();
 		}
 		wp_enqueue_style( 'wpemfb-default', self::url() . 'templates/default/default.css', array(), false );
 		wp_enqueue_style( 'wpemfb-classic', self::url() . 'templates/classic/classic.css', array(), false );
@@ -340,7 +341,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'auto_embed_active', __( 'Auto embed url\'s on editor ', 'wp-embed-facebook' ) );
 						self::field( 'number', 'max_width', __( 'Maximum width in pixels', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 						self::field( 'checkbox', 'video_as_post', __( 'Embed video as post', 'wp-embed-facebook' ) );
-						self::field( 'checkbox', 'video_download', sprintf( __( '%sDownload link under video', 'wp-embed-facebook' ), '<img style="display:block;float:left;padding-right:5px;" width="25px" height="auto" src="' . self::url() . 'lib/admin/ic_image_settings.png">' ) );
+						self::field( 'checkbox', 'video_download', sprintf( __( '%sDownload link under video', 'wp-embed-facebook' ), '<img title="Sponsored link" style="display:block;float:right;padding-left:5px;" width="50px" height="auto" src="' . self::url() . 'lib/admin/ic_image_settings.png">' ) );
 
 						self::field( 'string', sprintf( __( 'The quote plugin lets people select text on your page and add it to their share.<br><a href="%s" target="_blank" title="WP Embed Facebook">Demo</a>', 'wp-embed-facebook' ), 'http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/' ), '<h3>' . __( 'Quote Plugin', 'wp-embed-facebook' ) . '</h3>' );
 						self::field( 'checkbox', 'quote_plugin_active', __( 'Active', 'wp-embed-facebook' ) );
@@ -505,6 +506,8 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 
 							self::field( 'string', '', '<h3>' . __( 'Events', 'wp-embed-facebook' ) . '</h3>' );
 							self::field( 'checkbox', 'ev_local_tz', __( 'Use WP time to calculate the date', 'wp-embed-facebook' ) );
+							self::field( 'text', 'event_start_time_format', __( 'Time format', 'wp-embed-facebook' ) );
+							self::field( 'string', '<a href="https://codex.wordpress.org/Formatting_Date_and_Time" target="_blank">'.__('examples','wp-embed-facebook').'<a/>', '' );
 
 							self::field( 'string', '', '<h3>' . __( 'Pages', 'wp-embed-facebook' ) . '</h3>' );
 							self::field( 'checkbox', 'raw_page', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
@@ -516,6 +519,10 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 
 							self::field( 'string', '', '<h3>' . __( 'Posts', 'wp-embed-facebook' ) . '</h3>' );
 							self::field( 'checkbox', 'raw_post', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
+							self::field( 'text', 'single_post_time_format', __( 'Time format', 'wp-embed-facebook' ) );
+							self::field( 'string', '<a href="https://codex.wordpress.org/Formatting_Date_and_Time" target="_blank">'.__('examples','wp-embed-facebook').'<a/>', '' );
+
+
 
 							self::field( 'string', '', '<h3>' . __( 'Videos', 'wp-embed-facebook' ) . '</h3>' );
 							self::field( 'checkbox', 'raw_video', __( 'Use by default on "Auto Embeds"', 'wp-embed-facebook' ) );
@@ -567,6 +574,8 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 							self::field( 'checkbox', 'LB_fitImagesInViewport', __( 'Fit Images In Viewport', 'wp-embed-facebook' ) );
 							self::field( 'checkbox', 'LB_disableScrolling', __( 'Disable Scrolling', 'wp-embed-facebook' ) );
 							self::field( 'checkbox', 'LB_wrapAround', __( 'Loop Through Album', 'wp-embed-facebook' ) );
+							self::field( 'checkbox', 'LB_wpGallery', __( 'Use this lightbox on the [gallery] shortcode', 'wp-embed-facebook' ) );
+							self::field( 'string','<small>Experimental</small>' );
 
 							self::section();
 							if ( ! $has_app ) :
@@ -602,13 +611,13 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'enq_fbjs_global', __( 'Force Facebook SDK script on all site', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'force_app_token', __( 'Force app token', 'wp-embed-facebook' ) );
 						$versions = array(
-							'v2.0' => '2.0',
 							'v2.1' => '2.1',
 							'v2.2' => '2.2',
 							'v2.3' => '2.3',
 							'v2.4' => '2.4',
 							'v2.5' => '2.5',
 							'v2.6' => '2.6',
+							'v2.7' => '2.7',
 						);
 						self::field( 'select', 'sdk_version', 'Facebook SDK Version', $versions );
 

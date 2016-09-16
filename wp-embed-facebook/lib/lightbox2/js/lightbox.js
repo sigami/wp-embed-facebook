@@ -202,6 +202,7 @@ jQuery(function ($) {
                 }
             }
         }
+        //console.log($window.scrollTop());
 
         // Position Lightbox
         var top = $window.scrollTop() + this.options.positionFromTop;
@@ -214,6 +215,7 @@ jQuery(function ($) {
         // Disable scrolling of the page while open
         if (this.options.disableScrolling) {
             $('body').addClass('lb-disable-scrolling');
+            $('html').addClass('lb-disable-scrolling');
         }
 
         this.changeImage(imageNumber);
@@ -461,22 +463,38 @@ jQuery(function ($) {
         });
         if (this.options.disableScrolling) {
             $('body').removeClass('lb-disable-scrolling');
+            $('html').removeClass('lb-disable-scrolling');
         }
     };
     if (typeof WEF_LB === "undefined") {
         new Lightbox();
-    } else {
+    }
+    else {
         for (var key in WEF_LB) {
             if (WEF_LB.hasOwnProperty(key)) {
                 if (WEF_LB[key] == 'false') {
                     WEF_LB[key] = false;
                 }
-                if (WEF_LB[key] == 'true') {
+                else if (WEF_LB[key] == 'true') {
                     WEF_LB[key] = true;
+                }
+                else if (key != 'albumLabel') {
+                    WEF_LB[key] = parseInt(WEF_LB[key]);
                 }
             }
         }
+        if (WEF_LB.hasOwnProperty('wpGallery') && WEF_LB['wpGallery']) {
+            $('.gallery-icon a').each(function () {
+                var href = $(this).attr('href');
+                var p = new RegExp('.*?(\\.jpg|\\.png|\\.gif|\\.svg)', 'i');
+                var m = p.exec(href);
+                if (m !== null) {
+                    $(this).attr('data-lightbox', 'roadtrip');
+                }
+
+            });
+        }
+
         new Lightbox(WEF_LB);
     }
 });
-

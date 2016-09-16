@@ -3,48 +3,34 @@
  */
 'use strict';
 module.exports = function (grunt) {
+    var reload = false;
+    if( !(typeof grunt.option('reload') === "undefined") ){
+        reload = true;
+    }
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         vars: grunt.file.readJSON('variables.json'),
-        copy: {
-            main: {
-                dest: '<%= vars.test_dir %>',
-                expand: true,
-                //nonull: true,
-                cwd: '<%= pkg.name %>/',
-                src: '**'
-            }
-        },
-        clean: {
-            options: {force: true},
-            main: [
-                '<%= vars.test_dir %>'
-            ]
-        },
         watch: {
             sass: {
+                options: {
+                    livereload: reload
+                },
                 files: '<%= pkg.name %>/**/*.sass',
                 tasks: ['sass']
             },
             uglify: {
+                options: {
+                    livereload: reload
+                },
                 files: '<%= pkg.name %>/**/*.js',
                 tasks: ['uglify']
             },
-            //makepot: {
-            //    files: '<%= pkg.name %>/**/*.php',
-            //    tasks: ['makepot']
-            //},
-            copy: {
-                files: ['<%= pkg.name %>/**', '!*'],
-                tasks: ['copy']
-            },
-            livereload: {
+            makepot: {
                 options: {
-                    livereload: true
+                    livereload: reload
                 },
-                files: [
-                    '<%= pkg.name %>/**'
-                ]
+               files: '<%= pkg.name %>/**/*.php',
+               tasks: ['makepot']
             }
         },
         sass: {
@@ -86,30 +72,54 @@ module.exports = function (grunt) {
                         'language-team': '<%= pkg.author %>',
                         'X-Poedit-Basepath': '..',
                         'X-Poedit-SearchPathExcluded-0': '*.js',
-                        'X-Poedit-WPHeader': '<%= pkg.name %>/.php'
+                        'X-Poedit-WPHeader': '<%= pkg.name %>.php'
                     },
                     type: 'wp-plugin',
                     updateTimestamp: false,
                     updatePoFiles: true
                 }
             }
+        },
+        sync: {
+            test_dir: {
+                files: [{
+                    cwd: '<%= pkg.name %>/',
+                    src: '**',
+                    dest: '<%= vars.test_dir %>'
+                }],
+                // pretend: true, // Don't do any IO. Before you run the task with `updateAndDelete` PLEASE MAKE SURE it doesn't remove too much.
+                verbose: true // Display log messages when copying files
+            }
         }
-
     });
 
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-wp-i18n');
+    grunt.loadNpmTasks('grunt-sync');
 
 
     //grunt
     grunt.registerTask('default', ['sass', 'uglify', 'makepot']);
 
     //grunt dev
-    grunt.registerTask('dev', ['default', 'clean', 'copy', 'watch']);
+    grunt.registerTask('dev', function () {
+        grunt.config.set('watch', {
+            options: {
+                livereload: reload
+            },
+            sass: {
+                files: '<%= pkg.name %>/**/*.sass',
+                tasks: ['sass']
+            },
+            all_files: {
+                files: ['<%= pkg.name %>/**'],
+                tasks: ['sync']
+            }
+        });
+        grunt.task.run(['default', 'sync', 'watch']);
+    });
 
     // ---------------------------------
     //       Deployment only.

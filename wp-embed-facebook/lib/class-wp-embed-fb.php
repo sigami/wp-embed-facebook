@@ -362,7 +362,7 @@ class  WP_Embed_FB {
 						$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : WP_Embed_FB_Plugin::get_option( 'max_posts' );
 						$api_string = $fb_id . '?fields=name,picture,is_community_page,link,id,cover,category,website,likes,genre';
 						if ( intval( $num_posts ) > 0 ) {
-							$api_string .= ',posts.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
+							$api_string .= ',feed.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
 						}
 						break;
 					case 'video' :
@@ -565,6 +565,8 @@ class  WP_Embed_FB {
 	/* DISPLAY UTILITIES */
 
 	static function make_clickable( $text ) {
+		if(empty($text))
+			return $text;
 		return wpautop( self::rel_nofollow( make_clickable( $text ) ) );
 	}
 
@@ -591,7 +593,7 @@ class  WP_Embed_FB {
 	static function getwebsite( $urls ) {
 		$url = explode( ' ', trim( $urls ) );
 
-		return strpos( 'http://', $url[0] ) == false ? 'http://' . $url[0] : $url[0];
+		return strpos( 'http', $url[0] ) === false ? 'http://' . $url[0] : $url[0];
 	}
 
 }

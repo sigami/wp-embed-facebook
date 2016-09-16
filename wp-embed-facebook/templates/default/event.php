@@ -1,5 +1,5 @@
 <?php
-$start_time_format = 'l, j F Y g:i a';
+$start_time_format = WP_Embed_FB_Plugin::get_option('event_start_time_format');
 $old_time_zone = date_default_timezone_get();
 if(WP_Embed_FB_Plugin::get_option('ev_local_tz') == 'true'){
 	$timezone = WP_Embed_FB_Plugin::get_timezone();

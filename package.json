@@ -1,6 +1,6 @@
 {
   "name": "wp-embed-facebook",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Development version of the WP Embed Facebook Plugin",
   "main": "wp-embed-facebook/wp-embed-facebook.php",
   "repository": {
@@ -20,6 +20,7 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-sync": "^0.6.2",
     "grunt-wp-i18n": "^0.5.4"
   }
 }
