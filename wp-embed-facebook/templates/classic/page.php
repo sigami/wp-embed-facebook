@@ -37,8 +37,8 @@
 				</div>
 			</div>
 	</div>	
-	<?php if(isset($fb_data['posts'])) : global $wp_embed;   ?>
-		<?php foreach($fb_data['posts']['data'] as $fb_post) : ?>
+	<?php if(isset($fb_data['feed'])) : global $wp_embed;   ?>
+		<?php foreach($fb_data['feed']['data'] as $fb_post) : ?>
 			<?php if(isset($fb_post['picture']) || isset($fb_post['message'])) : ?>
 				<?php include('single-post.php') ?>
 			<?php endif; ?>

@@ -4,11 +4,11 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
 Tested up to: 4.6
-Stable tag: 2.1.5
+Stable tag: 2.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Embed any public Facebook video, page, comment, event, album, photo, profile or post optionally add Facebook comments to all your site or embed any Social Plugin
+Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
 
 == Description ==
 This plugin understands the url you entered on the editor or inside the `[embed]` [shortcode](https://codex.wordpress.org/Embeds) and returns the proper social plugin or custom embed.
@@ -137,6 +137,10 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 2.1.6 =
+* Fixed: missing posts from page embeds
+* Updated: readme file
+
 = 2.1.5 =
 * Added: new filter wef_lightbox_title
 * Added: event time format option
@@ -188,7 +192,7 @@ Buying the premium extensions helps to keep this project alive.
 * Added JetPack Photon compatibility
 * Added compatibility with some drag and drop themes
 * Added lightbox.sass for theme developers
-* Changed: d Lightbox script and style
+* Changed: Lightbox script and style
 * Added Lightbox Option Album Label
 * Added Lightbox Option Always Show Nav On Touch Devices
 * Added Lightbox Option Show Image Number Label
