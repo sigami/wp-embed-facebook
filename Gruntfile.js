@@ -111,7 +111,7 @@ module.exports = function (grunt) {
             },
             sass: {
                 files: '<%= pkg.name %>/**/*.sass',
-                tasks: ['sass']
+                tasks: ['sass','sync']
             },
             all_files: {
                 files: ['<%= pkg.name %>/**'],

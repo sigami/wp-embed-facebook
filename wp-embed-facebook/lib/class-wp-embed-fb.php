@@ -166,6 +166,11 @@ class  WP_Embed_FB {
 		$juiceArray = explode( '/', trim( $juice, '/' ) );
 		if ( ! $fb_id ) {
 			$fb_id = end( $juiceArray );
+			$fb_id_array = explode( '-', $fb_id );
+			if ( is_numeric( end( $fb_id_array ) ) ) {
+				$fb_id = end( $fb_id_array );
+			}
+			$fb_id = str_replace( ':0', '', $fb_id );
 		}
 		if ( ! $type ) {
 			if ( in_array( 'posts', $juiceArray ) ) {
@@ -233,13 +238,6 @@ class  WP_Embed_FB {
 			} else {
 				$type = 'page';
 			}
-		}
-		if ( ! is_numeric( $fb_id ) ) {
-			$fb_id_array = explode( '-', $fb_id );
-			if ( ! empty( $fb_id_array ) && is_numeric( end( $fb_id_array ) ) ) {
-				$fb_id = end( $fb_id_array );
-			}
-			$fb_id = str_replace( ':0', '', $fb_id );
 		}
 		$fb_id = apply_filters( 'wpemfb_embed_fb_id', $fb_id, $juiceArray );
 

@@ -20,7 +20,7 @@
 						_e($fb_data['category'],'wp-embed-facebook');
 					}
 				?><br>
-				<?php if(isset($fb_data["website"])) : ?>
+				<?php if(isset($fb_data["website"]) && (strip_tags($fb_data["website"]) != '')) :  ?>
 					<a  href="<?php echo WP_Embed_FB::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
 						<?php _e('Web Site','wp-embed-facebook') ?>
 					</a>						
