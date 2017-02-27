@@ -6,7 +6,6 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 		//Donate or review notice
 		add_action( 'admin_notices', __CLASS__ . '::admin_notices' );
 		add_action( 'wp_ajax_wpemfb_close_warning', __CLASS__ . '::wpemfb_close_warning' );
-		add_action( 'wp_ajax_wpemfb_video_down', __CLASS__ . '::wpemfb_video_down' );
 
 		//settings page
 		add_action( 'admin_menu', __CLASS__ . '::add_page' );
@@ -24,16 +23,9 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 			?>
 			<div class="notice wpemfb_warning is-dismissible">
 				<h2>WP Embed Facebook</h2>
-
-				<p>Hey! The last step.</p>
-
-				<p><img style="position:relative; top: 5px;" height="20px" width="auto"
-				        src="<?php echo self::url() . 'lib/admin/ic_setting.png' ?>">&nbsp;Turn on <a title="Let your site visitors download Facebook videos"
-						id="wef-video-down" href="<?php echo admin_url( "options-general.php?page=embedfacebook" ) ?>">Video
-						Download Option</a> in settings.</p>
 				<p>
 					<?php
-					printf( __( 'To enable comment moderation and embed albums, events, profiles and video as HTML5 setup a facebook app on <a href="%s">settings</a>', 'wp-embed-facebook' ), admin_url('options-general.php?page=embedfacebook') )
+					printf( __( 'To enable comment moderation and embed albums, events, profiles and video as HTML5 setup a facebook app on <a id="wef_settings_link" href="%s">settings</a>', 'wp-embed-facebook' ), admin_url('options-general.php?page=embedfacebook') )
 					?>
 				</p>
 			</div>
@@ -54,7 +46,6 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 		if ( current_user_can( 'manage_options' ) ) {
 			$options                   = self::get_option();
 			$options['close_warning2'] = 'true';
-			$options['video_download'] = 'true';
 			self::set_options( $options );
 		}
 		die;
@@ -113,13 +104,14 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 				jQuery(document).on('click', '.wpemfb_warning .notice-dismiss', function () {
 					jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'});
 				});
-				jQuery(document).on('click', '#wef-video-down', function (e) {
-					e.preventDefault();
-					jQuery.post(ajaxurl, {action: 'wpemfb_video_down'}, function () {
-						window.location = "<?php echo admin_url("options-general.php?page=embedfacebook"); ?>"
-					});
 
-				});
+                jQuery(document).on('click', '#wef_settings_link', function (e) {
+                    e.preventDefault();
+                    jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'}, function () {
+                        window.location = "<?php echo admin_url("options-general.php?page=embedfacebook"); ?>"
+                    });
+
+                });
 			</script>
 			<?php
 		endif;
@@ -335,13 +327,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'auto_embed_active', __( 'Auto embed url\'s on editor ', 'wp-embed-facebook' ) );
 						self::field( 'number', 'max_width', __( 'Maximum width in pixels', 'wp-embed-facebook' ), array(), array( 'min' => '0' ) );
 						self::field( 'checkbox', 'video_as_post', __( 'Embed video as post', 'wp-embed-facebook' ) );
-						self::field( 'checkbox', 'video_download', sprintf( __( '%sShow download option <br> under video', 'wp-embed-facebook' ), '<img title="Let your site visitors download Facebook videos" style="display:block;float:left;padding-right:5px;" width="50px" height="auto" src="' . self::url() . 'lib/admin/ic_image_settings.png">' ) );
 						?>
-						<tr valign="middle">
-							<th></th>
-							<td style="float: left;position: relative;top: -31px;left: 23px;">
-								Let your site visitors download Facebook videos					</td>
-						</tr>
 						<?php
 
 						self::field( 'string', sprintf( __( 'The quote plugin lets people select text on your page and add it to their share.<br><a href="%s" target="_blank" title="WP Embed Facebook">Demo</a>', 'wp-embed-facebook' ), 'http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/' ), '<h3>' . __( 'Quote Plugin', 'wp-embed-facebook' ) . '</h3>' );

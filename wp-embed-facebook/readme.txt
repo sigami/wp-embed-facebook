@@ -3,8 +3,8 @@ Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
-Tested up to: 4.6
-Stable tag: 2.1.7
+Tested up to: 4.7.2
+Stable tag: 2.1.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,6 +136,10 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 2.1.7 =
+* Removed download video link
+* Prevent wrong file load on theme templates @pierreg_
 
 = 2.1.7 =
 * Fixed: url understanding on page embeds when they have the format page-name-8798798
