@@ -358,7 +358,7 @@ class  WP_Embed_FB {
 						break;
 					case 'page' :
 						$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : WP_Embed_FB_Plugin::get_option( 'max_posts' );
-						$api_string = $fb_id . '?fields=name,picture,is_community_page,link,id,cover,category,website,likes,genre';
+						$api_string = $fb_id . '?fields=name,picture,is_community_page,link,id,cover,category,website,genre,fan_count';
 						if ( intval( $num_posts ) > 0 ) {
 							$api_string .= ',feed.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
 						}

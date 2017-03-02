@@ -240,7 +240,7 @@ class WP_Embed_FB_Plugin {
 			$on_theme  = get_stylesheet_directory() . "/plugins/wp-embed-facebook/$theme/$theme.css";
 			$true_path = self::url() . "templates/$theme/$theme.css";
 			if(file_exists( $on_theme )){
-				$true_path = get_stylesheet_directory() . "/plugins/wp-embed-facebook/$theme/$theme.css";
+				$true_path = get_stylesheet_directory_uri() . "/plugins/wp-embed-facebook/$theme/$theme.css";
 			}
 
 			wp_register_style( 'wpemfb-' . $theme, $true_path, array(), false );
