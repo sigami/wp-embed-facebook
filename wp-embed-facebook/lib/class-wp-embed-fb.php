@@ -245,6 +245,9 @@ class  WP_Embed_FB {
 	}
 
 	static function print_embed( $fb_id, $type, $juice ) {
+	    if($interrupt = apply_filters('wef_interrupt','',$fb_id,$type,$juice)){
+	        return $interrupt;
+        }
 		if ( ! self::is_raw( $type ) ) {
 			$fb_data       = array( 'social_plugin' => true, 'link' => $juice, 'type' => $type );
 			$template_name = 'social-plugin';

@@ -31,7 +31,7 @@
 					if($opt === 'true') :
 						echo WEF_Social_Plugins::get('like',array('href'=>'https://www.facebook.com/'.$fb_data['id'],'share'=>'true','layout'=>'button_count','show-faces'=> 'false'));
 					else :
-						printf( __( '%d people like this.', 'wp-embed-facebook' ), $fb_data['likes'] );
+						printf( __( '%d people like this.', 'wp-embed-facebook' ), $fb_data['fan_count'] );
 					endif;
 					?>
 				</div>

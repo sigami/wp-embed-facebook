@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 3.8.1
 Tested up to: 4.7.2
-Stable tag: 2.1.9
+Stable tag: 2.1.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -136,6 +136,10 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 2.1.10 =
+* Deprecated Facebook sdk 2.1 and 2.2 automatically updates to 2.3
+* Better admin navigation
 
 = 2.1.9 =
 * Fixed page likes count
@@ -432,5 +436,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 2.1.5 =
-Update to Facebook API v2.7 Improved Lightbox css.
+= 2.1.10 =
+Deprecated Facebook sdk 2.1 and 2.2 automatically updates to 2.3 and better admin navigation

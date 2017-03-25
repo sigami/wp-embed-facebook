@@ -107,7 +107,7 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', function () {
         grunt.config.set('watch', {
             options: {
-                livereload: reload
+                livereload: false
             },
             sass: {
                 files: '<%= pkg.name %>/**/*.sass',

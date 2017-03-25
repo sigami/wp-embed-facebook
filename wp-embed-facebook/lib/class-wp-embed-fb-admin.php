@@ -82,19 +82,35 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 		if ( $hook_suffix == 'settings_page_embedfacebook' ) :
 			?>
 			<script type="text/javascript">
-				jQuery(document).ready(function () {
-					var sections = jQuery('section');
-					sections.first().show();
-					jQuery(".nav-tab-wrapper a").on('click', function (event) {
-						event.preventDefault();
-						sections.hide();
-						jQuery.each(jQuery(".nav-tab-wrapper a"), function (key, value) {
-							jQuery(value).removeClass("nav-tab-active");
-						});
-						sections.eq(jQuery(this).index()).show();
-						jQuery(this).addClass('nav-tab-active')
-					});
-				});
+                jQuery(document).ready(function () {
+                    var sections = jQuery('section');
+                    var tabs = jQuery(".nav-tab-wrapper a");
+                    var hash = jQuery(window.location.hash);
+                    sections.hide();
+                    if (hash.length) {
+                        var index = hash.index() - 4;
+                        console.log(index);
+                        sections.eq(index).show();
+                        jQuery.each(tabs, function (key, value) {
+                            jQuery(value).removeClass("nav-tab-active");
+                        });
+                        tabs.eq(index).addClass('nav-tab-active');
+                    } else {
+                        sections.first().show();
+                    }
+                    tabs.on('click', function (event) {
+                        var index = jQuery(this).index();
+                        var url = window.location.pathname + window.location.search + '#' + sections.eq(index)[0].id;
+                        event.preventDefault();
+                        sections.hide();
+                        jQuery.each(tabs, function (key, value) {
+                            jQuery(value).removeClass("nav-tab-active");
+                        });
+                        sections.eq(index).show();
+                        jQuery(this).addClass('nav-tab-active');
+                        window.history.pushState(sections.eq(index)[0].id, tabs.eq(index)[0].innerText, url);
+                    });
+                });
 			</script>
 			<?php
 		endif;
@@ -297,7 +313,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 			<h2>WP Embed Facebook</h2>
 
 			<div class="wef-content">
-				<form id="config-form" action="#" method="post">
+				<form id="config-form" action="" method="post">
 					<?php wp_nonce_field( 'W7ziLKoLoj', 'save-data' ); ?>
 					<?php
 					$has_app = self::has_fb_app();
@@ -598,13 +614,12 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 						self::field( 'checkbox', 'enq_fbjs_global', __( 'Force Facebook SDK script on all site', 'wp-embed-facebook' ) );
 						self::field( 'checkbox', 'force_app_token', __( 'Force app token', 'wp-embed-facebook' ) );
 						$versions = array(
-							'v2.1' => '2.1',
-							'v2.2' => '2.2',
 							'v2.3' => '2.3',
 							'v2.4' => '2.4',
 							'v2.5' => '2.5',
 							'v2.6' => '2.6',
 							'v2.7' => '2.7',
+							'v2.8' => '2.8',
 						);
 						self::field( 'select', 'sdk_version', 'Facebook SDK Version', $versions );
 

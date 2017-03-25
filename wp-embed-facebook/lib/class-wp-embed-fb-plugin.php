@@ -128,7 +128,7 @@ class WP_Embed_FB_Plugin {
 				                  'app_id'                         => '',
 				                  'app_secret'                     => '',
 				                  'theme'                          => 'default',
-				                  'sdk_version'                    => 'v2.7',
+				                  'sdk_version'                    => 'v2.8',
 				                  'show_like'                      => 'true',
 				                  'fb_root'                        => 'true',
 				                  'show_follow'                    => 'true',
@@ -220,6 +220,11 @@ class WP_Embed_FB_Plugin {
 			} elseif ( session_status() == PHP_SESSION_NONE ) {
 				session_start();
 			}
+			if( (float) substr(WP_Embed_FB_Plugin::get_option('sdk_version'),1) <= 2.2 ){
+			    $options = WP_Embed_FB_Plugin::get_option();
+			    $options['sdk_version'] = 'v2.3';
+			    WP_Embed_FB_Plugin::set_options($options);
+            }
 		}
 	}
 
