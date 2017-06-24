@@ -425,7 +425,7 @@ class WEF_Social_Plugins {
 	}
 
 	/**
-	 * Gets the HTML code of any social plugin if
+	 * Gets the HTML code of any social plugin if any
 	 *
 	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post|follow
 	 * @param array  $options Defaults are WEF_Social_Plugin::$type

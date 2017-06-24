@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Embed Facebook package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Embed Facebook 2.1.9\n"
+"Project-Id-Version: WP Embed Facebook 2.1.10\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/wp-embed-facebook\n"
 "POT-Creation-Date: 2016-10-06 11:26-0500\n"
@@ -27,20 +27,36 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "X-Poedit-Wpheader: wp-embed-facebook.php\n"
 
-#: lib/class-wef-magic-embeds.php:100
+#: lib/class-wef-magic-embeds.php:123
 msgid "Shortcode used:"
 msgstr ""
 
-#: lib/class-wef-magic-embeds.php:105
+#: lib/class-wef-magic-embeds.php:128
 msgid "Final code:"
 msgstr ""
 
-#: lib/class-wef-magic-embeds.php:110
+#: lib/class-wef-magic-embeds.php:133
 msgid "More information:"
 msgstr ""
 
 #: lib/class-wef-social-plugins.php:500
 msgid "Invalid Facebook plugin type use it like this: [fb_plugin like]"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP Embed Facebook"
+msgstr ""
+
+#: lib/class-wef-widget.php:15
+msgid "Shortcode widget"
+msgstr ""
+
+#: lib/class-wef-widget.php:50
+msgid "Title:"
+msgstr ""
+
+#: lib/class-wef-widget.php:54
+msgid "Shortcode:"
 msgstr ""
 
 #: lib/class-wp-embed-fb-admin.php:28
@@ -66,7 +82,7 @@ msgstr ""
 msgid "Custom Embeds"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:324 lib/class-wp-embed-fb-admin.php:608
+#: lib/class-wp-embed-fb-admin.php:324 lib/class-wp-embed-fb-admin.php:609
 msgid "Lightbox"
 msgstr ""
 
@@ -405,6 +421,12 @@ msgstr ""
 msgid "Use this lightbox on the [gallery] shortcode"
 msgstr ""
 
+#: lib/class-wp-embed-fb-admin.php:599
+msgid ""
+"Beware altering this options without the proper knowledge could make the "
+"world disappear."
+msgstr ""
+
 #: lib/class-wp-embed-fb-admin.php:602
 msgid "Enqueue styles and scripts"
 msgstr ""
@@ -414,100 +436,104 @@ msgid "Only when there is an embed present"
 msgstr ""
 
 #: lib/class-wp-embed-fb-admin.php:604
-msgid "Facebook SDK"
+msgid "Use permalinks on social plugins urls"
 msgstr ""
 
 #: lib/class-wp-embed-fb-admin.php:605
-msgid "Template Styles"
+msgid "Facebook SDK"
 msgstr ""
 
 #: lib/class-wp-embed-fb-admin.php:606
+msgid "Template Styles"
+msgstr ""
+
+#: lib/class-wp-embed-fb-admin.php:607
 msgid "Adaptive social plugins script"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:609
+#: lib/class-wp-embed-fb-admin.php:610
 msgid "Enqueue script"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:610
+#: lib/class-wp-embed-fb-admin.php:611
 msgid "Attribute"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:612
+#: lib/class-wp-embed-fb-admin.php:613
 msgid "Other Options"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:613
+#: lib/class-wp-embed-fb-admin.php:614
 msgid "Add fb-root on top of content"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:614
+#: lib/class-wp-embed-fb-admin.php:615
 msgid "Force Facebook SDK script on all site"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:615
+#: lib/class-wp-embed-fb-admin.php:616
 msgid "Force app token"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:632
+#: lib/class-wp-embed-fb-admin.php:634
 msgid "Save all settings"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:637
+#: lib/class-wp-embed-fb-admin.php:639
 msgid "Restore default values?"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:640
+#: lib/class-wp-embed-fb-admin.php:642
 msgid "Restore defaults"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:648
+#: lib/class-wp-embed-fb-admin.php:650
 msgid "Premium Extension Available"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:652
+#: lib/class-wp-embed-fb-admin.php:654
 msgid "Shortcodes for embedding a full event or page."
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:654
+#: lib/class-wp-embed-fb-admin.php:656
 msgid "Elegant template for custom embeds"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:656
+#: lib/class-wp-embed-fb-admin.php:658
 msgid "Albums with more that 100 photos."
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:658
+#: lib/class-wp-embed-fb-admin.php:660
 msgid "One Year Premium Support"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:662
+#: lib/class-wp-embed-fb-admin.php:664
 msgid "Check it out"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:666
+#: lib/class-wp-embed-fb-admin.php:668
 msgid "Plus new features cooking"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:669
+#: lib/class-wp-embed-fb-admin.php:671
 msgid ""
 "Embed private data, shortcode creator, widgets, special templates for "
 "albums and pages"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:674
+#: lib/class-wp-embed-fb-admin.php:676
 msgid "This free plugin has taken thousands of hours to maintain and develop"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:679
+#: lib/class-wp-embed-fb-admin.php:681
 msgid "Rate it"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:687
+#: lib/class-wp-embed-fb-admin.php:689
 msgid "Donate"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:692
+#: lib/class-wp-embed-fb-admin.php:694
 msgid "More information"
 msgstr ""
 
@@ -530,11 +556,11 @@ msgid "Code"
 msgstr ""
 
 #: lib/class-wp-embed-fb.php:193 lib/class-wp-embed-fb.php:232
-#: lib/class-wp-embed-fb.php:429
+#: lib/class-wp-embed-fb.php:430
 msgid "Error"
 msgstr ""
 
-#: lib/class-wp-embed-fb.php:436
+#: lib/class-wp-embed-fb.php:437
 msgid ""
 "<small>To embed this type of content you need to setup a facebook app on <a "
 "href=\"%s\" title=\"WP Embed Facebook Settings\">settings</a></small>"
@@ -572,14 +598,6 @@ msgstr ""
 
 #: templates/classic/single-post.php:131 templates/default/single-post.php:131
 msgid "shares"
-msgstr ""
-
-#: templates/default/social-plugin.php:15
-msgid "Download this video"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
-msgid "WP Embed Facebook"
 msgstr ""
 
 #. Author URI of the plugin/theme

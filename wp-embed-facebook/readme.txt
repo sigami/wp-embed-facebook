@@ -2,9 +2,9 @@
 Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
-Requires at least: 3.8.1
-Tested up to: 4.7.2
-Stable tag: 2.1.10
+Requires at least: 4.6
+Tested up to: 4.8
+Stable tag: 2.1.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -137,17 +137,24 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 2.1.11 =
+* Added: shortcode widget
+* Added: api version 2.9
+* Added: filter wef_embedded_with
+* Added: advanced option to use permalinks on social plugins urls
+* Improved: updated wp_get_sites for get_sites
+
 = 2.1.10 =
-* Deprecated Facebook sdk 2.1 and 2.2 automatically updates to 2.3
-* Better admin navigation
+* Improved: Deprecated Facebook sdk 2.1 and 2.2 automatically updates to 2.3
+* Improved: admin navigation
 
 = 2.1.9 =
-* Fixed page likes count
-* Fix css not found no custom templates
+* Fixed: page likes count
+* Fixed: css not found no custom templates
 
 = 2.1.8 =
-* Removed download video link
-* Prevent wrong file load on theme templates @pierreg_
+* Fixed: Removed download video link
+* Fixed: Prevent wrong file load on theme templates @pierreg_
 
 = 2.1.7 =
 * Fixed: url understanding on page embeds when they have the format page-name-8798798

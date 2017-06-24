@@ -11,9 +11,6 @@ switch ( $type ) {
 		} else {
 			/** @noinspection PhpUndefinedVariableInspection */
 			echo WEF_Social_Plugins::get('video',array('href'=>'https://www.facebook.com/' . $fb_data['link'],'width'=>$width));
-			if ( WP_Embed_FB_Plugin::get_option( 'video_download' ) == 'true' ) {
-				echo '<p class="wef-video-link"><a title="Download this video" href="http://www.freemake.com/free_video_downloader/">' . __( 'Download this video', 'wp-embed-facebook' ) . '</a></p>';
-			}
 		}
 
 		break;

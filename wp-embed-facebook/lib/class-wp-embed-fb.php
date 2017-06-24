@@ -334,6 +334,7 @@ class  WP_Embed_FB {
 		 * @param string $template file full path
 		 * @param array  $fb_data  data from facebook
 		 */
+		echo apply_filters('wef_embedded_with','<!-- Embedded with WP Embed Facebook - http://wpembedfb.com -->');
 		$template = apply_filters( 'wpemfb_template', $template, $fb_data, $type );
 		/** @noinspection PhpIncludeInspection */
 		include( $template );

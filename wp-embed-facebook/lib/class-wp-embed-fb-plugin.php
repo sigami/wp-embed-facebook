@@ -28,6 +28,9 @@ class WP_Embed_FB_Plugin {
 
 		//register all scripts and styles
 		add_action( 'wp_enqueue_scripts', __CLASS__ . '::wp_enqueue_scripts' );
+
+		add_action('widgets_init',__CLASS__.'::widgets_init');
+
 	}
 
 	static function install() {
@@ -42,8 +45,7 @@ class WP_Embed_FB_Plugin {
 	 */
 	static function uninstall() {
 		if ( is_multisite() ) {
-			//TODO deprecated for get_sites in WP v4.6
-			$sites = wp_get_sites();
+			$sites = get_sites();
 			foreach ( $sites as $site ) {
 				switch_to_blog( $site['blog_id'] );
 				delete_option( self::option_name );
@@ -128,7 +130,7 @@ class WP_Embed_FB_Plugin {
 				                  'app_id'                         => '',
 				                  'app_secret'                     => '',
 				                  'theme'                          => 'default',
-				                  'sdk_version'                    => 'v2.8',
+				                  'sdk_version'                    => 'v2.9',
 				                  'show_like'                      => 'true',
 				                  'fb_root'                        => 'true',
 				                  'show_follow'                    => 'true',
@@ -176,6 +178,7 @@ class WP_Embed_FB_Plugin {
 				                  'event_start_time_format'        => 'l, j F Y g:i a',
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
 				                  'single_post_from_like'          => 'false',
+				                  'permalink_on_social_plugins'    => 'false',
 			                  ) + $social_options;
 		}
 
@@ -248,11 +251,10 @@ class WP_Embed_FB_Plugin {
 				$true_path = get_stylesheet_directory_uri() . "/plugins/wp-embed-facebook/$theme/$theme.css";
 			}
 
-			wp_register_style( 'wpemfb-' . $theme, $true_path, array(), false );
+			wp_register_style( 'wpemfb-' . $theme, $true_path, array(), '1.0' );
 		}
-		wp_register_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', array(), false );
-		wp_register_script( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' )
-		);
+		wp_register_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', array(), '1.0' );
+		wp_register_script( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' ),'1.0' );
 		$lb_defaults       = self::get_lb_defaults();
 		$options           = self::get_option();
 		$translation_array = array();
@@ -265,9 +267,9 @@ class WP_Embed_FB_Plugin {
 			//TODO use something like wp_add_inline_script('wpemfb-lightbox','new Lightbox(WEF_LB)') for LightBox options
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
-		wp_register_script( 'wpemfb', self::url() . 'lib/js/wpembedfb.min.js', array( 'jquery' ) );
+		wp_register_script( 'wpemfb', self::url() . 'lib/js/wpembedfb.min.js', array( 'jquery' ),'1.0');
 
-		wp_register_script( 'wpemfb-fbjs', self::url() . 'lib/js/fb.min.js', array( 'jquery' ) );
+		wp_register_script( 'wpemfb-fbjs', self::url() . 'lib/js/fb.min.js', array( 'jquery' ),'1.0' );
 		$translation_array = array(
 			'local'   => $options['sdk_lang'],
 			'version' => $options['sdk_version'],
@@ -564,6 +566,10 @@ class WP_Embed_FB_Plugin {
 		$array = explode( ',', $string );
 
 		return array_map( 'trim', $array );
+	}
+
+	static function widgets_init(){
+		register_widget('WEF_Widget');
 	}
 
 	static function lightbox_title( $title ) {

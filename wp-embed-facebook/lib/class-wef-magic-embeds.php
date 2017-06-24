@@ -67,13 +67,36 @@ class  WEF_Magic_Embeds extends WP_Embed_FB_Plugin {
 		$options  = self::get_option();
 		foreach ( $defaults as $key => $value ) {
 			if ( in_array( $key, self::$link_types ) ) {
-				$defaults[ $key ] = home_url( '/?p=' . get_queried_object_id() );
+				$defaults[ $key ] = self::get_true_url();
 			} else {
 				$defaults[ $key ] = $options["{$type}_$key"];
 			}
 		}
 
 		return $defaults;
+	}
+
+	static function get_true_url(){
+		global $wp;
+		if(is_home())
+			return home_url();
+
+		if(in_the_loop()){
+			global $post;
+			if(WP_Embed_FB_Plugin::get_option('permalink_on_social_plugins') === 'true'){
+				return get_permalink($post->ID);
+			} else {
+				$query = '/?p=' .$post->ID;
+			}
+		} else {
+			if(WP_Embed_FB_Plugin::get_option('permalink_on_social_plugins') === 'true'){
+				$query = $wp->request;
+			} else {
+				$query = '/?' .$wp->query_string;
+			}
+		}
+
+		return home_url($query);
 	}
 
 	static function wef_sp_shortcode_filter($ret,$type,$atts,$defaults) {
