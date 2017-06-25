@@ -595,7 +595,13 @@ class  WP_Embed_FB {
 	static function getwebsite( $urls ) {
 		$url = explode( ' ', trim( $urls ) );
 
-		return strpos( 'http', $url[0] ) === false ? 'http://' . $url[0] : $url[0];
+		if (preg_match('/https:/',$url[0]))
+			return $url[0];
+
+		if (preg_match('/http:/',$url[0]))
+			return $url[0];
+
+        return 'http://' . $url[0];
 	}
 
 }
