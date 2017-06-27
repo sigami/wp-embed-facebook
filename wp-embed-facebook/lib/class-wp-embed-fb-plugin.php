@@ -17,7 +17,7 @@ class WP_Embed_FB_Plugin {
 	/**
 	 * @var array $link_types Link fields needed for rendering a social plugin
 	 */
-	static $link_types = [ 'href', 'uri' ];
+	static $link_types = array( 'href', 'uri' );
 
 	static function hooks() {
 		//Session start when there is a facebook app
@@ -68,7 +68,7 @@ class WP_Embed_FB_Plugin {
 	 * @return array old options to be deleated since 2.1
 	 */
 	static function old_options() {
-		return [
+		return array(
 			'show_posts',
 			'close_warning',
 			'height',
@@ -104,13 +104,13 @@ class WP_Embed_FB_Plugin {
 			'force_app_token',
 			'video_download',
 			'sdk_version'
-		];
+	);
 	}
 
 	static function get_defaults() {
 		if ( self::$defaults === null ) {
 			$locale         = get_locale();
-			$locale         = str_replace( [
+			$locale         = str_replace( array(
 				'es_ES',
 				'es_MX',
 				'es_AR',
@@ -118,9 +118,9 @@ class WP_Embed_FB_Plugin {
 				'es_GT',
 				'es_PE',
 				'es_VE'
-			], 'es_LA', $locale );
+			), 'es_LA', $locale );
 			$vars           = WEF_Social_Plugins::get_defaults();
-			$social_options = [];
+			$social_options = array();
 			foreach ( $vars as $key => $value ) {
 				foreach ( $value as $d_key => $d_value ) {
 					if ( ! in_array( $d_key, self::$link_types ) ) {
@@ -128,7 +128,7 @@ class WP_Embed_FB_Plugin {
 					}
 				}
 			}
-			self::$defaults = [
+			self::$defaults = array(
 				                  'sdk_lang'                       => array_key_exists( $locale, self::get_fb_locales() ) ? $locale : 'en_US',
 				                  'max_width'                      => '450',
 				                  'max_photos'                     => '24',
@@ -186,7 +186,7 @@ class WP_Embed_FB_Plugin {
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
 				                  'single_post_from_like'          => 'false',
 				                  'permalink_on_social_plugins'    => 'false',
-			                  ] + $social_options;
+		) + $social_options;
 		}
 
 		return apply_filters( 'wpemfb_defaults', self::$defaults );
@@ -194,7 +194,7 @@ class WP_Embed_FB_Plugin {
 
 	static function get_lb_defaults() {
 		if ( self::$lb_defaults === null ) {
-			$keys              = [
+			$keys              = array(
 				'albumLabel',
 				'alwaysShowNavOnTouchDevices',
 				'showImageNumberLabel',
@@ -207,8 +207,8 @@ class WP_Embed_FB_Plugin {
 				'resizeDuration',
 				'fadeDuration',
 				'wpGallery'
-			];
-			self::$lb_defaults = [];
+			);
+			self::$lb_defaults = array();
 			$defaults          = self::get_defaults();
 			foreach ( $keys as $key ) {
 				self::$lb_defaults[ $key ] = $defaults[ 'LB_' . $key ];
@@ -251,20 +251,20 @@ class WP_Embed_FB_Plugin {
 	 * Enqueue wp embed facebook styles
 	 */
 	static function wp_enqueue_scripts() {
-		foreach ( [ 'default', 'classic' ] as $theme ) {
+		foreach ( array( 'default', 'classic' ) as $theme ) {
 			$on_theme  = get_stylesheet_directory() . "/plugins/wp-embed-facebook/$theme/$theme.css";
 			$true_path = self::url() . "templates/$theme/$theme.css";
 			if ( file_exists( $on_theme ) ) {
 				$true_path = get_stylesheet_directory_uri() . "/plugins/wp-embed-facebook/$theme/$theme.css";
 			}
 
-			wp_register_style( 'wpemfb-' . $theme, $true_path, [], '1.0' );
+			wp_register_style( 'wpemfb-' . $theme, $true_path, array(), '1.0' );
 		}
-		wp_register_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', [], '1.0' );
-		wp_register_script( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/js/lightbox.min.js', [ 'jquery' ], '1.0' );
+		wp_register_style( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/css/lightbox.css', array(  ), '1.0' );
+		wp_register_script( 'wpemfb-lightbox', self::url() . 'lib/lightbox2/js/lightbox.min.js', array( 'jquery' ), '1.0' );
 		$lb_defaults       = self::get_lb_defaults();
 		$options           = self::get_option();
-		$translation_array = [];
+		$translation_array = array();
 		foreach ( $lb_defaults as $default_name => $value ) {
 			if ( $options[ 'LB_' . $default_name ] !== $value ) {
 				$translation_array[ $default_name ] = $options[ 'LB_' . $default_name ];
@@ -274,18 +274,18 @@ class WP_Embed_FB_Plugin {
 			//TODO use something like wp_add_inline_script('wpemfb-lightbox','new Lightbox(WEF_LB)') for LightBox options
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
-		wp_register_script( 'wpemfb', self::url() . 'lib/js/wpembedfb.min.js', [ 'jquery' ], '1.0' );
+		wp_register_script( 'wpemfb', self::url() . 'lib/js/wpembedfb.min.js', array( 'jquery' ), '1.0' );
 
-		wp_register_script( 'wpemfb-fbjs', self::url() . 'lib/js/fb.min.js', [ 'jquery' ], '1.0' );
-		$translation_array = [
+		wp_register_script( 'wpemfb-fbjs', self::url() . 'lib/js/fb.min.js', array( 'jquery' ), '1.0' );
+		$translation_array = array(
 			'local'   => $options['sdk_lang'],
 			'version' => $options['sdk_version'],
 			'fb_id'   => $options['app_id'] == '0' ? '' : $options['app_id']
-		];
+		);
 		if ( $options['auto_comments_active'] == 'true' && $options['comments_count_active'] == 'true' ) {
-			$translation_array = $translation_array + [
+			$translation_array = $translation_array + array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				];
+				);
 		}
 		wp_localize_script( 'wpemfb-fbjs', 'WEF', $translation_array );
 
@@ -339,7 +339,7 @@ class WP_Embed_FB_Plugin {
 					self::$options = $options;
 				} else {
 					//check option array for corruption
-					$compare = [];
+					$compare = array();
 					foreach ( $defaults as $default_key => $default_value ) {
 						$compare[ $default_key ] = isset( $options[ $default_key ] ) ? $options[ $default_key ] : $default_value;
 					}
@@ -410,7 +410,7 @@ class WP_Embed_FB_Plugin {
 	}
 
 	static function get_fb_locales() {
-		return [
+		return array(
 
 			'af_ZA' => 'Afrikaans',
 			'ar_AR' => 'Arabic',
@@ -516,7 +516,7 @@ class WP_Embed_FB_Plugin {
 			'zh_HK' => 'Traditional Chinese (Hong Kong)',
 			'zh_TW' => 'Traditional Chinese (Taiwan)',
 
-		];
+		);
 	}
 
 	static function get_timezone() {
@@ -547,10 +547,10 @@ class WP_Embed_FB_Plugin {
 	}
 
 	static function lightbox_title( $title ) {
-		$clean_title = esc_attr( wp_rel_nofollow( make_clickable( str_replace( [ '"', "'" ], [
+		$clean_title = esc_attr( wp_rel_nofollow( make_clickable( str_replace( array( '"', "'" ), array(
 			'&#34;',
 			'&#39;'
-		], $title ) ) ) );
+		), $title ) ) ) );
 
 		return apply_filters( 'wef_lightbox_title', 'data-title="' . $clean_title . '"', $title );
 	}

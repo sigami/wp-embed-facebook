@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 2.1.13
+Stable tag: 2.1.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,6 +140,9 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 2.1.14 =
+* Compatibility for PHP 5.3 0..o
 
 = 2.1.13 =
 * Fixed: website page url @sabrina_b

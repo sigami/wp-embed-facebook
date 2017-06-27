@@ -513,6 +513,9 @@ class  WP_Embed_FB {
 		}
 	}
 
+	/**
+	 * @return null|Sigami_Facebook
+	 */
 	static function get_fbsdk() {
 		if ( self::$fbsdk && self::$fbsdk instanceof Sigami_Facebook ) {
 			if ( WP_Embed_FB_Plugin::get_option( 'force_app_token' ) == 'true' ) {
@@ -522,9 +525,11 @@ class  WP_Embed_FB {
 			return self::$fbsdk;
 		} else {
 			if ( ! class_exists( 'FacebookApiException' ) ) {
-				require_once(WP_Embed_FB_Plugin::path().'lib/base_facebook.php');
+				/** @noinspection PhpIncludeInspection */
+				require_once( WP_Embed_FB_Plugin::path() . 'lib/base_facebook.php');
 			}
-			require_once(WP_Embed_FB_Plugin::path().'lib/class-sigami-facebook.php');
+			/** @noinspection PhpIncludeInspection */
+			require_once( WP_Embed_FB_Plugin::path() . 'lib/class-sigami-facebook.php');
 			$config           = array();
 			$config['appId']  = WP_Embed_FB_Plugin::get_option( 'app_id' );
 			$config['secret'] = WP_Embed_FB_Plugin::get_option( 'app_secret' );

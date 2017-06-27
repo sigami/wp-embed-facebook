@@ -472,13 +472,13 @@ jQuery(function ($) {
     else {
         for (var key in WEF_LB) {
             if (WEF_LB.hasOwnProperty(key)) {
-                if (WEF_LB[key] == 'false') {
+                if (WEF_LB[key] === 'false') {
                     WEF_LB[key] = false;
                 }
-                else if (WEF_LB[key] == 'true') {
+                else if (WEF_LB[key] === 'true') {
                     WEF_LB[key] = true;
                 }
-                else if (key != 'albumLabel') {
+                else if (key !== 'albumLabel') {
                     WEF_LB[key] = parseInt(WEF_LB[key]);
                 }
             }
