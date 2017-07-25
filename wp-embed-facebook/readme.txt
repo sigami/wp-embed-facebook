@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 2.1.15
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,8 +141,17 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 2.2.0 =
+* Improved: fb.js no longer depends on jQuery
+* Improved: Templates CSS (completely rewritten)
+* Improved: Custom embed responsiveness
+* Improved: Album thumbnails look
+* Fixed: Adaptive embed script
+* Added: [embedfb] shortcode just in case [facebook] shortcode is being used by another plugin
+* Updated: Deprecate Facebook SDK version 2.3 force to 2.4
+
 = 2.1.14 =
-* Compatibility for PHP 5.3 0..o
+* Added: Compatibility for PHP 5.3 0..o
 
 = 2.1.13 =
 * Fixed: website page url @sabrina_b
@@ -456,5 +465,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 2.1.12 =
-Added new options and filters.
+= 2.2.0 =
+Better responsiveness and theme compatibility with custom embeds also adaptive script works again.

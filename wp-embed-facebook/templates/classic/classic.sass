@@ -1,7 +1,8 @@
 .wef-classic
   font: 300 14px/20px Helvetica
   padding: 10px
-  display: block
+  display: table
+  margin: 10px auto
   border:
     width: 1px
     style: solid
@@ -10,53 +11,46 @@
   width: 100%
   background-color: #FFFFFF
   color: #0f0f0f
-  .row
-    margin:
-      left: -10px
-      right: -10px
-    display: table
-    width: 100%
-  .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12
-    /* float: left */
-    position: relative
-    min-height: 1px
-    padding:
-      left: 10px
-      right: 10px
-    display: table-cell
-    vertical-align: middle
-    text-align: left
-  .col-12
-    width: 100%
-  .col-11
-    width: 91.66666667%
-  .col-10
-    width: 83.33333333%
-  .col-9
-    width: 75%
-  .col-8
-    width: 66.66666667%
-  .col-7
-    width: 58.33333333%
-  .col-6
-    width: 50%
-  .col-5
-    width: 41.66666667%
-  .col-4
-    width: 33.33333333%
-  .col-3
-    width: 25%
-  .col-2
-    width: 16.66666667%
-  .col-1
-    width: 8.33333333%
-  hr
+  @media (min-width: 30em)
+    .row
+      width: 100%
+      display: table-row
+      table-layout: fixed
+      float: left
+    .wef-col-1, .wef-col-2, .wef-col-3, .wef-col-4, .wef-col-5, .wef-col-6, .wef-col-7, .wef-col-8, .wef-col-9, .wef-col-10, .wef-col-11, .wef-col-12
+      display: table-cell
+      float: left
+    .wef-col-12
+      width: 100%
+    .wef-col-11
+      width: 91.66666667%
+    .wef-col-10
+      width: 83.33333333%
+    .wef-col-9
+      width: 75%
+    .wef-col-8
+      width: 66.66666667%
+    .wef-col-7
+      width: 58.33333333%
+    .wef-col-6
+      width: 50%
+    .wef-col-5
+      width: 41.66666667%
+    .wef-col-4
+      width: 33.33333333%
+    .wef-col-3
+      width: 25%
+    .wef-col-2
+      width: 16.66666667%
+    .wef-col-1
+      width: 8.33333333%
+  hr.wef-hr
     margin:
       top: 10px !important
       bottom: 10px !important
       left: 0 !important
       right: 0 !important
-    float: none !important
+    float: left !important
     border:
       top: 1px
       style: solid
@@ -66,38 +60,36 @@
     box-sizing: content-box
     height: 0 !important
     width: 100% !important
-  img.icon
+  img.wef-icon
     float: right
     box-shadow: none
     margin: 0
     padding: 0
     display: block
-  img.thumbnail
+  img.wef-thumbnail
     border: 1px solid #808080
     border-radius: 2px
     height: 60px !important
-    margin: 1px
-    padding: 2px
+    margin: 2px 4px
+    padding: 0
     width: 60px !important
-  .album-thumbs
-    line-height: 1px !important
-    //padding-left: 5.3% !important
+  .wef-album-thumbs
+    display: inline-block
   a.wef-button
     padding: 5px 9px !important
     text-align: center
     text-decoration: none !important
     display: inline-block
     font-size: 15px
-    margin: 0px -15px !important
-    -webkit-transition-duration: .2s
-    transition-duration: .2s
+    -webkit-transition-duration: .1s
+    transition-duration: .1s
     cursor: pointer
     background-color: #fff
     color: #000 !important
     border: 2px solid #23487F !important
     border-radius: 4px
     &:hover, &:focus
-      background-color: #008CBA !important
+      background-color: #23487F !important
       color: white !important
       text-decoration: none !important
   a
@@ -111,7 +103,7 @@
     &:focus, &:hover
       color: #23487F
       text-decoration: underline !important
-    &.post-likes
+    &.wef-post-likes
       color: #6d84b4 !important
       font-size: 12px !important
     &.road-trip
@@ -119,13 +111,14 @@
       height: 0 !important
     img
       display: inline-block !important
-      margin: 0
-      padding: 0
+      margin: 0 !important
+      padding: 0 !important
+      box-shadow: none !important
   p
     font: 300 14px/20px Helvetica
     padding: 0 !important
     margin: 0 !important
-    &.post-time
+    &.wef-post-time
       font-style: italic
       color: #8e8c8d
       font-size: 12px
@@ -146,7 +139,7 @@
     border: 0 !important
     margin: 0 !important
     padding: 0 !important
-  .post-link
+  .wef-post-link
     border:
       width: 1px
       style: solid
@@ -156,16 +149,12 @@
       padding:
         left: 10px !important
         right: 10px !important
-  .text-center
+  .wef-text-center
     text-align: center
-  .pl-none
+  .wef-pl-none
     padding-left: 0 !important
     word-break: break-all
-  .color
-    color: #23487F
-  .bold
-    font-weight: bold !important
-  .title
+  .wef-title
     font-size: 20px !important
     font-weight: bold !important
     word-break: break-all
@@ -173,28 +162,24 @@
     height: 100% !important
     background-color: transparent !important
     padding-top: 5px !important
-  .pad-top
+  .wef-pad-top
     padding:
       top: 5px
-  .page-post
-    left: 2.6% !important
   .caption-description p
     color: #8e8c8d !important
     font-style: italic !important
     font-size: 12px !important
   .wef-measure
     width: 100%
-  .break-all
-    word-break: break-all
-  .event_address
+  .wef-event_address
     color: #565656
     font-size: 12px
-  .relative-container
+  .wef-relative-container
     position: relative
     display: block
     height: 0
     overflow: hidden
-    .relative
+    .wef-relative
       position: absolute
       top: 0
       left: 0
@@ -204,31 +189,32 @@
       border: 0
       margin: 0
       padding: 0
-  .video
+  .wef-video
     padding: 0 0 56.25%
     iframe, embed, object, video
-      @extend .relative
-  .fbpost-image
+      @extend .wef-relative
+  .wef-fbpost-image
     padding: 0 0 75%
     div
       cursor: pointer
       background:
         size: cover
         position: 50% 50%
-  .cover
+  .wef-cover
     padding: 0 0 36.86%
     div
       background-size: 100% !important
       background-position-x: 0
       cursor: pointer
-.wef-video-link
-  margin: 0 !important
-  padding: 0 !important
-  a
-    font: 300 14px/20px Helvetica
-    color: #23487F !important
-    text-decoration: none !important
-    border: 0 !important
-    margin: 0 !important
-    padding: 0 !important
-    box-shadow: none !important
+  div.wef-album-thumb
+    height: 65px !important
+    margin: 1px
+    padding: 2px
+    width: 65px !important
+    float: left
+    background-size: cover
+  .wef-text-right
+    text-align: right
+  .event_address
+    color: #404040
+    font-style: italic

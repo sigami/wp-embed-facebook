@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Embed Facebook package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Embed Facebook 2.1.14\n"
+"Project-Id-Version: WP Embed Facebook 2.1.15\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/wp-embed-facebook\n"
 "POT-Creation-Date: 2016-10-06 11:26-0500\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "More information:"
 msgstr ""
 
-#: lib/class-wef-social-plugins.php:500
+#: lib/class-wef-social-plugins.php:504
 msgid "Invalid Facebook plugin type use it like this: [fb_plugin like]"
 msgstr ""
 
@@ -568,7 +568,7 @@ msgstr ""
 
 #: templates/classic/com-page.php:20 templates/classic/page.php:34
 #: templates/classic/post.php:21 templates/default/com-page.php:20
-#: templates/default/page.php:34
+#: templates/default/page.php:34 templates/default/post.php:21
 msgid "%d people like this."
 msgstr ""
 

@@ -1,5 +1,5 @@
-jQuery(document).ready(function () {
-    jQuery(".wef-measure").each(function () {
-        jQuery(this).next().attr("data-width", jQuery(this).outerWidth() + "px")
+(function ($) {
+    $(".wef-measure").each(function () {
+        $(this).next().attr("data-width", $(this).outerWidth() + "px")
     })
-});
+})(jQuery);

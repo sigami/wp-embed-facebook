@@ -1,16 +1,16 @@
 <div class="wef-default" style="max-width: <?php echo $width ?>px" >
 	<?php if(isset($fb_data['cover'])) : ?>
-		<div class="relative-container cover"><div class="relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
+		<div class="wef-relative-container wef-cover"><div class="wef-relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
 	<?php endif; ?>
-	<div class="row pad-top">
-			<div class="col-2 text-center">
+	<div class="wef-row wef-pad-top">
+			<div class="wef-col-2 wef-text-center">
 				<a href="<?php echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
 					<img src="<?php echo $fb_data['picture']['data']['url'] ?>" width="50px" height="50px" />
 				</a>		
 			</div>
-			<div class="col-10 pl-none">
+			<div class="wef-col-10 wef-pl-none">
 				<a href="<?php echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
-					<span class="title"><?php echo $fb_data['name'] ?></span>
+					<span class="wef-title"><?php echo $fb_data['name'] ?></span>
 				</a>
 				<br>
 				<?php
@@ -37,8 +37,8 @@
 				</div>
 			</div>
 	</div>	
-	<?php if(isset($fb_data['feed'])) : global $wp_embed;   ?>
-		<?php foreach($fb_data['feed']['data'] as $fb_post) : ?>
+	<?php if(isset($fb_data['posts'])) : global $wp_embed;   ?>
+		<?php foreach($fb_data['posts']['data'] as $fb_post) : ?>
 			<?php if(isset($fb_post['picture']) || isset($fb_post['message'])) : ?>
 				<?php include('single-post.php') ?>
 			<?php endif; ?>

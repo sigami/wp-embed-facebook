@@ -13,12 +13,12 @@ date_default_timezone_set( $old_time_zone );
 ?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px">
 	<?php if(isset($fb_data['cover'])) : ?>
-		<div class="relative-container cover"><div class="relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
+		<div class="wef-relative-container wef-cover"><div class="wef-relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
 	<?php endif; ?>
-	<div class="row pad-top">
-		<div class="col-12">
+	<div class="wef-row wef-pad-top">
+		<div class="wef-col-12">
 			<a href="https://www.facebook.com/<?php echo $fb_data['id'] ?>" target="_blank" rel="nofollow">
-				<span class="title"><?php echo $fb_data['name'] ?></span>
+				<span class="wef-title"><?php echo $fb_data['name'] ?></span>
 			</a>
 			<p><?php echo $start_time ?></p>
 			<p>

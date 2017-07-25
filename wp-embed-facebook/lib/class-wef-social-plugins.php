@@ -492,6 +492,10 @@ class WEF_Social_Plugins {
 
 			$ret = self::get( $type, $data );
 
+			if ( ( WP_Embed_FB_Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( WP_Embed_FB_Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
+				wp_enqueue_script( 'wpemfb-fbjs' );
+			}
+
 			do_action( 'wef_sp_shortcode_action' );
 
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
@@ -500,97 +504,4 @@ class WEF_Social_Plugins {
 		return __( 'Invalid Facebook plugin type use it like this: [fb_plugin like]', 'wp-embed-facebook' );
 	}
 
-	/* DEPRECATED FUNCTIONS TO BE REMOVED ON v2.2 */
-
-	/**
-	 * @param string $href
-	 * @param        $options array colorscheme | share | layout | show_faces
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 *
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function like_btn( $href, $options = array() ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'like\')' );
-
-		return self::get( 'like', array( 'href' => $href ) + $options );
-	}
-
-	/**
-	 * @param       $href
-	 * @param array $options
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function follow_btn( $href, $options = array() ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'follow\')' );
-
-		return self::get( 'follow', array( 'href' => $href ) + $options );
-	}
-
-	/**
-	 * @param string $href
-	 * @param string $layout Can be one of "box_count", "button_count", "button", "link", "icon_link", or "icon".
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function share_btn( $href, $layout = 'icon_link' ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'share\')' );
-
-		return self::get( 'share', array( 'href' => $href, 'layout' => $layout ) );
-	}
-
-	/**
-	 * @param string $href
-	 * @param int    $width
-	 * @param array  $options hide_cover,show_facepile,show_posts,small_header,height
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function page_plugin( $href, $width, $options = array() ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'page\')' );
-
-		return self::get( 'page', array( 'href' => $href, 'width' => $width ) + $options );
-	}
-
-	/**
-	 * @param string $href
-	 * @param int    $width
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function embedded_post( $href, $width ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'post\')' );
-
-		return self::get( 'post', array( 'href' => $href, 'width' => $width ) );
-	}
-
-	/**
-	 * @param string $href
-	 * @param int    $width
-	 *
-	 * @return string
-	 *
-	 * @deprecated
-	 * @see WEF_Social_Plugins::get()
-	 */
-	static function embedded_video( $href, $width ) {
-		_deprecated_function( __CLASS__ . '::' . __FUNCTION__ . '()', '2.1.1', __CLASS__ . '::' . 'get(\'video\')' );
-
-		return self::get( 'video', array( 'href' => $href, 'width' => $width ) );
-	}
 }
