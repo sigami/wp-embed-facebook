@@ -26,8 +26,8 @@
 				foreach ($fb_data['photos']['data'] as $pic) {
 					$data_title = isset($pic['name']) ? $pic['name'] :  '';
 					?>
-					<a href="<?php echo $pic['source'] ?>" <?php echo WP_Embed_FB_Plugin::get_option('lightbox_att') ?> <?php echo !empty($data_title) ? WP_Embed_FB_Plugin::lightbox_title($data_title) : '' ?> >
-						<img class="wef-thumbnail" src="<?php echo $pic['picture'] ?>" />
+					<a class="wef-album-thumbs" href="<?php echo $pic['source'] ?>" <?php echo WP_Embed_FB_Plugin::get_option('lightbox_att') ?> <?php echo !empty($data_title) ? WP_Embed_FB_Plugin::lightbox_title($data_title) : '' ?> >
+						<span class="wef-album-thumb" style="background-image: url('<?php  echo $pic['picture'] ?>')"></span>
 					</a>
 					<?php
 				}

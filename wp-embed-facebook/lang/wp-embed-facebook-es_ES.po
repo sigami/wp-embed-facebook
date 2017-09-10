@@ -75,27 +75,27 @@ msgstr ""
 msgid "Settings"
 msgstr "Configuracion"
 
-#: lib/class-wp-embed-fb-admin.php:321
+#: lib/class-wp-embed-fb-admin.php:345
 msgid "Magic Embeds"
 msgstr "Incrustados Mágicos"
 
-#: lib/class-wp-embed-fb-admin.php:322
+#: lib/class-wp-embed-fb-admin.php:346
 msgid "Social Plugins"
 msgstr "Social Plugins"
 
-#: lib/class-wp-embed-fb-admin.php:323
+#: lib/class-wp-embed-fb-admin.php:347
 msgid "Custom Embeds"
 msgstr "Incrustados personalizados"
 
-#: lib/class-wp-embed-fb-admin.php:324 lib/class-wp-embed-fb-admin.php:609
+#: lib/class-wp-embed-fb-admin.php:348 lib/class-wp-embed-fb-admin.php:633
 msgid "Lightbox"
 msgstr "Lightbox"
 
-#: lib/class-wp-embed-fb-admin.php:325
+#: lib/class-wp-embed-fb-admin.php:349
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: lib/class-wp-embed-fb-admin.php:341
+#: lib/class-wp-embed-fb-admin.php:365
 msgid ""
 "Auto embeds understand the url you are entering and return a social plugin "
 "or a custom embed. <br>They can be activated by <a href=\"%s\" title="
@@ -109,23 +109,23 @@ msgstr ""
 "por el <a href=\"%s\" title=\"[facebook] Shortcode attributes and examples\" "
 "target=\"_blank\">shortcode</a> [facebook url] ."
 
-#: lib/class-wp-embed-fb-admin.php:342
+#: lib/class-wp-embed-fb-admin.php:366
 msgid "Auto Embeds"
 msgstr "Auto Incrustados"
 
-#: lib/class-wp-embed-fb-admin.php:343
+#: lib/class-wp-embed-fb-admin.php:367
 msgid "Auto embed url's on editor "
 msgstr "Auto incrustar urls en el editor"
 
-#: lib/class-wp-embed-fb-admin.php:344
+#: lib/class-wp-embed-fb-admin.php:368
 msgid "Maximum width in pixels"
 msgstr "Máxima anchura en píxeles"
 
-#: lib/class-wp-embed-fb-admin.php:345
+#: lib/class-wp-embed-fb-admin.php:369
 msgid "Embed video as post"
 msgstr "Incrustar video como post"
 
-#: lib/class-wp-embed-fb-admin.php:349
+#: lib/class-wp-embed-fb-admin.php:373
 msgid ""
 "The quote plugin lets people select text on your page and add it to their "
 "share.<br><a href=\"%s\" target=\"_blank\" title=\"WP Embed Facebook\">Demo</"
@@ -135,39 +135,39 @@ msgstr ""
 "agregarla a su participación.<br><a href=\"%s\" target=\"_blank\" title=\"WP "
 "Embed Facebook\">Ejemplo</a>"
 
-#: lib/class-wp-embed-fb-admin.php:349
+#: lib/class-wp-embed-fb-admin.php:373
 msgid "Quote Plugin"
 msgstr "Quote Plugin"
 
-#: lib/class-wp-embed-fb-admin.php:350 lib/class-wp-embed-fb-admin.php:355
+#: lib/class-wp-embed-fb-admin.php:374 lib/class-wp-embed-fb-admin.php:379
 msgid "Active"
 msgstr "Activo"
 
-#: lib/class-wp-embed-fb-admin.php:351 lib/class-wp-embed-fb-admin.php:356
+#: lib/class-wp-embed-fb-admin.php:375 lib/class-wp-embed-fb-admin.php:380
 msgid "Post types"
 msgstr "Tipos de entradas"
 
-#: lib/class-wp-embed-fb-admin.php:352 lib/class-wp-embed-fb-admin.php:357
+#: lib/class-wp-embed-fb-admin.php:376 lib/class-wp-embed-fb-admin.php:381
 msgid "Post types separated by commas i.e. post,page,attachment"
 msgstr "Tipos de post separado por comas, es decir: post,page,attachment"
 
-#: lib/class-wp-embed-fb-admin.php:354
+#: lib/class-wp-embed-fb-admin.php:378
 msgid "Comments"
 msgstr "Comentarios"
 
-#: lib/class-wp-embed-fb-admin.php:358
+#: lib/class-wp-embed-fb-admin.php:382
 msgid "Sync comment count"
 msgstr "Sincronizar conteo de comentarios"
 
-#: lib/class-wp-embed-fb-admin.php:361
+#: lib/class-wp-embed-fb-admin.php:385
 msgid "Add open graph meta"
 msgstr "Agregar meta open graph"
 
-#: lib/class-wp-embed-fb-admin.php:362
+#: lib/class-wp-embed-fb-admin.php:386
 msgid "Needed to moderate comments"
 msgstr "Necesario para moderar comentarios"
 
-#: lib/class-wp-embed-fb-admin.php:362
+#: lib/class-wp-embed-fb-admin.php:386
 msgid ""
 "Disable this if you already have another plugin adding <a title=\"Moderation "
 "Setup Instructions\" target=\"_blank\" href=\"%s\">the fb:app_id meta</a>"
@@ -175,11 +175,11 @@ msgstr ""
 "Desactivar esto si ya tienes otro plugin añadiendo <a title=\"Moderation "
 "Setup Instructions\" target=\"_blank\" href=\"%s\">la meta fb:app_id</a>"
 
-#: lib/class-wp-embed-fb-admin.php:363
+#: lib/class-wp-embed-fb-admin.php:387
 msgid "To enable comments moderation setup your App ID"
 msgstr "Para permitir moderación en comentarios configurar tu App ID"
 
-#: lib/class-wp-embed-fb-admin.php:366
+#: lib/class-wp-embed-fb-admin.php:390
 msgid ""
 "If you cant see the \"Moderate comment\" link above each comment you will "
 "need to <a title=\"Sharing Debugger\" target=\"_blank\" href=\"%s\">scrape "
@@ -188,19 +188,19 @@ msgstr ""
 "Si no ves el enlace \"Moderar comentaio\" sobre cada comentario tendras que "
 "<a title=\"Sharing Debugger\" target=\"_blank\" href=\"%s\">raspar la url</a>"
 
-#: lib/class-wp-embed-fb-admin.php:370
+#: lib/class-wp-embed-fb-admin.php:394
 msgid "Notes:"
 msgstr "Notas:"
 
-#: lib/class-wp-embed-fb-admin.php:372
+#: lib/class-wp-embed-fb-admin.php:396
 msgid "Facebook settings"
 msgstr "Ajustes de Facebook"
 
-#: lib/class-wp-embed-fb-admin.php:373
+#: lib/class-wp-embed-fb-admin.php:397
 msgid "Social Plugins Language"
 msgstr "Lenguaje de los plugins sociales"
 
-#: lib/class-wp-embed-fb-admin.php:376
+#: lib/class-wp-embed-fb-admin.php:400
 msgid ""
 "Creating a Facebook app is easy view the <a href=\"%s\" target=\"_blank\" "
 "title=\"WP Embed FB documentation\">step by step guide</a> or view <a href="
@@ -210,15 +210,15 @@ msgstr ""
 "\"_blank\" title=\"WP Embed FB documentation\">Guía paso a paso</a> o ver <a "
 "href=\"%s\" target=\"_blank\" title=\"Facebook Apps\">tus aplicaciones</a>."
 
-#: lib/class-wp-embed-fb-admin.php:383
+#: lib/class-wp-embed-fb-admin.php:407
 msgid "App ID"
 msgstr "App ID"
 
-#: lib/class-wp-embed-fb-admin.php:385
+#: lib/class-wp-embed-fb-admin.php:409
 msgid "App Secret"
 msgstr "App Secret"
 
-#: lib/class-wp-embed-fb-admin.php:397
+#: lib/class-wp-embed-fb-admin.php:421
 msgid ""
 "<a title=\"Facebook Social Plugins\" href=\"%s\" rel=\"nofollow\" target="
 "\"_blank\">Social plugins</a> are pieces of code that Facebook developers "
@@ -228,148 +228,148 @@ msgstr ""
 "\"_blank\">Los plugins sociales</a> son piezas de código que los "
 "desarrolladores de Facebook creado para nosotros los mortales."
 
-#: lib/class-wp-embed-fb-admin.php:399 lib/class-wp-embed-fb-admin.php:542
+#: lib/class-wp-embed-fb-admin.php:423 lib/class-wp-embed-fb-admin.php:566
 msgid "Example:"
 msgstr "Ejemplo:"
 
-#: lib/class-wp-embed-fb-admin.php:401
+#: lib/class-wp-embed-fb-admin.php:425
 msgid "Embed a like button for the curent page:"
 msgstr "Insertar un botón de me gusta de la página actual:"
 
-#: lib/class-wp-embed-fb-admin.php:404
+#: lib/class-wp-embed-fb-admin.php:428
 msgid "add debug=1 to debug the result."
 msgstr "Añadir debug=1 para depurar el resultado."
 
-#: lib/class-wp-embed-fb-admin.php:411
+#: lib/class-wp-embed-fb-admin.php:435
 msgid "Page plugin"
 msgstr "Page plugin"
 
-#: lib/class-wp-embed-fb-admin.php:418
+#: lib/class-wp-embed-fb-admin.php:442
 msgid "Tabs separated by commas i.e. timeline,events,messages"
 msgstr "Pestañas separadas por comas, es decir: timeline,events,messages"
 
-#: lib/class-wp-embed-fb-admin.php:425
+#: lib/class-wp-embed-fb-admin.php:449
 msgid "Post plugin"
 msgstr "Post plugin"
 
-#: lib/class-wp-embed-fb-admin.php:432
+#: lib/class-wp-embed-fb-admin.php:456
 msgid "Video"
 msgstr "Video"
 
-#: lib/class-wp-embed-fb-admin.php:439
+#: lib/class-wp-embed-fb-admin.php:463
 msgid "Single comment"
 msgstr "Single comment"
 
-#: lib/class-wp-embed-fb-admin.php:443
+#: lib/class-wp-embed-fb-admin.php:467
 msgid "Activate them on all your posts on the \"Magic embeds\" section"
 msgstr "Activar en todos tus posts en la sección \"Incrustados Mágicos\""
 
-#: lib/class-wp-embed-fb-admin.php:443
+#: lib/class-wp-embed-fb-admin.php:467
 msgid "Comments plugin"
 msgstr "Comments plugin"
 
-#: lib/class-wp-embed-fb-admin.php:450
+#: lib/class-wp-embed-fb-admin.php:474
 msgid "Activate it on all your posts on the \"Magic embeds\" section"
 msgstr "Activar en todos tus posts en la sección \"Incrustados Mágicos\""
 
-#: lib/class-wp-embed-fb-admin.php:450
+#: lib/class-wp-embed-fb-admin.php:474
 msgid "Quote plugin"
 msgstr "Quote plugin"
 
-#: lib/class-wp-embed-fb-admin.php:453
+#: lib/class-wp-embed-fb-admin.php:477
 msgid "Save button"
 msgstr "Save button"
 
-#: lib/class-wp-embed-fb-admin.php:456
+#: lib/class-wp-embed-fb-admin.php:480
 msgid "Like button"
 msgstr "Like button"
 
-#: lib/class-wp-embed-fb-admin.php:465
+#: lib/class-wp-embed-fb-admin.php:489
 msgid "Send button"
 msgstr "Send button"
 
-#: lib/class-wp-embed-fb-admin.php:469
+#: lib/class-wp-embed-fb-admin.php:493
 msgid "Share button"
 msgstr "Share button"
 
-#: lib/class-wp-embed-fb-admin.php:473
+#: lib/class-wp-embed-fb-admin.php:497
 msgid "Follow button"
 msgstr "Follow button"
 
-#: lib/class-wp-embed-fb-admin.php:483
+#: lib/class-wp-embed-fb-admin.php:507
 msgid "Adaptive view"
 msgstr "Vista Adaptiva"
 
-#: lib/class-wp-embed-fb-admin.php:495
+#: lib/class-wp-embed-fb-admin.php:519
 msgid "General"
 msgstr "General"
 
-#: lib/class-wp-embed-fb-admin.php:507
+#: lib/class-wp-embed-fb-admin.php:531
 msgid "Albums"
 msgstr "Álbumes"
 
-#: lib/class-wp-embed-fb-admin.php:508
+#: lib/class-wp-embed-fb-admin.php:532
 msgid "Number of Photos"
 msgstr "Número de Imágenes"
 
-#: lib/class-wp-embed-fb-admin.php:510
+#: lib/class-wp-embed-fb-admin.php:534
 msgid "Events"
 msgstr "Eventos"
 
-#: lib/class-wp-embed-fb-admin.php:511
+#: lib/class-wp-embed-fb-admin.php:535
 msgid "Use WP time to calculate the date"
 msgstr "Usa el tiempo de WP para calcular la fecha"
 
-#: lib/class-wp-embed-fb-admin.php:512 lib/class-wp-embed-fb-admin.php:525
+#: lib/class-wp-embed-fb-admin.php:536 lib/class-wp-embed-fb-admin.php:549
 msgid "Time format"
 msgstr "Formato de fecha"
 
-#: lib/class-wp-embed-fb-admin.php:513 lib/class-wp-embed-fb-admin.php:526
+#: lib/class-wp-embed-fb-admin.php:537 lib/class-wp-embed-fb-admin.php:550
 msgid "examples"
 msgstr "ejemplos"
 
-#: lib/class-wp-embed-fb-admin.php:515
+#: lib/class-wp-embed-fb-admin.php:539
 msgid "Pages"
 msgstr "Páginas"
 
-#: lib/class-wp-embed-fb-admin.php:516 lib/class-wp-embed-fb-admin.php:521
-#: lib/class-wp-embed-fb-admin.php:524 lib/class-wp-embed-fb-admin.php:531
+#: lib/class-wp-embed-fb-admin.php:540 lib/class-wp-embed-fb-admin.php:545
+#: lib/class-wp-embed-fb-admin.php:548 lib/class-wp-embed-fb-admin.php:555
 msgid "Use by default on \"Auto Embeds\""
 msgstr "Utilizar por defecto en \"Auto incrustados\""
 
-#: lib/class-wp-embed-fb-admin.php:517
+#: lib/class-wp-embed-fb-admin.php:541
 msgid "Show like button"
 msgstr "Mostrar botón \"Me gusta\""
 
-#: lib/class-wp-embed-fb-admin.php:518
+#: lib/class-wp-embed-fb-admin.php:542
 msgid "Number of posts"
 msgstr "Número de publicaciones"
 
-#: lib/class-wp-embed-fb-admin.php:520
+#: lib/class-wp-embed-fb-admin.php:544
 msgid "Photos"
 msgstr "Fotos"
 
-#: lib/class-wp-embed-fb-admin.php:523
+#: lib/class-wp-embed-fb-admin.php:547
 msgid "Posts"
 msgstr "Publicaciones"
 
-#: lib/class-wp-embed-fb-admin.php:530
+#: lib/class-wp-embed-fb-admin.php:554
 msgid "Videos"
 msgstr "Vídeos"
 
-#: lib/class-wp-embed-fb-admin.php:532
+#: lib/class-wp-embed-fb-admin.php:556
 msgid "Force 16:9 ratio"
 msgstr "Fuerza de relación 16:9"
 
-#: lib/class-wp-embed-fb-admin.php:534
+#: lib/class-wp-embed-fb-admin.php:558
 msgid "Profiles"
 msgstr "Perfiles"
 
-#: lib/class-wp-embed-fb-admin.php:535
+#: lib/class-wp-embed-fb-admin.php:559
 msgid "Show follow button"
 msgstr "Botón de seguir"
 
-#: lib/class-wp-embed-fb-admin.php:540
+#: lib/class-wp-embed-fb-admin.php:564
 msgid ""
 "Custom embeds can be triggered using the [facebook url] or [embed] "
 "shortcodes also by activating \"Auto Embeds\" on Magic Embeds section."
@@ -378,7 +378,7 @@ msgstr ""
 "[facebook url] o [embed] también al activar \"Auto Incrustados\" en la "
 "sección Incrustados Mágicos."
 
-#: lib/class-wp-embed-fb-admin.php:547
+#: lib/class-wp-embed-fb-admin.php:571
 msgid ""
 "<a href=\"%s\" title=\"WP Embed Facebook Shortcode\" target=\"_blank\">Read "
 "More</a>"
@@ -386,13 +386,13 @@ msgstr ""
 "<a href=\"%s\" title=\"WP Embed Facebook Shortcode\" target=\"_blank\">Leer "
 "más</a>"
 
-#: lib/class-wp-embed-fb-admin.php:554 lib/class-wp-embed-fb-admin.php:588
+#: lib/class-wp-embed-fb-admin.php:578 lib/class-wp-embed-fb-admin.php:612
 msgid "By default you can only embed public pages, videos, photos and posts."
 msgstr ""
 "Por default sólo puede incrustar páginas, videos, fotos y publicaciones "
 "públicas."
 
-#: lib/class-wp-embed-fb-admin.php:555 lib/class-wp-embed-fb-admin.php:589
+#: lib/class-wp-embed-fb-admin.php:579 lib/class-wp-embed-fb-admin.php:613
 msgid ""
 "To embed albums, events, profiles and video as HTML5 you will need to setup "
 "a Facebook App on Magic Embeds section"
@@ -400,153 +400,153 @@ msgstr ""
 "Para incrustar álbumes, eventos, perfiles y vídeo en HTML5, necesitará "
 "configurar una App Facebook en la sección de incrustados mágicos"
 
-#: lib/class-wp-embed-fb-admin.php:568
+#: lib/class-wp-embed-fb-admin.php:592
 msgid "Lightbox Options"
 msgstr "Opciones de Lightbox"
 
-#: lib/class-wp-embed-fb-admin.php:569
+#: lib/class-wp-embed-fb-admin.php:593
 msgid "Show Image Number Label"
 msgstr "Etiqueta de número de imagen"
 
-#: lib/class-wp-embed-fb-admin.php:570
+#: lib/class-wp-embed-fb-admin.php:594
 msgid "Album Label"
 msgstr "Etiqueta del album"
 
-#: lib/class-wp-embed-fb-admin.php:571
+#: lib/class-wp-embed-fb-admin.php:595
 msgid "Fade Duration"
 msgstr "Duración del esfumado"
 
-#: lib/class-wp-embed-fb-admin.php:572
+#: lib/class-wp-embed-fb-admin.php:596
 msgid "Resize Duration"
 msgstr "Duración del cambio de tamaño"
 
-#: lib/class-wp-embed-fb-admin.php:573
+#: lib/class-wp-embed-fb-admin.php:597
 msgid "Position From Top"
 msgstr "Posición desde arriba"
 
-#: lib/class-wp-embed-fb-admin.php:574
+#: lib/class-wp-embed-fb-admin.php:598
 msgid "Max Height"
 msgstr "Altura máxima"
 
-#: lib/class-wp-embed-fb-admin.php:575
+#: lib/class-wp-embed-fb-admin.php:599
 msgid "Max Width"
 msgstr "Anchura máxima"
 
-#: lib/class-wp-embed-fb-admin.php:576
+#: lib/class-wp-embed-fb-admin.php:600
 msgid "Always Show Nav On TouchDevices"
 msgstr "Siempre mostrar nav. en dispositivos táctiles"
 
-#: lib/class-wp-embed-fb-admin.php:577
+#: lib/class-wp-embed-fb-admin.php:601
 msgid "Fit Images In Viewport"
 msgstr "Escalar imágenes a la ventana"
 
-#: lib/class-wp-embed-fb-admin.php:578
+#: lib/class-wp-embed-fb-admin.php:602
 msgid "Disable Scrolling"
 msgstr "Desactivar desplazamiento"
 
-#: lib/class-wp-embed-fb-admin.php:579
+#: lib/class-wp-embed-fb-admin.php:603
 msgid "Loop Through Album"
 msgstr "Bucle por el álbum"
 
-#: lib/class-wp-embed-fb-admin.php:580
+#: lib/class-wp-embed-fb-admin.php:604
 msgid "Use this lightbox on the [gallery] shortcode"
 msgstr "Utilice este Lightbox en el shortcode [gallery]"
 
-#: lib/class-wp-embed-fb-admin.php:599
+#: lib/class-wp-embed-fb-admin.php:623
 msgid ""
 "Beware altering this options without the proper knowledge could make the "
 "world disappear."
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:602
+#: lib/class-wp-embed-fb-admin.php:626
 msgid "Enqueue styles and scripts"
 msgstr "Enqueue estilos y scripts"
 
-#: lib/class-wp-embed-fb-admin.php:603
+#: lib/class-wp-embed-fb-admin.php:627
 msgid "Only when there is an embed present"
 msgstr "Sólo cuando hay un incrustado presente"
 
-#: lib/class-wp-embed-fb-admin.php:604
+#: lib/class-wp-embed-fb-admin.php:628
 msgid "Use permalinks on social plugins urls"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:605
+#: lib/class-wp-embed-fb-admin.php:629
 msgid "Facebook SDK"
 msgstr "SDK de Facebook"
 
-#: lib/class-wp-embed-fb-admin.php:606
+#: lib/class-wp-embed-fb-admin.php:630
 msgid "Template Styles"
 msgstr "Estilos de la plantilla"
 
-#: lib/class-wp-embed-fb-admin.php:607
+#: lib/class-wp-embed-fb-admin.php:631
 msgid "Adaptive social plugins script"
 msgstr "Script pasa social plugins adaptivos"
 
-#: lib/class-wp-embed-fb-admin.php:610
+#: lib/class-wp-embed-fb-admin.php:634
 msgid "Enqueue script"
 msgstr "Registrar el script del plugin"
 
-#: lib/class-wp-embed-fb-admin.php:611
+#: lib/class-wp-embed-fb-admin.php:635
 msgid "Attribute"
 msgstr "Atributo"
 
-#: lib/class-wp-embed-fb-admin.php:613
+#: lib/class-wp-embed-fb-admin.php:637
 msgid "Other Options"
 msgstr "Otras Opciones"
 
-#: lib/class-wp-embed-fb-admin.php:614
+#: lib/class-wp-embed-fb-admin.php:638
 msgid "Add fb-root on top of content"
 msgstr "Añadir fb-root en la parte superior contenido"
 
-#: lib/class-wp-embed-fb-admin.php:615
+#: lib/class-wp-embed-fb-admin.php:639
 msgid "Force Facebook SDK script on all site"
 msgstr "Forzar el script de Facebook SDK en todo sitio"
 
-#: lib/class-wp-embed-fb-admin.php:616
+#: lib/class-wp-embed-fb-admin.php:640
 msgid "Force app token"
 msgstr "Forzar el token de la app"
 
-#: lib/class-wp-embed-fb-admin.php:634
+#: lib/class-wp-embed-fb-admin.php:658
 msgid "Save all settings"
 msgstr "Guardar todos los ajustes"
 
-#: lib/class-wp-embed-fb-admin.php:639
+#: lib/class-wp-embed-fb-admin.php:663
 msgid "Restore default values?"
 msgstr "¿ Restaurar valores predeterminados ?"
 
-#: lib/class-wp-embed-fb-admin.php:642
+#: lib/class-wp-embed-fb-admin.php:666
 msgid "Restore defaults"
 msgstr "Restaurar valores predeterminados"
 
-#: lib/class-wp-embed-fb-admin.php:650
+#: lib/class-wp-embed-fb-admin.php:674
 msgid "Premium Extension Available"
 msgstr "Extensión Premium disponible"
 
-#: lib/class-wp-embed-fb-admin.php:654
+#: lib/class-wp-embed-fb-admin.php:678
 msgid "Shortcodes for embedding a full event or page."
 msgstr "Shortcodes para incrustar un evento o una página."
 
-#: lib/class-wp-embed-fb-admin.php:656
+#: lib/class-wp-embed-fb-admin.php:680
 msgid "Elegant template for custom embeds"
 msgstr "Plantilla Elegant para incrustados personalizados"
 
-#: lib/class-wp-embed-fb-admin.php:658
+#: lib/class-wp-embed-fb-admin.php:682
 msgid "Albums with more that 100 photos."
 msgstr "Álbumes con más 100 fotos."
 
-#: lib/class-wp-embed-fb-admin.php:660
+#: lib/class-wp-embed-fb-admin.php:684
 msgid "One Year Premium Support"
 msgstr "Soporte Premium por un año"
 
-#: lib/class-wp-embed-fb-admin.php:664
+#: lib/class-wp-embed-fb-admin.php:688
 msgid "Check it out"
 msgstr "Échale un vistazo!"
 
-#: lib/class-wp-embed-fb-admin.php:668
+#: lib/class-wp-embed-fb-admin.php:692
 msgid "Plus new features cooking"
 msgstr "Más novedades un la cocina"
 
-#: lib/class-wp-embed-fb-admin.php:671
+#: lib/class-wp-embed-fb-admin.php:695
 msgid ""
 "Embed private data, shortcode creator, widgets, special templates for albums "
 "and pages"
@@ -554,20 +554,20 @@ msgstr ""
 "Incrusta datos privados, creador de shortcodes, widgets, plantillas "
 "especiales para álbumes y páginas"
 
-#: lib/class-wp-embed-fb-admin.php:676
+#: lib/class-wp-embed-fb-admin.php:700
 msgid "This free plugin has taken thousands of hours to maintain and develop"
 msgstr ""
 "Este plugin gratuito ha costado miles de horas en mantener y desarrollar"
 
-#: lib/class-wp-embed-fb-admin.php:681
+#: lib/class-wp-embed-fb-admin.php:705
 msgid "Rate it"
 msgstr "Valóralo ahora"
 
-#: lib/class-wp-embed-fb-admin.php:689
+#: lib/class-wp-embed-fb-admin.php:713
 msgid "Donate"
 msgstr "Dona"
 
-#: lib/class-wp-embed-fb-admin.php:694
+#: lib/class-wp-embed-fb-admin.php:718
 msgid "More information"
 msgstr "Más información"
 

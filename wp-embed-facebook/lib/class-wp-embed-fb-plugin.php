@@ -111,7 +111,6 @@ class WP_Embed_FB_Plugin {
 		if ( self::$defaults === null ) {
 			$locale         = get_locale();
 			$locale         = str_replace( array(
-				'es_ES',
 				'es_MX',
 				'es_AR',
 				'es_CL',
@@ -119,6 +118,15 @@ class WP_Embed_FB_Plugin {
 				'es_PE',
 				'es_VE'
 			), 'es_LA', $locale );
+
+			$fb_locales = self::get_fb_locales();
+
+			if(isset($fb_locales[$locale])){
+				$sdk_lang = $locale;
+			} else {
+				$sdk_lang = 'en_US';
+			}
+
 			$vars           = WEF_Social_Plugins::get_defaults();
 			$social_options = array();
 			foreach ( $vars as $key => $value ) {
@@ -129,7 +137,7 @@ class WP_Embed_FB_Plugin {
 				}
 			}
 			self::$defaults = array(
-				                  'sdk_lang'                       => array_key_exists( $locale, self::get_fb_locales() ) ? $locale : 'en_US',
+				                  'sdk_lang'                       => $sdk_lang,
 				                  'max_width'                      => '450',
 				                  'max_photos'                     => '24',
 				                  'max_posts'                      => '0',

@@ -144,9 +144,33 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 	 * Add template editor style to the embeds.
 	 */
 	static function admin_init() {
-		add_editor_style( self::url() . '/templates/default/default.css' );
-		add_editor_style( self::url() . '/templates/classic/classic.css' );
+		//add_editor_style( self::url() . 'templates/default/default.css' );
+		//add_editor_style( self::url() . 'templates/classic/classic.css' );
+        //This way I only have to change the version instead of all
+        add_filter('mce_css',__CLASS__.'::mce_css');
 	}
+
+	static function mce_css($css){
+
+	    $list = array();
+
+		$list[] = add_query_arg(
+			'version',
+			'2.2.1',
+			WP_Embed_FB_Plugin::url() . 'templates/classic/classic.css'
+		);
+		$list[] = add_query_arg(
+			'version',
+			'2.2.1',
+			WP_Embed_FB_Plugin::url() . 'templates/default/default.css'
+		);
+
+		if(!empty($css)){
+		    $css .= ',';
+        }
+
+		return $css . implode( ',', $list );
+    }
 
 	/**
 	 * Render form sections
