@@ -144,7 +144,7 @@ class WP_Embed_FB_Plugin {
 				                  'app_id'                         => '',
 				                  'app_secret'                     => '',
 				                  'theme'                          => 'default',
-				                  'sdk_version'                    => 'v2.9',
+				                  'sdk_version'                    => 'v2.10',
 				                  'show_like'                      => 'true',
 				                  'fb_root'                        => 'true',
 				                  'show_follow'                    => 'true',

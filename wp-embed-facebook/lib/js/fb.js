@@ -36,6 +36,8 @@ var wef_serialize = function(obj, prefix) {
 
 var wef_comment_callback = function(response) {
 
+    // console.log(response);
+
     var wef_ajax = new XMLHttpRequest();
 
     // wef_ajax.onreadystatechange = function()

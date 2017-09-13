@@ -1,5 +1,6 @@
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px" >
-	<a href="<?php /** @noinspection PhpUndefinedVariableInspection */
+	<a href="<?php //TODO sdk v2.10 does not use source it uses images
+    /** @noinspection PhpUndefinedVariableInspection */
 	echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
 		<img src="<?php echo $fb_data['source'] ?>" width="100%" height="auto" >
 	</a>
