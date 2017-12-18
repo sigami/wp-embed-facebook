@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP Embed Facebook package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Embed Facebook 2.2.1\n"
+"Project-Id-Version: WP Embed Facebook 2.2.2\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/wp-embed-facebook\n"
 "POT-Creation-Date: 2016-10-06 11:26-0500\n"
@@ -475,65 +475,65 @@ msgstr ""
 msgid "Force app token"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:659
+#: lib/class-wp-embed-fb-admin.php:660
 msgid "Save all settings"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:664
+#: lib/class-wp-embed-fb-admin.php:665
 msgid "Restore default values?"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:667
+#: lib/class-wp-embed-fb-admin.php:668
 msgid "Restore defaults"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:675
+#: lib/class-wp-embed-fb-admin.php:676
 msgid "Premium Extension Available"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:679
+#: lib/class-wp-embed-fb-admin.php:680
 msgid "Shortcodes for embedding a full event or page."
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:681
+#: lib/class-wp-embed-fb-admin.php:682
 msgid "Elegant template for custom embeds"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:683
+#: lib/class-wp-embed-fb-admin.php:684
 msgid "Albums with more that 100 photos."
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:685
+#: lib/class-wp-embed-fb-admin.php:686
 msgid "One Year Premium Support"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:689
+#: lib/class-wp-embed-fb-admin.php:690
 msgid "Check it out"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:693
+#: lib/class-wp-embed-fb-admin.php:694
 msgid "Plus new features cooking"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:696
+#: lib/class-wp-embed-fb-admin.php:697
 msgid ""
 "Embed private data, shortcode creator, widgets, special templates for "
 "albums and pages"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:701
+#: lib/class-wp-embed-fb-admin.php:702
 msgid "This free plugin has taken thousands of hours to maintain and develop"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:706
+#: lib/class-wp-embed-fb-admin.php:707
 msgid "Rate it"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:714
+#: lib/class-wp-embed-fb-admin.php:715
 msgid "Donate"
 msgstr ""
 
-#: lib/class-wp-embed-fb-admin.php:719
+#: lib/class-wp-embed-fb-admin.php:720
 msgid "More information"
 msgstr ""
 

@@ -58,7 +58,7 @@ module.exports = function (grunt) {
             }
         },
         makepot: {
-            main: {
+        main: {
                 options: {
                     cwd: '<%= pkg.name %>/',
                     domainPath: 'lang',

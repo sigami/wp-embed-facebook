@@ -647,6 +647,7 @@ class WP_Embed_FB_Admin extends WP_Embed_FB_Plugin {
 							'v2.8' => '2.8',
 							'v2.9' => '2.9',
 							'v2.10' => '2.10',
+							'v2.11' => '2.11',
 						);
 						self::field( 'select', 'sdk_version', 'Facebook SDK Version', $versions );
 

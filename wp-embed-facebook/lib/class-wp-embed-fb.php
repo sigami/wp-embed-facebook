@@ -526,7 +526,6 @@ class  WP_Embed_FB {
 				self::$fbsdk->setAccessToken( WP_Embed_FB_Plugin::get_option( 'app_id' ) . '|' . WP_Embed_FB_Plugin::get_option( 'app_secret' ) );
 			}
 
-			return self::$fbsdk;
 		} else {
 			if ( ! class_exists( 'FacebookApiException' ) ) {
 				/** @noinspection PhpIncludeInspection */
@@ -543,8 +542,12 @@ class  WP_Embed_FB {
 				self::$fbsdk->setAccessToken( WP_Embed_FB_Plugin::get_option( 'app_id' ) . '|' . WP_Embed_FB_Plugin::get_option( 'app_secret' ) );
 			}
 
-			return self::$fbsdk;
 		}
+		do_action('kakashi_test');
+
+		self::$fbsdk = apply_filters('wef_fbsdk',self::$fbsdk);
+
+		return self::$fbsdk;
 	}
 
 	/**
@@ -566,7 +569,7 @@ class  WP_Embed_FB {
 	}
 
 	static function valid_fb_data( $fb_data ) {
-		if ( is_array( $fb_data ) && ( isset( $fb_data['id'] ) || isset( $fb_data['social_plugin'] ) ) ) {
+		if ( is_array( $fb_data ) && ( isset( $fb_data['id'] ) || isset( $fb_data['social_plugin'] ) || isset( $fb_data['data'] ) ) ) {
 			return true;
 		}
 

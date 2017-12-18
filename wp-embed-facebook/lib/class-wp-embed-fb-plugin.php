@@ -144,7 +144,7 @@ class WP_Embed_FB_Plugin {
 				                  'app_id'                         => '',
 				                  'app_secret'                     => '',
 				                  'theme'                          => 'default',
-				                  'sdk_version'                    => 'v2.10',
+				                  'sdk_version'                    => 'v2.11',
 				                  'show_like'                      => 'true',
 				                  'fb_root'                        => 'true',
 				                  'show_follow'                    => 'true',
@@ -240,7 +240,7 @@ class WP_Embed_FB_Plugin {
 			}
 			if ( (float) substr( WP_Embed_FB_Plugin::get_option( 'sdk_version' ), 1 ) <= 2.3 ) {
 				$options                = WP_Embed_FB_Plugin::get_option();
-				$options['sdk_version'] = 'v2.4';
+				$options['sdk_version'] = 'v2.11';
 				WP_Embed_FB_Plugin::set_options( $options );
 			}
 		}

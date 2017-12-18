@@ -4,20 +4,28 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
 Requires at least: 4.6
 Tested up to: 4.8
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
 
 == Description ==
-This plugin understands the url you entered on the editor or inside the `[embed]` [shortcode](https://codex.wordpress.org/Embeds) and returns the proper social plugin or custom embed.
 
-Alternativelly you can disable this feature and use the `[facebook url]` shortcode instead. [Examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
+Automatically embed any type of content from Facebook directly into your site by simply copying the url into the editor.
 
-You can pass some special attributes to overwrite defaults on both ShortCodes, read more about them [here](http://www.wpembedfb.com/shortcode-attributes-and-examples/).
+There are two types of embeds: Custom Embeds that are entirely native to this plugin and social plugins which are pieces of code created by Facebook developers
+
+[All custom embeds examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/)
+
+[All social plugins examples](http://www.wpembedfb.com/demo-site/category/social-plugins/)
+
+As an alternative to automatically embed your content you can use the `[facebook url]` shortcode instead and pass on some parameters to change each embed [examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
+
+You can also use the native `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
 
 = Supported Embeds =
+* Facebook Live Video
 * Facebook Videos
 * Facebook Albums
 * Facebook Events
@@ -68,12 +76,10 @@ If you found a bug or want to add an extra feature create a pull request on [git
 * Embed events with address and admins
 * Embed albums with more that 100 photos
 * Embed all upcoming events of a fan page
+* mbed personal data
 * Features cooking
-    * Embed personal data
     * Shortcode creator
     * Special templates for albums and pages
-
-**[Live Demo](http://www.wpembedfb.com/demo/)**
 
 == Installation ==
 
@@ -140,6 +146,10 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 2.2.3 =
+* Added: filter for $fbsdk
+* Added: Facebook SDK v2.11
 
 = 2.2.2 =
 * Added: Facebook SDK v2.10
