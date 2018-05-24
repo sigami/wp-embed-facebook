@@ -161,5 +161,6 @@ class  WEF_Comments  {
 			update_post_meta( $post_id, '_wef_comment_count', intval( $count ) );
 		}
 		wp_die();
+		//something
 	}
 }
