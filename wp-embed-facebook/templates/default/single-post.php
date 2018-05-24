@@ -134,9 +134,9 @@ $link_info = $name . $description . $caption;
 		<a class="wef-post-likes"
 		   href="<?php echo "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1] ?> "
 		   target="_blank" rel="nofollow" title="<?php echo esc_attr($title_count) ?>">
-			<?php echo isset($fb_post['likes']) ? '<img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/y6/r/l9Fe9Ugss0S.gif" />' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['comments']) ? '<img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/yg/r/V8Yrm0eKZpi.gif" />' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['shares']) ? '<img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/y2/r/o19N6EzzbUm.png" />' . $fb_post['shares']['count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['likes']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/like.png" /> ' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['comments']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/comments.png" /> ' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['shares']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/share.png" /> ' . $fb_post['shares']['count'] . ' ' : "" ?>
 		</a>
 	</div>
 </div>
