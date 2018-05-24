@@ -1,18 +1,20 @@
 <?php
 
+namespace SIGAMI\WP_Embed_FB;
+
 /**
  * Handles comments auto embeds and comment count synchronization. It includes all actions and filters. Comments plugin
  * can also be invoked using the [fb_plugin comments] shortocode.
  *
  * @see WEF_Social_Plugins
  */
-class  WEF_Comments extends WP_Embed_FB_Plugin {
+class  WEF_Comments  {
 	static function hooks() {
 
 		/** @see WEF_Comments::comments_template */
 		add_filter( 'comments_template', __CLASS__ . '::comments_template' );
 
-		if ( self::get_option( 'comments_count_active' ) === 'true' ) {
+		if ( Plugin::get_option( 'comments_count_active' ) === 'true' ) {
 
 			/** @see WEF_Comments::get_comments_number */
 			add_filter( 'get_comments_number', __CLASS__ . '::get_comments_number', 10, 2 );
@@ -29,7 +31,7 @@ class  WEF_Comments extends WP_Embed_FB_Plugin {
 
 		}
 
-		if ( self::get_option( 'comments_open_graph' ) === 'true' ) {
+		if ( Plugin::get_option( 'comments_open_graph' ) === 'true' ) {
 			/** @see WEF_Comments::wp_head */
 			add_action( 'wp_head', __CLASS__ . '::wp_head' );
 		}
@@ -39,7 +41,7 @@ class  WEF_Comments extends WP_Embed_FB_Plugin {
 	 * Adds FB open graph app_id meta tag to head
 	 */
 	static function wp_head() {
-		$app_id = self::get_option( 'app_id' );
+		$app_id = Plugin::get_option( 'app_id' );
 		if ( ! empty( $app_id ) ) {
 			echo '<meta property="fb:app_id" content="' . $app_id . '" />' . PHP_EOL;
 		}

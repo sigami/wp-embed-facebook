@@ -4,52 +4,78 @@ Plugin Name: WP Embed Facebook
 Plugin URI: http://www.wpembedfb.com
 Description: Embed any public Facebook video, photo, album, event, page, comment, profile, or post. Add Facebook comments to all your site, insert Facebook social plugins (like, save, send, share, follow, quote, comments) anywhere on your site. View the <a href="http://www.wpembedfb.com/demo-site/" title="plugin website" target="_blank">demo site</a>.
 Author: Miguel Sirvent
-Version: 2.2.3
+Version: 3.0.0
 Author URI: http://www.wpembedfb.com
 Text Domain: wp-embed-facebook
 Domain Path: /lang
-*/
+ */
 
-/** @noinspection PhpIncludeInspection */
-require_once( plugin_dir_path( __FILE__ ) . 'lib/class-wp-embed-fb-plugin.php' );
-WP_Embed_FB_Plugin::hooks();
+namespace SIGAMI\WP_Embed_FB;
 
-/** @noinspection PhpIncludeInspection */
-require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wef-widget.php' );
-/** @noinspection PhpIncludeInspection */
-require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wef-social-plugins.php' );
+spl_autoload_register( __NAMESPACE__ . '\auto_loader' );
 
-
-/** @see WP_Embed_FB_Plugin::install */
-register_activation_hook( __FILE__, 'WP_Embed_FB_Plugin::install' );
-
-/** @see WP_Embed_FB_Plugin::uninstall */
-register_uninstall_hook( __FILE__, 'WP_Embed_FB_Plugin::uninstall' );
-
-/** @see WP_Embed_FB_Plugin::deactivate */
-register_deactivation_hook( __FILE__, 'WP_Embed_FB_Plugin::deactivate' );
-
-/** @noinspection PhpIncludeInspection */
-require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wp-embed-fb.php' );
-
-/* Magic here */
-/** @noinspection PhpIncludeInspection */
-require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wef-magic-embeds.php' );
-WEF_Magic_Embeds::hooks();
-
-
-if ( WP_Embed_FB_Plugin::get_option( 'auto_comments_active' ) === 'true' ) {
-	/** @noinspection PhpIncludeInspection */
-	require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wef-comments.php' );
-	WEF_Comments::hooks();
+function auto_loader( $class_name ) {
+	if ( false !== strpos( $class_name, __NAMESPACE__ ) ) {
+		$classes_dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inc'
+		               . DIRECTORY_SEPARATOR;
+		/** @noinspection PhpIncludeInspection */
+		require_once $classes_dir . str_replace( [ __NAMESPACE__, '\\' ], '', $class_name )
+		             . '.php';
+	}
 }
 
-if ( is_admin() ) {
-	/** @noinspection PhpIncludeInspection */
-	require_once( WP_Embed_FB_Plugin::path() . 'lib/class-wp-embed-fb-admin.php' );
-	WP_Embed_FB_Admin::hooks();
+final class Plugin extends Plugin_Framework {
 
-	/** @see WP_Embed_FB_Admin::add_action_link */
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'WP_Embed_FB_Admin::add_action_link' );
+	const FILE = __FILE__;
+
+	const OPTION = 'wp-embed-fb';
+
+	# Sections of the admin page
+	protected static $tabs = [ 'General' ];
+
+	static function load_translation() {
+		load_plugin_textdomain( 'wp-embed-fb', false,
+			dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
+	}
+
+	static function defaults() {
+		if ( self::$defaults === null ) {
+			self::$defaults = [
+				'option' => 'on',
+			];
+		}
+
+		return self::$defaults;
+	}
+
+	static function form_content() {
+		ob_start();
+		?>
+        <section id="general" class="section">
+			<?php
+			self::section( __( 'Options', 'wp-embed-fb' ) );
+			self::field( 'checkbox', 'option', __( 'Option', 'wp-embed-fb' ),
+				__( 'Description', 'wp-embed-fb' ) );
+			self::section();
+			?>
+        </section>
+		<?php
+
+		return ob_get_clean();
+	}
+
+	protected function __construct() {
+
+		self::$page_title = __( 'Page Title', 'wp-embed-fb' );
+		self::$menu_title = __( 'Menu Title', 'wp-embed-fb' );
+		self::$menu_slug  = 'wp-embed-fb';
+
+		parent::__construct();
+
+		$options = self::get_option();
+
+	}
+
 }
 
+Plugin::instance();
