@@ -1,3 +1,6 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+?>
 <div class="wef-default" style="max-width: <?php echo $width ?>px" >
 	<a href="<?php /** @noinspection PhpUndefinedVariableInspection */
 	echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
@@ -5,7 +8,7 @@
 	</a>
 
 	<a class="wef-post-link" href="<?php echo $fb_data['link'] ?> " target="_blank" rel="nofollow">
-		<?php echo isset($fb_data['likes']) ? '<img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/like.png" /> '.$fb_data['likes']['summary']['total_count'].' ' : ""  ?>
-		<?php echo isset($fb_data['comments']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/comments.png"/> '.$fb_data['comments']['summary']['total_count'].' ' : ""  ?>
+		<?php echo isset($fb_data['likes']) ? '<img width="16px" height="16px" src="'.Plugin::url().'inc/images/like.png" /> '.$fb_data['likes']['summary']['total_count'].' ' : ""  ?>
+		<?php echo isset($fb_data['comments']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/comments.png"/> '.$fb_data['comments']['summary']['total_count'].' ' : ""  ?>
 	</a>
 </div>

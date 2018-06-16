@@ -1,3 +1,8 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Social_Plugins;
+use SIGAMI\WP_Embed_FB\Embed_Facebook;
+?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px">
 	<div class="wef-row">
 		<div class="wef-col-3 wef-text-center">
@@ -13,9 +18,9 @@
 			<br>
 			<div>
 				<?php
-				$opt = WP_Embed_FB_Plugin::get_option('show_like');
+				$opt = Plugin::get_option('show_like');
 				if($opt === 'true') :
-					echo WEF_Social_Plugins::get('like',array('href'=>'https://www.facebook.com/'.$fb_data['id'],'share'=>'true','layout'=>'button_count'));
+					echo Social_Plugins::get('like',array('href'=>'https://www.facebook.com/'.$fb_data['id'],'share'=>'true','layout'=>'button_count'));
 				else :
 					printf( __( '%d people like this.', 'wp-embed-facebook' ), $fb_data['likes'] );
 				endif;
@@ -23,7 +28,7 @@
 			</div>
 			<?php if(isset($fb_data["website"])) : ?>
 				<br>
-				<a href="<?php echo WP_Embed_FB::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
+				<a href="<?php echo Embed_Facebook::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
 					<?php _e('Web Site','wp-embed-facebook') ?>
 				</a>
 			<?php endif; ?>

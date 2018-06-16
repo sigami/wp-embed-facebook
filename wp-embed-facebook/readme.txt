@@ -2,9 +2,9 @@
 Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
-Requires at least: 4.6
-Tested up to: 4.8
-Stable tag: 2.2.3
+Requires at least: 4.9.5
+Tested up to: 4.9.5
+Stable tag: 2.9.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Embed any public Facebook video, page, comment, event, album, photo, profile. Ad
 
 Automatically embed any type of content from Facebook directly into your site by simply copying the url into the editor.
 
-There are two types of embeds: Custom Embeds that are entirely native to this plugin and social plugins which are pieces of code created by Facebook developers
+There are two types of embeds: Custom Embeds that which entirely native to this plugin and social plugins which are pieces of code created by Facebook developers
 
 [All custom embeds examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/)
 
@@ -22,13 +22,13 @@ There are two types of embeds: Custom Embeds that are entirely native to this pl
 
 As an alternative to automatically embed your content you can use the `[facebook url]` shortcode instead and pass on some parameters to change each embed [examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
 
-You can also use the native `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
+You can also use the built in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
 
 = Supported Embeds =
 * Facebook Live Video
 * Facebook Videos
 * Facebook Albums
-* Facebook Events
+* Facebook Page Events List
 * Facebook Photos
 * Facebook Fan pages
 * Facebook Profiles
@@ -40,11 +40,15 @@ Pieces of code crafted by Facebook developers for us mortals ( [official documen
 
 Examples:
 
-A like and share button for the current page
+A like and share button for the current page (works on a sidebar)
 
 `[fb_plugin like share=true]`
 
-Send a message to a Facebook fan page.
+Embed a complete Facebook fan page with latest post, events and the posibility to send a direct message
+
+`[fb_plugin page href=https://www.facebook.com/sydneyoperahouse/ tabs=timeline,events,messages ] `
+
+Embed all upcoming events of a fan page
 
 `[fb_plugin page href=https://www.facebook.com/wpemf/ small-header=true height=350 tabs=messages ]`
 
@@ -71,12 +75,8 @@ If you found a bug or want to add an extra feature create a pull request on [git
 
 = Premium extension =
 * "Elegant" custom embeds theme
-* Embed full event shortcode
 * Embed full fan page shortcode
-* Embed events with address and admins
 * Embed albums with more that 100 photos
-* Embed all upcoming events of a fan page
-* mbed personal data
 * Features cooking
     * Shortcode creator
     * Special templates for albums and pages
@@ -146,6 +146,10 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 2.2.4 =
+* Fixed: Missing icons on custom embeds
+* Added: Facebook SDK v2.12
 
 = 2.2.3 =
 * Added: filter for $fbsdk

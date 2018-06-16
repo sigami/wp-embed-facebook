@@ -1,0 +1,387 @@
+# Copyright (C) 2018 Miguel Sirvent
+# This file is distributed under the same license as the WP Embed Facebook package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Embed Facebook 2.2.3\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/wp-embed-facebook\n"
+"POT-Creation-Date: 2018-06-16 06:57:53+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Miguel Sirvent <miguel@sigami.net>\n"
+"Language-Team: Miguel Sirvent <miguel@sigami.net>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-Wpheader: wp-embed-facebook.php\n"
+"X-Generator: grunt-wp-i18n1.0.2\n"
+
+#: inc/Admin.php:48
+msgid ""
+"To enable comment moderation and embed albums, events, profiles and video "
+"as HTML5 setup a facebook app on <a id=\"wef_settings_link\" "
+"href=\"%s\">settings</a>"
+msgstr ""
+
+#: inc/Admin.php:87
+msgid "Settings"
+msgstr ""
+
+#: inc/Embed_Facebook.php:58
+msgid "This is not a valid facebook url"
+msgstr ""
+
+#: inc/Embed_Facebook.php:74
+msgid ""
+"You are using the [facebook] shortcode wrong. See examples <a "
+"title=\"Examples\" target=\"_blank\" href=\"%s\" >here</a>."
+msgstr ""
+
+#: inc/Embed_Facebook.php:193
+msgid "Error: Try embedding this post as a social plugin (only visible to admins)"
+msgstr ""
+
+#: inc/Embed_Facebook.php:197 inc/Embed_Facebook.php:236
+msgid "Code"
+msgstr ""
+
+#: inc/Embed_Facebook.php:199 inc/Embed_Facebook.php:238
+#: inc/Embed_Facebook.php:443
+msgid "Error"
+msgstr ""
+
+#: inc/Embed_Facebook.php:450
+msgid ""
+"<small>To embed this type of content you need to setup a facebook app on <a "
+"href=\"%s\" title=\"WP Embed Facebook Settings\">settings</a></small>"
+msgstr ""
+
+#: inc/Framework.php:632
+msgid "General"
+msgstr ""
+
+#: inc/Framework.php:637
+msgid "Some Stuff"
+msgstr ""
+
+#: inc/Framework.php:638
+msgid "This stuff is interesting"
+msgstr ""
+
+#: inc/Framework.php:643
+msgid "Text Option"
+msgstr ""
+
+#: inc/Framework.php:649
+msgid "Off Option"
+msgstr ""
+
+#: inc/Framework.php:655
+msgid "On Option"
+msgstr ""
+
+#: inc/Framework.php:663 inc/Plugin.php:288
+msgid "Advanced"
+msgstr ""
+
+#: inc/Framework.php:667
+msgid "More Important Stuff"
+msgstr ""
+
+#: inc/Framework.php:672
+msgid "Number Option"
+msgstr ""
+
+#: inc/Framework.php:679
+msgid "Checklist Option"
+msgstr ""
+
+#: inc/Framework.php:682
+msgid "One title"
+msgstr ""
+
+#: inc/Framework.php:683
+msgid "Two title"
+msgstr ""
+
+#: inc/Plugin.php:22 inc/Plugin.php:23
+msgid "Embed Facebook"
+msgstr ""
+
+#: inc/Plugin.php:25
+msgid "Reset to defaults"
+msgstr ""
+
+#: inc/Plugin.php:26
+msgid "Are you sure?"
+msgstr ""
+
+#: inc/Plugin.php:130
+msgid "To enable comments moderation setup your App ID <a href=\"#fb_api\">here</a>"
+msgstr ""
+
+#: inc/Plugin.php:134
+msgid ""
+"If you cant see the \"Moderate comment\" link above each comment you will "
+"need to <a title=\"Sharing Debugger\" target=\"_blank\" href=\"%s\">scrape "
+"the url</a>"
+msgstr ""
+
+#: inc/Plugin.php:142
+msgid "Magic Embeds"
+msgstr ""
+
+#: inc/Plugin.php:146
+msgid "Auto Embeds"
+msgstr ""
+
+#: inc/Plugin.php:147
+msgid ""
+"Auto embeds understand the url you are entering and return a social plugin "
+"or a custom embed. <br>They can be activated by <a href=\"%s\" "
+"title=\"WordPress Embeds\" target=\"_blank\">pasting the url on the "
+"editor</a> or by the [embedfb url ] <a href=\"%s\" title=\"[facebook] "
+"Shortcode attributes and examples\" target=\"_blank\">shortcode</a>."
+msgstr ""
+
+#: inc/Plugin.php:154
+msgid "Auto embed url's on editor"
+msgstr ""
+
+#: inc/Plugin.php:160
+msgid "Maximum width in pixels"
+msgstr ""
+
+#: inc/Plugin.php:167
+msgid "Embed video as post"
+msgstr ""
+
+#: inc/Plugin.php:173
+msgid "Quote Plugin"
+msgstr ""
+
+#: inc/Plugin.php:174
+msgid ""
+"The quote plugin lets people select text on your page and add it to their "
+"Facebook share."
+msgstr ""
+
+#: inc/Plugin.php:180 inc/Plugin.php:199
+msgid "Active"
+msgstr ""
+
+#: inc/Plugin.php:185 inc/Plugin.php:204
+msgid "Post types"
+msgstr ""
+
+#: inc/Plugin.php:186 inc/Plugin.php:205
+msgid "Post types separated by commas i.e. post,page,attachment"
+msgstr ""
+
+#: inc/Plugin.php:192
+msgid "Comments"
+msgstr ""
+
+#: inc/Plugin.php:193
+msgid "Replace WP comments for FB comments on selected post types"
+msgstr ""
+
+#: inc/Plugin.php:211
+msgid "Sync comment count"
+msgstr ""
+
+#: inc/Plugin.php:213
+msgid "Comments count get stored on _wef_comments_count post meta."
+msgstr ""
+
+#: inc/Plugin.php:215
+msgid "You can refresh the comment count by updating the post"
+msgstr ""
+
+#: inc/Plugin.php:222
+msgid "Add open graph meta"
+msgstr ""
+
+#: inc/Plugin.php:224
+msgid "Needed to moderate comments"
+msgstr ""
+
+#: inc/Plugin.php:225
+msgid ""
+"Disable this if you already have another plugin adding <a "
+"title=\"Moderation Setup Instructions\" target=\"_blank\" href=\"%s\">the "
+"fb:app_id meta</a>"
+msgstr ""
+
+#: inc/Plugin.php:235
+msgid "Social Plugins"
+msgstr ""
+
+#: inc/Plugin.php:240
+msgid "API"
+msgstr ""
+
+#: inc/Plugin.php:244
+msgid "Facebook API settings"
+msgstr ""
+
+#: inc/Plugin.php:246
+msgid ""
+"Creating a Facebook app is easy view the <a href=\"%s\" target=\"_blank\" "
+"title=\"WP Embed FB documentation\">step by step guide</a> or view <a "
+"href=\"%s\" target=\"_blank\" title=\"Facebook Apps\">your apps</a>."
+msgstr ""
+
+#: inc/Plugin.php:256
+msgid "Social Plugins Language"
+msgstr ""
+
+#: inc/Plugin.php:262
+msgid "App ID"
+msgstr ""
+
+#: inc/Plugin.php:263
+msgid "Needed for comments moderation and custom embeds"
+msgstr ""
+
+#: inc/Plugin.php:269
+msgid "App Secret"
+msgstr ""
+
+#: inc/Plugin.php:270
+msgid "Needed for custom embeds"
+msgstr ""
+
+#: inc/Plugin.php:278
+msgid "Custom Embeds"
+msgstr ""
+
+#: inc/Plugin.php:283
+msgid "Lightbox"
+msgstr ""
+
+#: inc/Plugin.php:306
+msgid "This free plugin has taken thousands of hours to maintain and develop"
+msgstr ""
+
+#: inc/Plugin.php:311
+msgid "Rate it"
+msgstr ""
+
+#: inc/Plugin.php:318
+msgid "Donate"
+msgstr ""
+
+#: inc/Plugin.php:324
+msgid "Plugin Website"
+msgstr ""
+
+#: inc/Social_Plugins.php:563
+msgid "Invalid Facebook plugin type use it like this: [fb_plugin like]"
+msgstr ""
+
+#: inc/Social_Plugins.php:577
+msgid "Shortcode used:"
+msgstr ""
+
+#: inc/Social_Plugins.php:582
+msgid "Final code:"
+msgstr ""
+
+#: inc/Social_Plugins.php:587
+msgid "More information:"
+msgstr ""
+
+#: inc/Social_Plugins.php:607
+msgid "Shortcode usage example:"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WP Embed Facebook"
+msgstr ""
+
+#: inc/Widget.php:16
+msgid "Shortcode widget"
+msgstr ""
+
+#: inc/Widget.php:51
+msgid "Title:"
+msgstr ""
+
+#: inc/Widget.php:55
+msgid "Shortcode:"
+msgstr ""
+
+#: templates/classic/com-page.php:25 templates/classic/page.php:39
+#: templates/classic/post.php:23 templates/default/com-page.php:25
+#: templates/default/page.php:39 templates/default/post.php:23
+#: templates/elegant/com-page.php:25 templates/elegant/page.php:39
+#: templates/elegant/post.php:23
+msgid "%d people like this."
+msgstr ""
+
+#: templates/classic/com-page.php:31 templates/classic/com-page.php:32
+#: templates/classic/page.php:29 templates/classic/page.php:30
+#: templates/default/com-page.php:31 templates/default/com-page.php:32
+#: templates/default/page.php:29 templates/default/page.php:30
+#: templates/elegant/com-page.php:31 templates/elegant/com-page.php:32
+#: templates/elegant/page.php:29 templates/elegant/page.php:30
+msgid "Web Site"
+msgstr ""
+
+#: templates/classic/event.php:29 templates/classic/event.php:32
+#: templates/default/event.php:29 templates/default/event.php:39
+#: templates/elegant/event.php:29 templates/elegant/event.php:39
+msgid "@ "
+msgstr ""
+
+#: templates/classic/event.php:36
+msgid "Creator: "
+msgstr ""
+
+#: templates/classic/single-post.php:127 templates/default/single-post.php:127
+#: templates/elegant/single-post.php:132
+msgid "likes"
+msgstr ""
+
+#: templates/classic/single-post.php:130 templates/default/single-post.php:130
+#: templates/elegant/single-post.php:135
+msgid "comments"
+msgstr ""
+
+#: templates/classic/single-post.php:133 templates/default/single-post.php:133
+#: templates/elegant/single-post.php:138
+msgid "shares"
+msgstr ""
+
+#: templates/default/event.php:44 templates/elegant/event.php:44
+msgid "Get Tickets"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.wpembedfb.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Embed any public Facebook video, photo, album, event, page, comment, "
+"profile, or post. Add Facebook comments to all your site, insert Facebook "
+"social plugins (like, save, send, share, follow, quote, comments) anywhere "
+"on your site. View the <a href=\"http://www.wpembedfb.com/demo-site/\" "
+"title=\"plugin website\" target=\"_blank\">demo site</a>."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Miguel Sirvent"
+msgstr ""

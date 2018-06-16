@@ -1,3 +1,8 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Social_Plugins;
+use SIGAMI\WP_Embed_FB\Embed_Facebook;
+?>
 <div class="wef-default" style="max-width: <?php echo $width ?>px" >
 	<?php if(isset($fb_data['cover'])) : ?>
 		<div class="wef-relative-container wef-cover"><div class="wef-relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
@@ -21,15 +26,15 @@
 					}
 				?><br>
 				<?php if(isset($fb_data["website"]) && (strip_tags($fb_data["website"]) != '')) :  ?>
-					<a  href="<?php echo WP_Embed_FB::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
+					<a  href="<?php echo Embed_Facebook::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
 						<?php _e('Web Site','wp-embed-facebook') ?>
 					</a>						
 				<?php endif; ?>
 				<div style="float: right;">
 					<?php
-					$opt = WP_Embed_FB_Plugin::get_option('show_like');
+					$opt = Plugin::get_option('show_like');
 					if($opt === 'true') :
-						echo WEF_Social_Plugins::get('like',array('href'=>'https://www.facebook.com/'.$fb_data['id'],'share'=>'true','layout'=>'button_count','show-faces'=> 'false'));
+						echo Social_Plugins::get('like',array('href'=>'https://www.facebook.com/'.$fb_data['id'],'share'=>'true','layout'=>'button_count','show-faces'=> 'false'));
 					else :
 						printf( __( '%d people like this.', 'wp-embed-facebook' ), $fb_data['fan_count'] );
 					endif;

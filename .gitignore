@@ -77,3 +77,5 @@ node_modules
 .idea
 variables.json
 svn
+
+npm-debug.log

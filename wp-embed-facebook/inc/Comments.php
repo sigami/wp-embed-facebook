@@ -3,38 +3,55 @@
 namespace SIGAMI\WP_Embed_FB;
 
 /**
- * Handles comments auto embeds and comment count synchronization. It includes all actions and filters. Comments plugin
- * can also be invoked using the [fb_plugin comments] shortocode.
+ * Handles comments auto embeds and comment count synchronization. It includes all actions and
+ * filters. Comments plugin can also be invoked using the [fb_plugin comments] shortocode.
  *
  * @see WEF_Social_Plugins
  */
-class  WEF_Comments  {
-	static function hooks() {
+class  Comments {
 
-		/** @see WEF_Comments::comments_template */
+	private static $instance = null;
+
+	static function instance() {
+		if ( self::$instance === null ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
+	private function __construct() {
+
+		/** @see Comments::comments_template */
 		add_filter( 'comments_template', __CLASS__ . '::comments_template' );
 
 		if ( Plugin::get_option( 'comments_count_active' ) === 'true' ) {
 
-			/** @see WEF_Comments::get_comments_number */
+			/** @see Comments::get_comments_number */
 			add_filter( 'get_comments_number', __CLASS__ . '::get_comments_number', 10, 2 );
 
-			/** @see WEF_Comments::save_post */
+			/** @see Comments::save_post */
 			add_filter( 'save_post', __CLASS__ . '::save_post', 10, 3 );
 
-			/** @see WEF_Comments::pre_get_posts */
+			/** @see Comments::pre_get_posts */
 			add_action( 'pre_get_posts', __CLASS__ . '::pre_get_posts' );
 
-			/** @see WEF_Comments::wpemfb_comments */
+			/** @see Comments::wpemfb_comments */
 			add_filter( 'wp_ajax_wpemfb_comments', __CLASS__ . '::wpemfb_comments' );
 			add_filter( 'wp_ajax_nopriv_wpemfb_comments', __CLASS__ . '::wpemfb_comments' );
 
+			/** @see Comments::uninstall */
+			add_action( Plugin::$option . '_uninstall', __CLASS__ . '::uninstall' );
 		}
 
 		if ( Plugin::get_option( 'comments_open_graph' ) === 'true' ) {
-			/** @see WEF_Comments::wp_head */
+			/** @see Comments::wp_head */
 			add_action( 'wp_head', __CLASS__ . '::wp_head' );
 		}
+	}
+
+	static function uninstall() {
+		delete_post_meta_by_key( '_wef_comment_count' );
 	}
 
 	/**
@@ -55,13 +72,12 @@ class  WEF_Comments  {
 	 * @return string
 	 */
 	static function comments_template( $template ) {
-		$array = self::string_to_array( self::get_option( 'auto_comments_post_types' ) );
+		$array = Helpers::string_to_array( Plugin::get_option( 'auto_comments_post_types' ) );
 		if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
-			$template = self::path() . 'templates/comments.php';
+			$template = Plugin::path() . 'templates/comments.php';
 		}
 
 		return $template;
-
 	}
 
 	/**
@@ -95,24 +111,24 @@ class  WEF_Comments  {
 		if ( wp_is_post_revision( $post_id ) || ! $update ) {
 			return;
 		}
-		$options = self::get_option();
-		$array   = self::string_to_array( $options['auto_comments_post_types'] );
+		$options = Plugin::get_option();
+		$array   = Helpers::string_to_array( $options['auto_comments_post_types'] );
 		//https://graph.facebook.com/?id=http://t-underboot.sigami.net/?p=4
 		if ( in_array( $post->post_type, $array ) ) {
-			$args     = array(
+			$args     = [
 				'fields' => 'share{comment_count}',
 				'id'     => home_url( "/?p=$post_id" )
-			);
+			];
 			$url      = "https://graph.facebook.com/{$options[ 'sdk_version' ]}/?" . http_build_query( $args );
 			$request  = wp_remote_get( $url );
 			$response = wp_remote_retrieve_body( $request );
 			if ( ! is_wp_error( $request ) && ! empty( $response ) ) {
 				$data = json_decode( $response, true );
-//					print_r($data);die();
+				//					print_r($data);die();
 				if ( is_array( $data ) && isset( $data['share'] ) && isset( $data['share']['comment_count'] ) ) {
-					update_post_meta( $post->ID, '_wef_comment_count', intval( $data['share']['comment_count'] ) );
+					update_post_meta( $post->ID, '_wef_comment_count',
+						intval( $data['share']['comment_count'] ) );
 				}
-
 			}
 		}
 	}
@@ -120,25 +136,25 @@ class  WEF_Comments  {
 	/**
 	 * Alter order by 'comment_count' to use _wef_comment_count meta instead
 	 *
-	 * @param WP_Query $query
+	 * @param \WP_Query $query
 	 *
-	 * @return WP_Query
+	 * @return \WP_Query
 	 */
 	static function pre_get_posts( $query ) {
 		if ( isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'comment_count' ) {
 			$query->set(
 				'meta_query',
-				array(
+				[
 					'relation' => 'OR',
-					array(
+					[
 						'key'     => '_wef_comment_count',
 						'compare' => 'NOT EXISTS'
-					),
-					array(
+					],
+					[
 						'key'     => '_wef_comment_count',
 						'compare' => 'EXISTS'
-					)
-				)
+					]
+				]
 			);
 			$query->set( 'orderby', 'meta_value_num' );
 		}
@@ -159,6 +175,7 @@ class  WEF_Comments  {
 				$count --;
 			}
 			update_post_meta( $post_id, '_wef_comment_count', intval( $count ) );
+			//TODO save info of the last 50 comments for recent comments widget
 		}
 		wp_die();
 	}

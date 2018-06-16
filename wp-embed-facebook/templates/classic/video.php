@@ -1,5 +1,7 @@
 <?php
-$use_ratio = (WP_Embed_FB_Plugin::get_option('video_ratio') == 'true');
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Embed_Facebook;
+$use_ratio = (Plugin::get_option('video_ratio') == 'true');
 ?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px">
     <?php echo $use_ratio ? '<div class="wef-relative-container wef-video">' : '' ?>
@@ -12,7 +14,7 @@ $use_ratio = (WP_Embed_FB_Plugin::get_option('video_ratio') == 'true');
     $type = end($type_array);
     $clean_type = strtolower($type);
 
-    if( WP_Embed_FB::is_raw('video') && $clean_type == 'mp4' ) : ?>
+    if( Embed_Facebook::is_raw('video') && $clean_type == 'mp4' ) : ?>
         <?php $end = isset($fb_data['format']) ? end($fb_data['format']) : $fb_data;  ?>
 
         <video controls poster="<?php echo $end['picture'] ?>" >

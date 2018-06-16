@@ -1,16 +1,18 @@
 <?php
-
+use SIGAMI\WP_Embed_FB\Embed_Facebook;
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Helpers;
 
 $story = isset($fb_post['story']) ? '<p>' . $fb_post['story'] . '</p>' : '';
 
 $icon = isset($fb_post["icon"]) ? '<img class="wef-icon" title="Facebook ' . $fb_post["type"] . '" src="' . $fb_post["icon"] . '">' : '';
 
 $old_time_zone = date_default_timezone_get();
-date_default_timezone_set(WP_Embed_FB_Plugin::get_timezone());
-$time = $icon . date_i18n(WP_Embed_FB_Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
+date_default_timezone_set(Helpers::get_timezone());
+$time = $icon . date_i18n(Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
 date_default_timezone_set($old_time_zone);
 
-$description = isset($fb_post['description']) && !empty($fb_post['description']) ? WP_Embed_FB::make_clickable($fb_post['description']) : '';
+$description = isset($fb_post['description']) && !empty($fb_post['description']) ? Embed_Facebook::make_clickable($fb_post['description']) : '';
 
 $linkArray = explode("_", $fb_post['id']);
 $link = (isset($fb_post['link']) && !empty($fb_post['link'])) ? $fb_post['link'] : "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1];
@@ -26,7 +28,7 @@ if ($caption == $message) {
 	$caption = '';
 }
 
-$message = WP_Embed_FB::make_clickable($message);
+$message = Embed_Facebook::make_clickable($message);
 
 
 $name = empty($name) ? '' : "<p class=\"caption-title\"><a href=\"$link\" title=\"$name\" target=\"_blank\" rel=\"nofollow\">$name</a></p>";
@@ -48,16 +50,16 @@ $link_info = $name . $description . $caption;
 		switch ($fb_post["type"]) :
 			case 'video':
 				if (strpos($link, 'facebook.com') !== false) {
-					$raw = WP_Embed_FB::$raw;
-					$width_r = WP_Embed_FB::$width;
-					WP_Embed_FB::$raw = true;
-					WP_Embed_FB::$width = $width - 40;
+					$raw = Embed_Facebook::$raw;
+					$width_r = Embed_Facebook::$width;
+					Embed_Facebook::$raw = true;
+					Embed_Facebook::$width = $width - 40;
 					echo $wp_embed->shortcode(array('src' => $link));
-					WP_Embed_FB::$raw = $raw;
-					WP_Embed_FB::$width = $width_r;
+					Embed_Facebook::$raw = $raw;
+					Embed_Facebook::$width = $width_r;
 					echo $link_info;
 				} else {
-					$use_ratio = (WP_Embed_FB_Plugin::get_option('video_ratio') == 'true');
+					$use_ratio = (Plugin::get_option('video_ratio') == 'true');
 					echo '<div class="wef-post-link">';
 					echo $use_ratio ? '<div class="wef-video">' : '';
 					echo $wp_embed->shortcode(array('src' => $link, 'width' => $width - 20));
@@ -67,14 +69,14 @@ $link_info = $name . $description . $caption;
 				}
 				break;
 			case 'event':
-				WP_Embed_FB::$width = $width - 40;
+				Embed_Facebook::$width = $width - 40;
 				echo $wp_embed->shortcode(array('src' => $link));
-				WP_Embed_FB::$width = $width;
+				Embed_Facebook::$width = $width;
 				break;
 			case 'photo':
 				?>
 
-				<a href="<?php echo $fb_post['full_picture'] ?>" <?php echo WP_Embed_FB_Plugin::get_option('lightbox_att') ?> <?php echo $message ? WP_Embed_FB_Plugin::lightbox_title($message) : '' ?> >
+				<a href="<?php echo $fb_post['full_picture'] ?>" <?php echo Plugin::get_option('lightbox_att') ?> <?php echo $message ? Helpers::lightbox_title($message) : '' ?> >
 					<div class="wef-relative-container wef-fbpost-image">
 						<div class="wef-relative"
 						     style="background-image: url('<?php echo $fb_post['full_picture'] ?>');"></div>
@@ -109,7 +111,7 @@ $link_info = $name . $description . $caption;
 			default:
 				?>
 				<?php if (isset($fb_post['full_picture'], $link) && !empty($fb_post['full_picture']) && !empty($link)) : ?>
-				<a href="<?php echo $fb_post['full_picture'] ?>" <?php echo WP_Embed_FB_Plugin::get_option('lightbox_att') ?> <?php echo $message ? WP_Embed_FB_Plugin::lightbox_title($message) : '' ?> >
+				<a href="<?php echo $fb_post['full_picture'] ?>" <?php echo Plugin::get_option('lightbox_att') ?> <?php echo $message ? \SIGAMI\WP_Embed_FB\Helpers::lightbox_title($message) : '' ?> >
 					<div class="wef-relative-container wef-fbpost-image">
 						<div class="wef-relative"
 						     style="background-image: url('<?php echo $fb_post['full_picture'] ?>');"></div>
@@ -134,9 +136,9 @@ $link_info = $name . $description . $caption;
 		<a class="wef-post-likes"
 		   href="<?php echo "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1] ?> "
 		   target="_blank" rel="nofollow" title="<?php echo esc_attr($title_count) ?>">
-			<?php echo isset($fb_post['likes']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/like.png" /> ' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['comments']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/comments.png" /> ' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['shares']) ? ' <img width="16px" height="16px" src="'.WP_Embed_FB_Plugin::url().'lib/images/share.png" /> ' . $fb_post['shares']['count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['likes']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/like.png" /> ' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['comments']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/comments.png" /> ' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['shares']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/share.png" /> ' . $fb_post['shares']['count'] . ' ' : "" ?>
 		</a>
 	</div>
 </div>

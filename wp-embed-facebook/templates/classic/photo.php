@@ -1,11 +1,14 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px" >
-	<a href="<?php //TODO sdk v2.10 does not use source it uses images
-    /** @noinspection PhpUndefinedVariableInspection */
+	<a href="<?php /** @noinspection PhpUndefinedVariableInspection */
 	echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
 		<img src="<?php echo $fb_data['source'] ?>" width="100%" height="auto" >
 	</a>
+
 	<a class="wef-post-link" href="<?php echo $fb_data['link'] ?> " target="_blank" rel="nofollow">
-		<?php echo isset($fb_data['likes']) ? '<img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/y6/r/l9Fe9Ugss0S.gif" />'.$fb_data['likes']['summary']['total_count'].' ' : ""  ?>
-		<?php echo isset($fb_data['comments']) ? '<img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/yg/r/V8Yrm0eKZpi.gif" />'.$fb_data['comments']['summary']['total_count'].' ' : ""  ?>
+		<?php echo isset($fb_data['likes']) ? '<img width="16px" height="16px" src="'.Plugin::url().'inc/images/like.png" /> '.$fb_data['likes']['summary']['total_count'].' ' : ""  ?>
+		<?php echo isset($fb_data['comments']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/comments.png"/> '.$fb_data['comments']['summary']['total_count'].' ' : ""  ?>
 	</a>
 </div>

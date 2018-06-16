@@ -1,3 +1,6 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px">
 	<div class="wef-row">
 		<div class="wef-col-3 wef-text-center">
@@ -26,7 +29,7 @@
 				foreach ($fb_data['photos']['data'] as $pic) {
 					$data_title = isset($pic['name']) ? $pic['name'] :  '';
 					?>
-					<a class="wef-album-thumbs" href="<?php echo $pic['source'] ?>" <?php echo WP_Embed_FB_Plugin::get_option('lightbox_att') ?> <?php echo !empty($data_title) ? WP_Embed_FB_Plugin::lightbox_title($data_title) : '' ?> >
+					<a class="wef-album-thumbs" href="<?php echo $pic['source'] ?>" <?php echo Plugin::get_option('lightbox_att') ?> <?php echo !empty($data_title) ? \SIGAMI\WP_Embed_FB\Helpers::lightbox_title($data_title) : '' ?> >
 						<span class="wef-album-thumb" style="background-image: url('<?php  echo $pic['picture'] ?>')"></span>
 					</a>
 					<?php

@@ -1,10 +1,12 @@
 <?php
-$start_time_format = WP_Embed_FB_Plugin::get_option('event_start_time_format');
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Helpers;
+$start_time_format = Plugin::get_option('event_start_time_format');
 $old_time_zone = date_default_timezone_get();
-if(WP_Embed_FB_Plugin::get_option('ev_local_tz') == 'true'){
-	$timezone = WP_Embed_FB_Plugin::get_timezone();
+if(Plugin::get_option('ev_local_tz') == 'true'){
+	$timezone = Helpers::get_timezone();
 } else {
-	$timezone = isset( $fb_data['timezone'] ) ? $fb_data['timezone'] : WP_Embed_FB_Plugin::get_timezone();
+	$timezone = isset( $fb_data['timezone'] ) ? $fb_data['timezone'] : Helpers::get_timezone();
 }
 date_default_timezone_set( $timezone );
 /** @noinspection PhpUndefinedVariableInspection */

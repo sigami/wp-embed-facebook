@@ -1,3 +1,7 @@
+<?php
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Social_Plugins;
+?>
 <div class="wef-default" style="max-width: <?php echo $width ?>px">
 	<div class="wef-row">
 			<div class="wef-col-3 wef-text-center">
@@ -14,9 +18,9 @@
 				</p>
 				<div>
 					<?php
-					$opt = WP_Embed_FB_Plugin::get_option('show_follow');
+					$opt = Plugin::get_option('show_follow');
 					if($opt === 'true') :
-						WEF_Social_Plugins::get('follow',array('href'=>'https://www.facebook.com/'.$fb_data['id']));
+						Social_Plugins::get('follow',array('href'=>'https://www.facebook.com/'.$fb_data['id']));
 					endif;
 					?>
 				</div>

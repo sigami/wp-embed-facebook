@@ -1,10 +1,12 @@
 <?php
-$start_time_format = WP_Embed_FB_Plugin::get_option('event_start_time_format');
+use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Helpers;
+$start_time_format = Plugin::get_option('event_start_time_format');
 $old_time_zone = date_default_timezone_get();
-if(WP_Embed_FB_Plugin::get_option('ev_local_tz') == 'true'){
-	$timezone = WP_Embed_FB_Plugin::get_timezone();
+if(Plugin::get_option('ev_local_tz') == 'true'){
+	$timezone = Helpers::get_timezone();
 } else {
-	$timezone = isset( $fb_data['timezone'] ) ? $fb_data['timezone'] : WP_Embed_FB_Plugin::get_timezone();
+	$timezone = isset( $fb_data['timezone'] ) ? $fb_data['timezone'] : Helpers::get_timezone();
 }
 date_default_timezone_set( $timezone );
 /** @noinspection PhpUndefinedVariableInspection */
@@ -26,12 +28,22 @@ date_default_timezone_set( $old_time_zone );
 				if ( isset( $fb_data['place']['id'] ) ) {
 					_e( '@ ', 'wp-embed-facebook' );
 					echo '<a href="https://www.facebook.com/' . $fb_data['place']['id'] . '" target="_blank">' . $fb_data['place']['name'] . '</a>';
+					if(isset($fb_data['place']['location']) && !empty($fb_data['place']['location']) ){
+						$location = $fb_data['place']['location'];
+						$street = (isset($location['street']) && !empty($location['street']) ) ? $location['street'] : '';
+						$city = (isset($location['city']) && !empty($location['city']) ) ? $location['city'].',' : '';
+						$country = (isset($location['country']) && !empty($location['country']) ) ? $location['country'].'.' : '';
+						echo "<span class=\"event_address\"> $street $city $country</span>";
+					}
 				} else {
 					echo isset( $fb_data['place']['name'] ) ? __( '@ ', 'wp-embed-facebook' ) . $fb_data['place']['name'] : '';
 				}
 				?>
 			</p>
-			<p><?php echo __( 'Creator: ', 'wp-embed-facebook' ) . '<a href="https://www.facebook.com/' . $fb_data['owner']['id'] . '" target="_blank">' . $fb_data['owner']['name'] . '</a>' ?></p>
+			<?php if(isset($fb_data['ticket_uri']) && !empty($fb_data['ticket_uri']) ) : ?>
+                <p class="wef-text-right"><a class="wef-button" href="<?php echo $fb_data['ticket_uri'] ?>"><?php _e('Get Tickets', 'wp-embed-facebook') ?></a>
+                </p>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
