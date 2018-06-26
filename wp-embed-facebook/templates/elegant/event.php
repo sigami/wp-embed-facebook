@@ -33,7 +33,7 @@ date_default_timezone_set( $old_time_zone );
 						$street = (isset($location['street']) && !empty($location['street']) ) ? $location['street'] : '';
 						$city = (isset($location['city']) && !empty($location['city']) ) ? $location['city'].',' : '';
 						$country = (isset($location['country']) && !empty($location['country']) ) ? $location['country'].'.' : '';
-						echo "<span class=\"event_address\"> $street $city $country</span>";
+						echo "<span class=\"wef-event_address\"> $street $city $country</span>";
 					}
 				} else {
 					echo isset( $fb_data['place']['name'] ) ? __( '@ ', 'wp-embed-facebook' ) . $fb_data['place']['name'] : '';

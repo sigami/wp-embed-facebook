@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WP Embed Facebook 2.1.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-embed-"
 "facebook\n"
-"POT-Creation-Date: 2018-06-16 06:53:49+00:00\n"
+"POT-Creation-Date: 2018-06-19 05:29:24+00:00\n"
 "PO-Revision-Date: 2016-10-06 11:54-0500\n"
 "Last-Translator: Miguel Sirvent <miguel.sirvent@gmail.com>\n"
 "Language-Team: Miguel Sirvent <miguel@sigami.net>\n"
@@ -52,23 +52,23 @@ msgstr ""
 "Usas el shortcode [facebook] mal. Ver ejemplos <a title=\"Examples\" target="
 "\"_blank\" href=\"%s\">aquí</a>."
 
-#: inc/Embed_Facebook.php:193
+#: inc/Embed_Facebook.php:186
 msgid ""
 "Error: Try embedding this post as a social plugin (only visible to admins)"
 msgstr ""
 "Error: Trata de incrustar este post como un plugin social (visible sólo para "
 "administradores)"
 
-#: inc/Embed_Facebook.php:197 inc/Embed_Facebook.php:236
+#: inc/Embed_Facebook.php:190 inc/Embed_Facebook.php:229
 msgid "Code"
 msgstr "Código"
 
-#: inc/Embed_Facebook.php:199 inc/Embed_Facebook.php:238
-#: inc/Embed_Facebook.php:443
+#: inc/Embed_Facebook.php:192 inc/Embed_Facebook.php:231
+#: inc/Embed_Facebook.php:436
 msgid "Error"
 msgstr "Error"
 
-#: inc/Embed_Facebook.php:450
+#: inc/Embed_Facebook.php:443
 msgid ""
 "<small>To embed this type of content you need to setup a facebook app on <a "
 "href=\"%s\" title=\"WP Embed Facebook Settings\">settings</a></small>"
@@ -76,6 +76,10 @@ msgstr ""
 "<small>Para incrustar este tipo de contenido necesita configurar una "
 "aplicación de Facebook en <a href=\"%s\" title=\"WP Embed Facebook Settings"
 "\">configuración</a></small>"
+
+#: inc/FB_API.php:107
+msgid "Unknown error occurred"
+msgstr ""
 
 #: inc/Framework.php:632
 msgid "General"

@@ -30,7 +30,7 @@ class Magic_Embeds {
 		/** @see Magic_Embeds::the_content */
 		add_filter( 'the_content', __CLASS__ . '::the_content' );
 
-		//Session start when there is a facebook app
+		//Deprecate old api versions
 		add_action( 'init', __CLASS__ . '::init', 999 );
 
 		/** @see WP_Embed_FB::shortcode */
@@ -54,13 +54,6 @@ class Magic_Embeds {
 
 	static function init() {
 		if ( Helpers::has_fb_app() ) {
-			if ( version_compare( phpversion(), '5.4.0', '<' ) ) {
-				if ( session_id() == '' ) {
-					session_start();
-				}
-			} elseif ( session_status() == PHP_SESSION_NONE ) {
-				session_start();
-			}
 			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.3 ) {
 				$options                = Plugin::get_option();
 				$options['sdk_version'] = 'v2.11';
@@ -95,7 +88,14 @@ class Magic_Embeds {
 	 */
 	static function plugins_loaded() {
 		wp_embed_register_handler( "wpembedfb", "/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/",
-			'WP_Embed_FB::embed_register_handler' );
+			__CLASS__.'::embed_register_handler' );
+	}
+
+	static function embed_register_handler(
+		$match, /** @noinspection PhpUnusedParameterInspection */
+		$attr, $url = null, $atts = null
+	) {
+		return Embed_FB::fb_embed( $match, $url, $atts );
 	}
 
 	static function wp_enqueue_scripts() {

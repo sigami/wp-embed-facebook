@@ -1,7 +1,7 @@
 <?php
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Social_Plugins;
-use SIGAMI\WP_Embed_FB\Embed_Facebook;
+use SIGAMI\WP_Embed_FB\Embed_FB;
 ?>
 <div class="wef-classic aligncenter" style="max-width: <?php echo $width ?>px">
 	<div class="wef-row">
@@ -28,7 +28,7 @@ use SIGAMI\WP_Embed_FB\Embed_Facebook;
 			</div>
 			<?php if(isset($fb_data["website"])) : ?>
 				<br>
-				<a href="<?php echo Embed_Facebook::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
+				<a href="<?php echo Embed_FB::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
 					<?php _e('Web Site','wp-embed-facebook') ?>
 				</a>
 			<?php endif; ?>

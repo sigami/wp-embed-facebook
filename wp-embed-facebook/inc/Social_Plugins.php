@@ -93,14 +93,15 @@ class Social_Plugins {
 	 */
 	static $like
 		= [
+			'href'              => '',
 			'action'            => [ 'like', 'recommend' ],
 			'colorscheme'       => [ 'light', 'dark' ],
-			'href'              => '',
 			'kid-directed-site' => [ 'false', 'true' ],
 			'layout'            => [ 'standard', 'button_count', 'button', 'box_count' ],
 			'ref'               => '',
 			'share'             => [ 'false', 'true' ],
 			'show-faces'        => [ 'true', 'false' ],
+			'size'              => [ 'small', 'large' ],
 			'width'             => '450'
 		];
 	/**
@@ -163,10 +164,25 @@ class Social_Plugins {
 	 */
 	static $send
 		= [
-			'colorscheme'       => [ 'light', 'dark' ],
 			'href'              => '',
+			'colorscheme'       => [ 'light', 'dark' ],
 			'kid-directed-site' => [ 'false', 'true' ],
 			'ref'               => '',
+		];
+	/**
+	 * Group
+	 *
+	 * The Group Plugins lets people join your Facebook group from a link in an email message or a
+	 * web page.
+	 *
+	 * @link https://developers.facebook.com/docs/plugins/group-plugin
+	 */
+	static $group
+		= [
+			'href'                => '',
+			'show-social-context' => [ 'false', 'true' ],
+			'show-metadata'       => [ 'false', 'true' ],
+			'skin'                => [ 'light', 'dark' ],
 		];
 	/**
 	 * Embedded Comments
@@ -292,16 +308,12 @@ class Social_Plugins {
 	 */
 	static $comments
 		= [
-			'colorscheme' => [ 'light', 'dark' ],
 			'href'        => '',
+			'colorscheme' => [ 'light', 'dark' ],
 			'mobile'      => [ 'false', 'true' ],
 			'num_posts'   => '10',
 			'order_by'    => [ 'social', 'reverse_time', 'time' ],
 			'width'       => '550px',
-		];
-	static $comments_count
-		= [
-			'href' => ''
 		];
 	/**
 	 * Embedded Posts
@@ -325,38 +337,6 @@ class Social_Plugins {
 			'href'      => '',
 			'width'     => '500',
 			'show-text' => [ 'true', 'false' ],
-		];
-	/**
-	 * Follow Button
-	 *
-	 * The Follow button lets people subscribe to the public updates of others on Facebook.
-	 *
-	 * <code>
-	 *
-	 * colorscheme: The color scheme used by the comments plugin.
-	 *              dark
-	 *              light
-	 * href: The absolute URL of the page that will be quoted.
-	 * kid-directed-site: TIf your web site or online service, or a portion of your service, is
-	 * directed to children under 13 you must enable this layout: Selects one of the different
-	 * layouts that are available for the plugin. standard button_count box_count show-faces:
-	 * Specifies whether to display profile photos below the button (standard layout only). width:
-	 * The width of the plugin. The layout you choose affects the minimum and default widths you
-	 * can use. default 450 minimum 225
-	 *
-	 * </code>
-	 *
-	 * @link https://developers.facebook.com/docs/plugins/follow-button/
-	 *
-	 */
-	static $follow
-		= [
-			'colorscheme'       => [ 'light', 'dark' ],
-			'href'              => '',
-			'kid-directed-site' => [ 'false', 'true' ],
-			'layout'            => [ 'standard', 'button_count', 'box_count' ],
-			'show-faces'        => [ 'true', 'false' ],
-			'width'             => '450',
 		];
 	/**
 	 * Associative array with the default variables interpreted by fb
@@ -445,8 +425,9 @@ class Social_Plugins {
 					}
 				}
 			}
-			if($all_options)
+			if ( $all_options ) {
 				return $vars;
+			}
 
 			self::$defaults = $vars;
 		}
@@ -488,8 +469,9 @@ class Social_Plugins {
 		do_action( 'wef_sp_get_action' );
 
 		$defaults = self::get_defaults();
-		$options  = Plugin::get_option();
-		foreach ( $defaults as $key => $value ) {
+
+		$options = Plugin::get_option();
+		foreach ( $defaults[ $type ] as $key => $value ) {
 			if ( in_array( $key, Social_Plugins::$link_types ) ) {
 				$defaults[ $key ] = Helpers::get_true_url();
 			} else {
@@ -528,7 +510,10 @@ class Social_Plugins {
 
 		if ( isset( $defaults[ $type ] ) ) {
 
-			if ( isset( $atts['help'] ) || isset( $atts['usage'] ) ) {
+			if ( isset( $atts['help'] )
+			     || isset( $atts['usage'] )
+			     || ( isset( $atts[0] ) && ( ( $atts[0] == 'help' ) || ( $atts[0] == 'usage' ) ) )
+			) {
 				return self::usage( $type );
 			}
 
@@ -560,8 +545,13 @@ class Social_Plugins {
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
 		}
 
-		return __( 'Invalid Facebook plugin type use it like this: [fb_plugin like]',
-			'wp-embed-facebook' );
+		ob_start();
+		$types = array_keys( $defaults );
+		echo '<p>' . __( 'Invalid Facebook plugin type use it like this:',
+				'wp-embed-facebook' ) . '</p>';
+		echo '<p>[fb_plugin ' . implode( '|', $types ) . ' help ]</p>';
+
+		return ob_get_clean();
 	}
 
 	static function debug( $ret, $atts, $type ) {
@@ -597,15 +587,18 @@ class Social_Plugins {
 		$all_defaults = self::get_defaults( true );
 
 		$string = ' ';
-		foreach ( $all_defaults as $att => $default ) {
+
+		foreach ( $all_defaults[ $type ] as $att => $default ) {
 			if ( is_array( $default ) ) {
 				$default = implode( '|', $default );
 			}
 			$string .= "$att=\"$default\" ";
 		}
 		ob_start();
-		echo '<p>' . __( 'Shortcode usage example:', 'elegantcrm' ) . '</p>';
-		echo '<p>[fb_plugin ' . $type . $string . ']</p>';
+		echo '<p>' . __( 'Shortcode usage example:', 'wp-embed-facebook' ) . '</p>';
+		echo '<p>[fb_plugin ' . $type . $string . ' adaptive="false|true" ]</p>';
+		echo '<p>' . __( 'More information:',
+				'wp-embed-facebook' ) . ' ' . self::get_links( $type ) . '</p>';
 
 		return ob_get_clean();
 	}

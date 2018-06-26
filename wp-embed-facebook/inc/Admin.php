@@ -24,10 +24,6 @@ class Admin {
 		add_action( 'admin_notices', __CLASS__ . '::admin_notices' );
 		add_action( 'wp_ajax_wpemfb_close_warning', __CLASS__ . '::wpemfb_close_warning' );
 
-		//settings page
-		add_action( 'admin_menu', __CLASS__ . '::add_page' );
-		add_action( 'in_admin_footer', __CLASS__ . '::in_admin_footer' );
-
 		//editor style
 		add_action( 'admin_init', __CLASS__ . '::admin_init' );
 

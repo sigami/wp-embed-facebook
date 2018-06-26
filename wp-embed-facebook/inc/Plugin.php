@@ -137,6 +137,19 @@ final class Plugin extends Framework {
 		//$comment_notes .= 'An automatic solution for this will be available on future releases<br>';
 		$comment_notes .= '</small><br>';
 
+		ob_start();
+		printf( __( '<a title="Facebook Social Plugins" href="%s" rel="nofollow" target="_blank">Social plugins</a> are pieces of code that Facebook developers created for us mortals.',
+			'wp-embed-facebook' ), 'https://developers.facebook.com/docs/plugins/' )
+		?>
+        <br>
+        <strong><?php _e( 'Example:', 'wp-embed-facebook' ) ?></strong>
+        <br>
+		<?php _e( 'Embed a like button for the curent page:', 'wp-embed-facebook' ) ?>
+        <br>
+        [fb_plugin like share=true layout=button_count]&nbsp;
+		<?php _e( 'add help=1 to view all available options and defaults.', 'wp-embed-facebook' );
+		$social_plugins_desc = ob_get_clean();
+
 		return [
 			[
 				'label'    => __( 'Magic Embeds', 'wp-embed-facebook' ),
@@ -151,7 +164,7 @@ final class Plugin extends Framework {
 							[
 								'type'  => 'checkbox',
 								'name'  => 'auto_embed_active',
-								'label' => __( 'Auto embed url\'s on editor',
+								'label' => __( "Auto embed URL's on editor",
 									'wp-embed-facebook' ),
 							],
 							[
@@ -234,7 +247,24 @@ final class Plugin extends Framework {
 			[
 				'label'    => __( 'Social Plugins', 'wp-embed-facebook' ),
 				'id'       => 'social_plugins',
-				'sections' => []
+				'sections' => [
+					[
+						'title'       => 'Social Plugins',
+						'description' => $social_plugins_desc,
+					],
+					[
+						'title'       => __( 'Page plugin',
+								'wp-embed-facebook' ).'<small style="font-weight: 300"> [fb_plugin  page href=]</small>',
+						'description' => Social_Plugins::get_links( 'page' ),
+						'fields'      => [
+							[
+								'type'  => 'number',
+								'name'  => 'page_width',
+								'label' => __( 'width', 'wp-embed-facebook' )
+							]
+						]
+					]
+				]
 			],
 			[
 				'label'    => __( 'API', 'wp-embed-facebook' ),

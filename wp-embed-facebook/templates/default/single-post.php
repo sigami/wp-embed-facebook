@@ -1,5 +1,5 @@
 <?php
-use SIGAMI\WP_Embed_FB\Embed_Facebook;
+use SIGAMI\WP_Embed_FB\Embed_FB;
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Helpers;
 
@@ -12,7 +12,7 @@ date_default_timezone_set(Helpers::get_timezone());
 $time = $icon . date_i18n(Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
 date_default_timezone_set($old_time_zone);
 
-$description = isset($fb_post['description']) && !empty($fb_post['description']) ? Embed_Facebook::make_clickable($fb_post['description']) : '';
+$description = isset($fb_post['description']) && !empty($fb_post['description']) ? Embed_FB::make_clickable($fb_post['description']) : '';
 
 $linkArray = explode("_", $fb_post['id']);
 $link = (isset($fb_post['link']) && !empty($fb_post['link'])) ? $fb_post['link'] : "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1];
@@ -28,7 +28,7 @@ if ($caption == $message) {
 	$caption = '';
 }
 
-$message = Embed_Facebook::make_clickable($message);
+$message = Embed_FB::make_clickable($message);
 
 
 $name = empty($name) ? '' : "<p class=\"caption-title\"><a href=\"$link\" title=\"$name\" target=\"_blank\" rel=\"nofollow\">$name</a></p>";
@@ -50,13 +50,13 @@ $link_info = $name . $description . $caption;
 		switch ($fb_post["type"]) :
 			case 'video':
 				if (strpos($link, 'facebook.com') !== false) {
-					$raw = Embed_Facebook::$raw;
-					$width_r = Embed_Facebook::$width;
-					Embed_Facebook::$raw = true;
-					Embed_Facebook::$width = $width - 40;
+					$raw = Embed_FB::$raw;
+					$width_r = Embed_FB::$width;
+					Embed_FB::$raw = true;
+					Embed_FB::$width = $width - 40;
 					echo $wp_embed->shortcode(array('src' => $link));
-					Embed_Facebook::$raw = $raw;
-					Embed_Facebook::$width = $width_r;
+					Embed_FB::$raw = $raw;
+					Embed_FB::$width = $width_r;
 					echo $link_info;
 				} else {
 					$use_ratio = (Plugin::get_option('video_ratio') == 'true');
@@ -69,9 +69,9 @@ $link_info = $name . $description . $caption;
 				}
 				break;
 			case 'event':
-				Embed_Facebook::$width = $width - 40;
+				Embed_FB::$width = $width - 40;
 				echo $wp_embed->shortcode(array('src' => $link));
-				Embed_Facebook::$width = $width;
+				Embed_FB::$width = $width;
 				break;
 			case 'photo':
 				?>

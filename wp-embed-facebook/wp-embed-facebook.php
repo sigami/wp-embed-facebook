@@ -33,8 +33,15 @@ if ( is_admin() ) {
 	Admin::instance();
 }
 
+//COMPATIBILITY
+include Plugin::path().'inc/deprecated/deprecated.php';
+
+
 //TODO pasar todas las opciones
-//TODO pasar los shortcodes premium
-//TODO pasar cosas premium
+//TODO probar los custom embeds con app token los q no funcionan pasarlos a premium
+//TODO quitar los custom embeds y solo dejar los albumes con mas de 100 fotos
+//quitar com-page profile
+//TODO cambiar el css y js del lightbox para hacerlo hermetico
+//TODO actualizar version premium con el resto de los custom embeds
 
 //TODO delete all that cannot longer be done

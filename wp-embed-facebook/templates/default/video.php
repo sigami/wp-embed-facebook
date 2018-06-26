@@ -1,6 +1,6 @@
 <?php
 use SIGAMI\WP_Embed_FB\Plugin;
-use SIGAMI\WP_Embed_FB\Embed_Facebook;
+use SIGAMI\WP_Embed_FB\Embed_FB;
 $use_ratio = (Plugin::get_option('video_ratio') == 'true');
 ?>
 <div class="wef-default" style="max-width: <?php echo $width ?>px">
@@ -14,7 +14,7 @@ $use_ratio = (Plugin::get_option('video_ratio') == 'true');
     $type = end($type_array);
     $clean_type = strtolower($type);
 
-    if( Embed_Facebook::is_raw('video') && $clean_type == 'mp4' ) : ?>
+    if( Embed_FB::is_raw('video') && $clean_type == 'mp4' ) : ?>
         <?php $end = isset($fb_data['format']) ? end($fb_data['format']) : $fb_data;  ?>
 
         <video controls poster="<?php echo $end['picture'] ?>" >
