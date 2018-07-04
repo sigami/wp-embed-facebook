@@ -40,7 +40,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.css': '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.sass',
-                    '<%= pkg.name %>/templates/classic/classic.css': '<%= pkg.name %>/templates/classic/classic.sass',
+                    '<%= pkg.name %>/templates/custom_embeds/styles.css': '<%= pkg.name %>/templates/classic/classic.sass',
                     '<%= pkg.name %>/templates/elegant/elegant.css': '<%= pkg.name %>/templates/elegant/elegant.sass',
                     '<%= pkg.name %>/templates/default/default.css': '<%= pkg.name %>/templates/default/default.sass'
                 }

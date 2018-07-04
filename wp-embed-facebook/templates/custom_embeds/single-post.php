@@ -1,4 +1,4 @@
-<?php
+1<?php
 use SIGAMI\WP_Embed_FB\Embed_FB;
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Helpers;

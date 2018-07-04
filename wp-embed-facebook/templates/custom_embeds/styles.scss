@@ -1,7 +1,10 @@
-$prefix: wef-;
+/**
+You may ask why this prefix ? It will help you to white label you custom embeds using a custom template :)
+ */
+$pf: wef-;
 
 //Main Styles
-.#{$prefix}container {
+.#{$pf}container {
   padding: 10px;
   line-height: 20px;
   font: {
@@ -14,7 +17,7 @@ $prefix: wef-;
   display: table;
   width: 100%;
   @media (min-width: 30em) {
-    .#{$prefix}row {
+    .#{$pf}row {
       width: 100%;
       display: table-row;
       table-layout: fixed;
@@ -22,7 +25,7 @@ $prefix: wef-;
     }
 
     @for $i from 1 through 12 {
-      .#{$prefix}col-#{$i} {
+      .#{$pf}col-#{$i} {
         width: 100%/$i;
         display: table-cell;
         float: left;
@@ -32,7 +35,7 @@ $prefix: wef-;
 
   //Template Styles
 
-  hr.#{$prefix}hr {
+  hr.#{$pf}hr {
     margin: {
       top: 10px !important;
       bottom: 10px !important;
@@ -52,7 +55,7 @@ $prefix: wef-;
     width: 100% !important;
   }
 
-  img.#{$prefix}icon {
+  img.#{$pf}icon {
     float: right;
     box-shadow: none;
     margin: 0;
@@ -60,7 +63,7 @@ $prefix: wef-;
     display: block;
   }
 
-  img.#{$prefix}thumbnail {
+  img.#{$pf}thumbnail {
     border: 1px solid #808080;
     border-radius: 2px;
     height: 60px !important;
@@ -69,11 +72,11 @@ $prefix: wef-;
     width: 60px !important;
   }
 
-  .#{$prefix}album-thumbs {
+  .#{$pf}album-thumbs {
     display: inline-block;
   }
 
-  a.#{$prefix}button {
+  a.#{$pf}button {
     padding: 5px 9px !important;
     text-align: center;
     text-decoration: none !important;
@@ -108,7 +111,7 @@ $prefix: wef-;
       text-decoration: underline !important;
     }
 
-    &.#{$prefix}post-likes {
+    &.#{$pf}post-likes {
       color: #6d84b4 !important;
       font-size: 12px !important;
     }
@@ -131,7 +134,7 @@ $prefix: wef-;
     padding: 0 !important;
     margin: 0 !important;
 
-    &.#{$prefix}post-time {
+    &.#{$pf}post-time {
       font-style: italic;
       color: #8e8c8d;
       font-size: 12px;
@@ -173,7 +176,7 @@ $prefix: wef-;
     padding: 0 !important;
   }
 
-  .#{$prefix}post-link {
+  .#{$pf}post-link {
     border: {
       width: 1px;
       style: solid;
@@ -188,20 +191,20 @@ $prefix: wef-;
     }
   }
 
-  .#{$prefix}text-center {
+  .#{$pf}text-center {
     text-align: center;
   }
 
-  .#{$prefix}text-right {
+  .#{$pf}text-right {
     text-align: right;
   }
 
-  .#{$prefix}pl-none {
+  .#{$pf}pl-none {
     padding-left: 0 !important;
     word-break: break-all;
   }
 
-  .#{$prefix}title {
+  .#{$pf}title {
     font-size: 20px !important;
     font-weight: bold !important;
     word-break: break-all;
@@ -211,28 +214,28 @@ $prefix: wef-;
     padding-top: 5px !important;
   }
 
-  .#{$prefix}pad-top {
+  .#{$pf}pad-top {
     padding: {
       top: 5px;
     }
   }
 
-  .#{$prefix}measure {
+  .#{$pf}measure {
     width: 100%;
   }
 
-  .#{$prefix}event_address {
+  .#{$pf}event_address {
     color: #404040;
     font-style: italic;
   }
 
-  .#{$prefix}relative-container {
+  .#{$pf}relative-container {
     position: relative;
     display: block;
     height: 0;
     overflow: hidden;
 
-    .#{$prefix}relative {
+    .#{$pf}relative {
       position: absolute;
       top: 0;
       left: 0;
@@ -245,15 +248,15 @@ $prefix: wef-;
     }
   }
 
-  .#{$prefix}video {
+  .#{$pf}video {
     padding: 0 0 56.25%;
 
     iframe, embed, object, video {
-      @extend .#{$prefix}relative;
+      @extend .#{$pf}relative;
     }
   }
 
-  .#{$prefix}fbpost-image {
+  .#{$pf}fbpost-image {
     padding: 0 0 75%;
 
     div {
@@ -265,7 +268,7 @@ $prefix: wef-;
     }
   }
 
-  .#{$prefix}cover {
+  .#{$pf}cover {
     padding: 0 0 36.86%;
 
     div {
@@ -276,7 +279,7 @@ $prefix: wef-;
   }
 
   //TODO can be span or div
-  .#{$prefix}album-thumb {
+  .#{$pf}album-thumb {
     height: 65px !important;
     margin: 1px;
     padding: 2px;
@@ -285,7 +288,7 @@ $prefix: wef-;
     background-size: cover;
   }
 
-  .#{$prefix}hovereffect {
+  .#{$pf}hovereffect {
     width: 100%;
     height: 100%;
     float: left;
@@ -352,7 +355,7 @@ $prefix: wef-;
 }
 
 //Theme Styles
-.#{$prefix}default {
+.#{$pf}default {
   background-color: #FFFFFF;
   border: {
     width: 1px;
@@ -362,7 +365,7 @@ $prefix: wef-;
   }
 }
 
-.#{$prefix}classic {
+.#{$pf}classic {
   background-color: #FFFFFF;
   margin: 10px auto;
   border: {
@@ -375,7 +378,7 @@ $prefix: wef-;
   color: #0f0f0f;
 }
 
-.#{$prefix}elegant {
+.#{$pf}elegant {
   margin: 10px auto;
   border: {
     width: 1px;

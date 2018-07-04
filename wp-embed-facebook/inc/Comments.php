@@ -50,6 +50,12 @@ class  Comments {
 		}
 	}
 
+	static function active_on_post_type(){
+		$post_types = Helpers::string_to_array( Plugin::get_option( 'auto_comments_post_types' ) );
+		return is_singular($post_types) || is_post_type_archive($post_types);
+
+	}
+
 	static function uninstall() {
 		delete_post_meta_by_key( '_wef_comment_count' );
 	}
@@ -72,10 +78,12 @@ class  Comments {
 	 * @return string
 	 */
 	static function comments_template( $template ) {
-		$array = Helpers::string_to_array( Plugin::get_option( 'auto_comments_post_types' ) );
-		if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
-			$template = Plugin::path() . 'templates/comments.php';
+
+		if ( ! self::active_on_post_type() ) {
+			return $template;
 		}
+
+		$template = Plugin::path() . 'templates/comments.php';
 
 		return $template;
 	}
@@ -92,6 +100,10 @@ class  Comments {
 		/** @noinspection PhpUnusedParameterInspection */
 		$number, $post_id
 	) {
+		if ( ! self::active_on_post_type() ) {
+			return $number;
+		}
+
 		$count = get_post_meta( $post_id, '_wef_comment_count', true );
 		if ( $count ) {
 			return $count;
@@ -108,27 +120,29 @@ class  Comments {
 	 * @param $update
 	 */
 	static function save_post( $post_id, $post, $update ) {
-		if ( wp_is_post_revision( $post_id ) || ! $update ) {
+		if ( wp_is_post_revision( $post_id )
+		     || ! $update
+		     || ! self::active_on_post_type()) {
 			return;
 		}
-		$options = Plugin::get_option();
-		$array   = Helpers::string_to_array( $options['auto_comments_post_types'] );
-		//https://graph.facebook.com/?id=http://t-underboot.sigami.net/?p=4
-		if ( in_array( $post->post_type, $array ) ) {
-			$args     = [
-				'fields' => 'share{comment_count}',
-				'id'     => home_url( "/?p=$post_id" )
-			];
-			$url      = "https://graph.facebook.com/{$options[ 'sdk_version' ]}/?" . http_build_query( $args );
-			$request  = wp_remote_get( $url );
-			$response = wp_remote_retrieve_body( $request );
-			if ( ! is_wp_error( $request ) && ! empty( $response ) ) {
-				$data = json_decode( $response, true );
-				//					print_r($data);die();
-				if ( is_array( $data ) && isset( $data['share'] ) && isset( $data['share']['comment_count'] ) ) {
-					update_post_meta( $post->ID, '_wef_comment_count',
-						intval( $data['share']['comment_count'] ) );
-				}
+
+		$sdk_version = Plugin::get_option('sdk_version');
+
+		$args     = [
+			'fields' => 'share{comment_count}',
+			'id'     => home_url( "/?p=$post_id" )
+		];
+		$url      = "https://graph.facebook.com/$sdk_version/?"
+		            . http_build_query( $args );
+		$request  = wp_remote_get( $url );
+		$response = wp_remote_retrieve_body( $request );
+		if ( ! is_wp_error( $request ) && ! empty( $response ) ) {
+			$data = json_decode( $response, true );
+			//					print_r($data);die();
+			if ( is_array( $data ) && isset( $data['share'] )
+			     && isset( $data['share']['comment_count'] ) ) {
+				update_post_meta( $post->ID, '_wef_comment_count',
+					intval( $data['share']['comment_count'] ) );
 			}
 		}
 	}
@@ -141,10 +155,14 @@ class  Comments {
 	 * @return \WP_Query
 	 */
 	static function pre_get_posts( $query ) {
-		if ( isset( $query->query_vars['orderby'] ) && $query->query_vars['orderby'] == 'comment_count' ) {
-			$query->set(
-				'meta_query',
-				[
+
+		if($query->get('post_type')) {			//todo if in array
+		}
+
+
+			if ( isset( $query->query_vars['orderby'] )
+		     && $query->query_vars['orderby'] == 'comment_count' ) {
+			$query->set( 'meta_query', [
 					'relation' => 'OR',
 					[
 						'key'     => '_wef_comment_count',
@@ -154,8 +172,7 @@ class  Comments {
 						'key'     => '_wef_comment_count',
 						'compare' => 'EXISTS'
 					]
-				]
-			);
+				] );
 			$query->set( 'orderby', 'meta_value_num' );
 		}
 
@@ -175,7 +192,10 @@ class  Comments {
 				$count --;
 			}
 			update_post_meta( $post_id, '_wef_comment_count', intval( $count ) );
-			//TODO save info of the last 50 comments for recent comments widget
+
+			//TODO save info of the last 50 comments for recent comments widget on extended embeds
+			do_action( 'wef_updated_comment', $post_id, $_POST['response'] );
+
 		}
 		wp_die();
 	}
