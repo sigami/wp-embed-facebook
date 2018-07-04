@@ -10,6 +10,8 @@ namespace SIGAMI\WP_Embed_FB;
  */
 class  Comments {
 
+	public static $current_post_type = '';
+
 	private static $instance = null;
 
 	static function instance() {
@@ -21,7 +23,6 @@ class  Comments {
 	}
 
 	private function __construct() {
-
 		/** @see Comments::comments_template */
 		add_filter( 'comments_template', __CLASS__ . '::comments_template' );
 
@@ -31,7 +32,7 @@ class  Comments {
 			add_filter( 'get_comments_number', __CLASS__ . '::get_comments_number', 10, 2 );
 
 			/** @see Comments::save_post */
-			add_filter( 'save_post', __CLASS__ . '::save_post', 10, 3 );
+			add_action( 'save_post', __CLASS__ . '::save_post', 10, 3 );
 
 			/** @see Comments::pre_get_posts */
 			add_action( 'pre_get_posts', __CLASS__ . '::pre_get_posts' );
@@ -50,10 +51,20 @@ class  Comments {
 		}
 	}
 
-	static function active_on_post_type(){
-		$post_types = Helpers::string_to_array( Plugin::get_option( 'auto_comments_post_types' ) );
-		return is_singular($post_types) || is_post_type_archive($post_types);
+	static function active_on_post_type() {
+		global $post_type, $post;
 
+		$allowed_post_types = Helpers::string_to_array( trim( Plugin::get_option( 'auto_comments_post_types' ),
+			' ,' ) );
+
+		if ( in_array( self::$current_post_type, $allowed_post_types )
+		     || in_array( $post_type, $allowed_post_types )
+		     || ( ( $post instanceof \WP_Post )
+		          && in_array( $post->post_type, $allowed_post_types ) ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	static function uninstall() {
@@ -96,10 +107,15 @@ class  Comments {
 	 *
 	 * @return mixed|string
 	 */
-	static function get_comments_number(
-		/** @noinspection PhpUnusedParameterInspection */
-		$number, $post_id
-	) {
+	static function get_comments_number( $number, $post_id ) {
+
+		//Detect post type if this function is called on an ajax call
+		if ( wp_doing_ajax() ) {
+			if ( empty( self::$current_post_type ) ) {
+				self::$current_post_type = get_post_type( $post_id );
+			}
+		}
+
 		if ( ! self::active_on_post_type() ) {
 			return $number;
 		}
@@ -120,30 +136,21 @@ class  Comments {
 	 * @param $update
 	 */
 	static function save_post( $post_id, $post, $update ) {
+		self::$current_post_type = get_post_type( $post );
 		if ( wp_is_post_revision( $post_id )
 		     || ! $update
-		     || ! self::active_on_post_type()) {
+		     || ! self::active_on_post_type() ) {
 			return;
 		}
 
-		$sdk_version = Plugin::get_option('sdk_version');
+		$data = FB_API::instance()
+		              ->run( "?fields=share{comment_count}&id=" . home_url( "/?p=$post_id" ) );
 
-		$args     = [
-			'fields' => 'share{comment_count}',
-			'id'     => home_url( "/?p=$post_id" )
-		];
-		$url      = "https://graph.facebook.com/$sdk_version/?"
-		            . http_build_query( $args );
-		$request  = wp_remote_get( $url );
-		$response = wp_remote_retrieve_body( $request );
-		if ( ! is_wp_error( $request ) && ! empty( $response ) ) {
-			$data = json_decode( $response, true );
-			//					print_r($data);die();
-			if ( is_array( $data ) && isset( $data['share'] )
-			     && isset( $data['share']['comment_count'] ) ) {
-				update_post_meta( $post->ID, '_wef_comment_count',
-					intval( $data['share']['comment_count'] ) );
-			}
+		if ( ! is_wp_error( $data )
+		     && isset( $data['share'] )
+		     && isset( $data['share']['comment_count'] ) ) {
+			update_post_meta( $post->ID, '_wef_comment_count',
+				intval( $data['share']['comment_count'] ) );
 		}
 	}
 
@@ -156,23 +163,22 @@ class  Comments {
 	 */
 	static function pre_get_posts( $query ) {
 
-		if($query->get('post_type')) {			//todo if in array
-		}
+		self::$current_post_type = $query->get( 'post_type' );
 
-
-			if ( isset( $query->query_vars['orderby'] )
+		if ( self::active_on_post_type()
+		     && isset( $query->query_vars['orderby'] )
 		     && $query->query_vars['orderby'] == 'comment_count' ) {
 			$query->set( 'meta_query', [
-					'relation' => 'OR',
-					[
-						'key'     => '_wef_comment_count',
-						'compare' => 'NOT EXISTS'
-					],
-					[
-						'key'     => '_wef_comment_count',
-						'compare' => 'EXISTS'
-					]
-				] );
+				'relation' => 'OR',
+				[
+					'key'     => '_wef_comment_count',
+					'compare' => 'NOT EXISTS'
+				],
+				[
+					'key'     => '_wef_comment_count',
+					'compare' => 'EXISTS'
+				]
+			] );
 			$query->set( 'orderby', 'meta_value_num' );
 		}
 
@@ -195,7 +201,6 @@ class  Comments {
 
 			//TODO save info of the last 50 comments for recent comments widget on extended embeds
 			do_action( 'wef_updated_comment', $post_id, $_POST['response'] );
-
 		}
 		wp_die();
 	}

@@ -13,6 +13,8 @@
     "url": "https://github.com/sigami/wp-embed-facebook/issues"
   },
   "homepage": "http://wpembedfb.com",
+  "private": true,
+  "deployment_host": "wordpress",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-clean": "^1.0.0",

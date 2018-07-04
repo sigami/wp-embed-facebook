@@ -33,7 +33,7 @@ class Magic_Embeds {
 		//Deprecate old api versions
 		add_action( 'init', __CLASS__ . '::init', 999 );
 
-		/** @see WP_Embed_FB::shortcode */
+		/** @see Embed_FB::shortcode */
 		add_shortcode( 'facebook', __NAMESPACE__ . '\Embed_FB::shortcode' );
 		add_shortcode( 'embedfb', __NAMESPACE__ . '\Embed_FB::shortcode' );
 
@@ -99,19 +99,18 @@ class Magic_Embeds {
 	}
 
 	static function wp_enqueue_scripts() {
+		//Legacy for custom templates previous to version 3.0
 		foreach ( [ 'default', 'classic', 'elegant' ] as $theme ) {
-			$on_theme  = get_stylesheet_directory() . "/plugins/wp-embed-facebook/$theme/$theme.css";
-			$true_path = Plugin::url() . "templates/$theme/$theme.css";
-			if ( file_exists( $on_theme ) ) {
-				$true_path = get_stylesheet_directory_uri() . "/plugins/wp-embed-facebook/$theme/$theme.css";
+			$on_theme = locate_template("/plugins/wp-embed-facebook/$theme/$theme.css");
+			if ( ! empty( $on_theme ) ) {
+				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::VER );
 			}
-
-			wp_register_style( 'wpemfb-' . $theme, $true_path, [], '1.1' );
 		}
+		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css', [] ,Plugin::VER );
 		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'inc/wef-lightbox/css/lightbox.css',
-			[], '1.0' );
+			[], Plugin::VER );
 		wp_register_script( 'wpemfb-lightbox',
-			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ], '1.0' );
+			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ], Plugin::VER );
 		$lb_defaults       = Helpers::get_lb_defaults();
 		$options           = Plugin::get_option();
 		$translation_array = [];
@@ -125,9 +124,9 @@ class Magic_Embeds {
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
 		wp_register_script( 'wpemfb', Plugin::url() . 'inc/js/wpembedfb.min.js', [ 'jquery' ],
-			'1.0', true );
+			Plugin::VER, true );
 
-		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', [], '1.1' );
+		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', [], Plugin::VER );
 		$translation_array = [
 			'local'   => $options['sdk_lang'],
 			'version' => $options['sdk_version'],

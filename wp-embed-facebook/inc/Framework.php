@@ -2,6 +2,10 @@
 
 namespace SIGAMI\WP_Embed_FB;
 
+/**
+ * Class Framework
+ * @version 2.3
+ */
 abstract class Framework {
 
 	###########################################
@@ -11,7 +15,7 @@ abstract class Framework {
 	/**
 	 * Plugin Framework Version
 	 */
-	const VER = '2.2.3';
+	const FRAMEWORK_VERSION = '2.3';
 
 	/**
 	 * @var string __FILE__ constant from plugin FILE

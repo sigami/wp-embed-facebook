@@ -6,6 +6,17 @@
 
 namespace SIGAMI\WP_Embed_FB;
 
+/**
+ * Class FB_API
+ * Why use a SDK when WordPress has everything you need.
+ *
+ * Example:
+ * use SIGAMI\WP_Embed_FB\FB_API;
+ * FB_API::instance()->api(); //on error throws \Exception
+ * FB_API::instance()->run(); //on error returns WP_Error
+ *
+ * @package SIGAMI\WP_Embed_FB
+ */
 class FB_API {
 
 	const GRAPH_URL = 'https://graph.facebook.com/';
@@ -115,7 +126,7 @@ class FB_API {
 	}
 
 	/**
-	 * Why use a SDK when WP has everything you need.
+	 * Same name as in FB PHP SDK
 	 *
 	 * @param string $string
 	 * @param string $method

@@ -9,7 +9,6 @@ module.exports = function (grunt) {
     }
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        vars: grunt.file.readJSON('variables.json'),
         watch: {
             sass: {
                 options: {
@@ -40,9 +39,7 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.css': '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.sass',
-                    '<%= pkg.name %>/templates/custom_embeds/styles.css': '<%= pkg.name %>/templates/classic/classic.sass',
-                    '<%= pkg.name %>/templates/elegant/elegant.css': '<%= pkg.name %>/templates/elegant/elegant.sass',
-                    '<%= pkg.name %>/templates/default/default.css': '<%= pkg.name %>/templates/default/default.sass'
+                    '<%= pkg.name %>/templates/custom_embeds/styles.css': '<%= pkg.name %>/templates/custom_embeds/styles.scss',
                 }
             }
         },

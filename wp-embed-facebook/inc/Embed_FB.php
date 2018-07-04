@@ -105,6 +105,8 @@ class Embed_FB {
 			}
 		}
 		if ( self::is_raw( $type_and_id['type'] ) ) {
+			wp_enqueue_style( 'wpemfb-custom' );
+			//Legacy support for custom embeds on
 			wp_enqueue_style( 'wpemfb-' . self::get_theme() );
 		}
 		do_action( 'wp_embed_fb' );
@@ -532,8 +534,11 @@ class Embed_FB {
 	 */
 	static function locate_template( $template_name ) {
 		$theme   = self::get_theme();
-		$located = locate_template( [ 'plugins/wp-embed-facebook/' . $theme . '/' . $template_name . '.php' ] );
-		$file    = 'templates/' . $theme . '/' . $template_name . '.php';
+		$located = locate_template( [
+			'plugins/wp-embed-facebook/custom-embeds/' . $template_name . '.php',
+			'plugins/wp-embed-facebook/' . $theme . '/' . $template_name . '.php',
+		] );
+		$file    = 'templates/custom-embeds/' . $template_name . '.php';
 		if ( empty( $located ) ) {
 			$located = Plugin::path() . $file;
 		}
