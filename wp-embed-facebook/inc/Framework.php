@@ -4,6 +4,7 @@ namespace SIGAMI\WP_Embed_FB;
 
 /**
  * Class Framework
+ *
  * @version 2.3
  */
 abstract class Framework {
@@ -15,7 +16,7 @@ abstract class Framework {
 	/**
 	 * Plugin Framework Version
 	 */
-	const FRAMEWORK_VERSION = '2.3';
+	const FRAMEWORK_VERSION = '2.5';
 
 	/**
 	 * @var string __FILE__ constant from plugin FILE
@@ -40,18 +41,13 @@ abstract class Framework {
 	protected static $option = '';
 
 	/**
-	 * @var bool Refresh options on each page load, helpful to add new defaults on the fly
-	 *           set to WP_DEBUG on Framework constructor.
-	 */
-	protected static $defaults_change = null;
-
-	/**
 	 * Admin page page_type to edit the plugin options. Set to false disable this feature.
 	 *
 	 * @var string
 	 *      menu|submenu|management|options|theme|plugins|users|dashboard|posts|media|links|pages|comments
 	 */
-	protected static $page_type  = 'options';
+	protected static $page_type = 'options';
+
 	protected static $capability = 'manage_options';
 	protected static $menu_slug  = 'new_page';
 	# Only for menu pages (Top Level)
@@ -64,6 +60,18 @@ abstract class Framework {
 	protected static $menu_title   = 'New Page';
 	protected static $reset_string = 'Reset to defaults';
 	protected static $confirmation = 'Are you sure?';
+
+	/**
+	 * @var bool Refresh options on each page load, helpful to add new defaults on the fly
+	 *           set to WP_DEBUG on Framework constructor.
+	 */
+	protected static $defaults_change = null;
+
+	/**
+	 * @var bool|int Enqueue //localhost:35729/livereload.js for grunt watch task
+	 *               set to int to change port number
+	 */
+	protected static $livereload = false;
 
 	static function instance( $file ) {
 		if ( self::$instance === null ) {
@@ -80,10 +88,6 @@ abstract class Framework {
 		}
 
 		static::$FILE = $file;
-
-		if ( ( static::$defaults_change === null ) && defined( WP_DEBUG ) ) {
-			static::$defaults_change = (bool) WP_DEBUG;
-		}
 
 		add_action( 'plugins_loaded', get_called_class() . '::load_translation' );
 		register_setting( "Settings_" . static::$option, static::$option, [
@@ -102,6 +106,19 @@ abstract class Framework {
 			/** @see Plugin_Framework::add_pager_script() */
 			add_action( 'current_screen', get_called_class() . '::add_pager_script' );
 		}
+
+		if ( WP_DEBUG ) {
+			static::$defaults_change = true;
+			if ( static::$livereload ) {
+				add_action( 'wp_enqueue_scripts', get_called_class() . '::livereload' );
+				add_action( 'admin_enqueue_scripts', get_called_class() . '::livereload' );
+			}
+		}
+	}
+
+	static function livereload() {
+	    $port = is_numeric(static::$livereload) ? static::$livereload : 35729;
+		wp_enqueue_script( static::$option . '-livereload', "//localhost:$port/livereload.js" );
 	}
 
 	static function activation() {
@@ -195,8 +212,8 @@ abstract class Framework {
 					} else {
 						$compare = [];
 						foreach ( static::defaults() as $default_key => $default_value ) {
-							$compare[ $default_key ] = isset( $options[ $default_key ] ) ?
-								$options[ $default_key ] : $default_value;
+							$compare[ $default_key ] = isset( $options[ $default_key ] )
+								? $options[ $default_key ] : $default_value;
 						}
 						if ( $compare === $options ) {
 							self::$options = $options;
@@ -250,11 +267,9 @@ abstract class Framework {
 				if ( is_int( $default_value ) ) {
 					$options[ $name ] = (int) $options[ $name ];
 				}
-				if (
-					( is_string( $default_value ) && is_string( $options[ $name ] ) )
-					|| ( is_object( $default_value ) && is_object( $options[ $name ] ) )
-					|| ( is_array( $default_value ) && is_array( $options[ $name ] ) )
-				) {
+				if ( ( is_string( $default_value ) && is_string( $options[ $name ] ) )
+				     || ( is_object( $default_value ) && is_object( $options[ $name ] ) )
+				     || ( is_array( $default_value ) && is_array( $options[ $name ] ) ) ) {
 					$clean[ $name ] = $options[ $name ];
 				}
 			}
@@ -365,7 +380,9 @@ abstract class Framework {
 	 *                                ['required','max'=>20,'onclick'=>'do_something()']
 	 * @param array      $values      Option values for select and checklist fields
 	 */
-	static function field( $type, $name = '', $label = '', $description = '', $atts = null, $values = [] ) {
+	static function field(
+		$type, $name = '', $label = '', $description = '', $atts = null, $values = []
+	) {
 		//TODO add aria-described-by on input that points to the id of description
 		$options    = apply_filters( static::$option . '_field_options', static::get_option() );
 		$help_text  = ! empty( $description ) ? "<p class=\"description\">$description</p>" : "";
@@ -381,13 +398,14 @@ abstract class Framework {
                         <fieldset>
 							<?php
 							foreach ( $values as $value => $title ) :
-								$checked = ( in_array( $value,
-									$options[ $name ] ) ) ? 'checked' : '';
+								$checked = ( in_array( $value, $options[ $name ] ) ) ? 'checked'
+									: '';
 								?>
                                 <label for="<?php echo "{$name}_$value" ?>">
                                     <input type="checkbox" id="<?php echo "{$name}_$value" ?>"
                                            name="<?php echo static::$option . "[$name][]" ?>"
-                                           value="<?php echo $value ?>" <?php echo $checked . ' ' . $attsString ?>/>
+                                           value="<?php echo $value ?>" <?php echo $checked . ' '
+									                                               . $attsString ?>/>
                                     <span><?php echo $title ?></span>
                                 </label>
                                 <br>
@@ -412,7 +430,8 @@ abstract class Framework {
                     <td>
                         <label for="users_can_register">
                             <input type="checkbox" id="<?php echo $name ?>"
-                                   name="<?php echo static::$option . "[$name]" ?>" <?php echo $checked ?>
+                                   name="<?php echo static::$option
+							                        . "[$name]" ?>" <?php echo $checked ?>
                                    value="true" <?php echo self::atts2string( $atts ) ?>/>
 							<?php echo $description ?></label>
                     </td>
@@ -426,17 +445,20 @@ abstract class Framework {
 				?>
                 <tr valign="middle">
                     <th scope="row"><label
-                                for="<?php echo static::$option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo static::$option
+								                . "[$name]" ?>"><?php echo $label ?></label>
                     </th>
                     <td>
-                        <select name="<?php echo static::$option . "[$name]" ?>" <?php echo $attsString ?>>
+                        <select name="<?php echo static::$option
+						                         . "[$name]" ?>" <?php echo $attsString ?>>
 							<?php
 							foreach ( $values as $value => $name ) :
 								if ( is_numeric( $value ) ) {
 									$value = $name;
 								}
 								?>
-                                <option value="<?php echo $value ?>" <?php echo $option == $value ? 'selected' : '' ?>><?php echo $name ?></option>
+                                <option value="<?php echo $value ?>" <?php echo $option == $value
+									? 'selected' : '' ?>><?php echo $name ?></option>
 							<?php endforeach; ?>
                         </select>
 						<?php echo $help_text ?>
@@ -466,7 +488,8 @@ abstract class Framework {
 				?>
                 <tr>
                     <th scope="row"><label
-                                for="<?php echo static::$option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo static::$option
+								                . "[$name]" ?>"><?php echo $label ?></label>
                     </th>
                     <td>
                         <input id="<?php echo $name ?>"
