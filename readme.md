@@ -2,9 +2,11 @@
 
 This is the official development version of the [WP Embed Facebook](https://wordpress.org/plugins/wp-embed-facebook/) plugin.
 
-If you found a bug or wish to add extra features, this is the place.
+If you found a bug  or wish to add extra features, this is the place.
 
 ## Roadmap ##
+
+
 
 The idea is to make a fully functional free plugin, with no limitations for the user.
 

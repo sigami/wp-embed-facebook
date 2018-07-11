@@ -128,6 +128,28 @@ class Helpers {
 		return self::$lb_defaults;
 	}
 
+	static function make_clickable( $text ) {
+		if ( empty( $text ) ) {
+			return $text;
+		}
+
+		return wpautop( self::rel_nofollow( make_clickable( $text ) ) );
+	}
+
+	static function rel_nofollow( $text ) {
+		$text = stripslashes( $text );
+
+		return preg_replace_callback( /** @lang text */
+			'|<a (.+?)>|i', [ __CLASS__, 'nofollow_callback' ], $text );
+	}
+
+	static function nofollow_callback( $matches ) {
+		$text = $matches[1];
+		$text = str_replace( [ ' rel="nofollow"', " rel='nofollow'" ], '', $text );
+
+		return "<a $text rel=\"nofollow\">";
+	}
+
 	static function get_fb_locales() {
 		return [
 

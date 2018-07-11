@@ -41,8 +41,6 @@ class Magic_Embeds {
 		add_shortcode( 'fb_plugin', __NAMESPACE__ . '\Social_Plugins::shortcode' );
 
 		add_action( 'widgets_init', __CLASS__ . '::widgets_init' );
-
-		//TODO add content filter and option to force embed when it fails for weirb reasons
 		//TODO do some magic with [facebook] JetPack shortcode.
 
 	}
@@ -88,7 +86,7 @@ class Magic_Embeds {
 	 */
 	static function plugins_loaded() {
 		wp_embed_register_handler( "wpembedfb", "/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/",
-			__CLASS__.'::embed_register_handler' );
+			__CLASS__ . '::embed_register_handler' );
 	}
 
 	static function embed_register_handler(
@@ -101,16 +99,18 @@ class Magic_Embeds {
 	static function wp_enqueue_scripts() {
 		//Legacy for custom templates previous to version 3.0
 		foreach ( [ 'default', 'classic', 'elegant' ] as $theme ) {
-			$on_theme = locate_template("/plugins/wp-embed-facebook/$theme/$theme.css");
+			$on_theme = locate_template( "/plugins/wp-embed-facebook/$theme/$theme.css" );
 			if ( ! empty( $on_theme ) ) {
-				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::VER );
+				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::PLUGIN_VERSION );
 			}
 		}
-		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css', [] ,Plugin::VER );
+		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css',
+			[], Plugin::PLUGIN_VERSION );
 		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'inc/wef-lightbox/css/lightbox.css',
-			[], Plugin::VER );
+			[], Plugin::PLUGIN_VERSION );
 		wp_register_script( 'wpemfb-lightbox',
-			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ], Plugin::VER );
+			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ],
+			Plugin::PLUGIN_VERSION );
 		$lb_defaults       = Helpers::get_lb_defaults();
 		$options           = Plugin::get_option();
 		$translation_array = [];
@@ -124,9 +124,10 @@ class Magic_Embeds {
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
 		wp_register_script( 'wpemfb', Plugin::url() . 'inc/js/wpembedfb.min.js', [ 'jquery' ],
-			Plugin::VER, true );
+			Plugin::PLUGIN_VERSION, true );
 
-		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', [], Plugin::VER );
+		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', [],
+			Plugin::PLUGIN_VERSION );
 		$translation_array = [
 			'local'   => $options['sdk_lang'],
 			'version' => $options['sdk_version'],

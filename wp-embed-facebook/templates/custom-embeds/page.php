@@ -26,7 +26,7 @@ use SIGAMI\WP_Embed_FB\Embed_FB;
 					}
 				?><br>
 				<?php if(isset($fb_data["website"]) && (strip_tags($fb_data["website"]) != '')) :  ?>
-					<a  href="<?php echo Embed_FB::getwebsite($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
+					<a  href="<?php echo esc_url_raw($fb_data["website"]) ?>" title="<?php _e('Web Site', 'wp-embed-facebook')  ?>" target="_blank">
 						<?php _e('Web Site','wp-embed-facebook') ?>
 					</a>						
 				<?php endif; ?>

@@ -12,7 +12,7 @@ date_default_timezone_set(Helpers::get_timezone());
 $time = $icon . date_i18n(Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
 date_default_timezone_set($old_time_zone);
 
-$description = isset($fb_post['description']) && !empty($fb_post['description']) ? Embed_FB::make_clickable($fb_post['description']) : '';
+$description = isset($fb_post['description']) && !empty($fb_post['description']) ? Helpers::make_clickable($fb_post['description']) : '';
 
 $linkArray = explode("_", $fb_post['id']);
 $link = (isset($fb_post['link']) && !empty($fb_post['link'])) ? $fb_post['link'] : "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1];
@@ -28,7 +28,7 @@ if ($caption == $message) {
 	$caption = '';
 }
 
-$message = Embed_FB::make_clickable($message);
+$message = Helpers::make_clickable($message);
 
 
 $name = empty($name) ? '' : "<p class=\"caption-title\"><a href=\"$link\" title=\"$name\" target=\"_blank\" rel=\"nofollow\">$name</a></p>";

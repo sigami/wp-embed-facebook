@@ -20,7 +20,7 @@ class Admin {
 
 		self::$url = admin_url( 'options-general.php?page=' . Plugin::$menu_slug );
 
-		//Donate or review notice
+		//notices
 		add_action( 'admin_notices', __CLASS__ . '::admin_notices' );
 		add_action( 'wp_ajax_wpemfb_close_warning', __CLASS__ . '::wpemfb_close_warning' );
 
@@ -59,6 +59,28 @@ class Admin {
 		die;
 	}
 
+	static function in_admin_footer() {
+		ob_start();
+		if ( Plugin::get_option( 'close_warning2' ) == 'false' ) :
+			?>
+            <script type="text/javascript">
+                jQuery(document).on('click', '.wpemfb_warning .notice-dismiss', function () {
+                    jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'});
+                });
+
+                jQuery(document).on('click', '#wef_settings_link', function (e) {
+                    e.preventDefault();
+                    jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'}, function () {
+                        window.location = "<?php echo Admin::$url; ?>"
+                    });
+
+                });
+            </script>
+		<?php
+		endif;
+		echo ob_get_clean();
+	}
+
 	/**
 	 * Enqueue WP Embed Facebook js and css to admin page
 	 *
@@ -68,14 +90,9 @@ class Admin {
 		if ( $hook_suffix == 'settings_page_' . Plugin::$menu_slug ) {
 			wp_enqueue_style( 'wpemfb-admin-css', Plugin::url() . 'inc/css/admin.css' );
 		}
-		wp_enqueue_style( 'wpemfb-default', Plugin::url() . 'templates/default/default.css', [],
-			false );
-		wp_enqueue_style( 'wpemfb-classic', Plugin::url() . 'templates/classic/classic.css', [],
-			false );
-		wp_enqueue_style( 'wpemfb-elegant', Plugin::url() . 'templates/elegant/elegant.css', [],
-			false );
-		wp_enqueue_style( 'wpemfb-lightbox', Plugin::url() . 'inc/wef-lightbox/css/lightbox.css',
-			[], false );
+
+		wp_enqueue_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css', [],
+			Plugin::PLUGIN_VERSION );
 	}
 
 	static function add_action_link( $links ) {
@@ -89,37 +106,22 @@ class Admin {
 	 * Add template editor style to the embeds.
 	 */
 	static function admin_init() {
-		//add_editor_style( Plugin::url() . 'templates/default/default.css' );
-		//add_editor_style( Plugin::url() . 'templates/classic/classic.css' );
-		//This way I only have to change the version instead of all
 		add_filter( 'mce_css', __CLASS__ . '::mce_css' );
 	}
 
 	static function mce_css( $css ) {
 
-		$list = [];
-
-		$list[] = add_query_arg(
+		$styles = add_query_arg(
 			'version',
 			Plugin::PLUGIN_VERSION,
-			Plugin::url() . 'templates/classic/classic.css'
-		);
-		$list[] = add_query_arg(
-			'version',
-			Plugin::PLUGIN_VERSION,
-			Plugin::url() . 'templates/default/default.css'
-		);
-		$list[] = add_query_arg(
-			'version',
-			Plugin::PLUGIN_VERSION,
-			Plugin::url() . 'templates/elegant/elegant.css'
+			Plugin::url() . 'templates/custom-embeds/styles.css'
 		);
 
 		if ( ! empty( $css ) ) {
 			$css .= ',';
 		}
 
-		return $css . implode( ',', $list );
+		return $css . $styles;
 	}
 
 }

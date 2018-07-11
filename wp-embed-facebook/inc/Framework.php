@@ -4,18 +4,14 @@ namespace SIGAMI\WP_Embed_FB;
 
 /**
  * Class Framework
- * @version 2.3
+ *
+ * @version 2.3.2
  */
 abstract class Framework {
 
 	###########################################
 	# Cache of commonly used vars do not edit #
 	###########################################
-
-	/**
-	 * Plugin Framework Version
-	 */
-	const FRAMEWORK_VERSION = '2.3';
 
 	/**
 	 * @var string __FILE__ constant from plugin FILE
@@ -46,7 +42,15 @@ abstract class Framework {
 	protected static $defaults_change = null;
 
 	/**
-	 * Admin page page_type to edit the plugin options. Set to false disable this feature.
+	 * String values for toggle options like checkboxes or any other internal process
+	 *
+	 * @var string
+	 */
+	protected static $on  = 'true';
+	protected static $off = 'false';
+
+	/**
+	 * Admin page type to edit the plugin options. Set to false disable this feature.
 	 *
 	 * @var string
 	 *      menu|submenu|management|options|theme|plugins|users|dashboard|posts|media|links|pages|comments
@@ -60,8 +64,13 @@ abstract class Framework {
 	# Only for submenu pages
 	protected static $parent_slug = 'options-general.php';
 	# Labels for options page. Set i18n on constructor
-	protected static $page_title   = 'New Page';
-	protected static $menu_title   = 'New Page';
+	protected static $page_title = 'New Page';
+	protected static $menu_title = 'New Page';
+	/**
+	 * @var bool Enable reset button on options page
+	 */
+	protected static $reset_button = true;
+	# Labels for reset options. Set i18n on constructor
 	protected static $reset_string = 'Reset to defaults';
 	protected static $confirmation = 'Are you sure?';
 
@@ -187,8 +196,9 @@ abstract class Framework {
 		if ( ! is_array( self::$options ) ) {
 			$options = get_option( static::$option );
 			if ( is_array( $options ) ) {
-				#Sanitize options on install, update and on development when you add a new default
-				#and want it to show on the next page load. Equals to WP_DEBUG on construct
+				#Sanitize options on install, update and on development also useful when you want to
+				# add a new default and want it to show on the next page load.
+				# Equals to WP_DEBUG on construct
 				if ( static::$defaults_change ) {
 					if ( $options === static::defaults() ) {
 						self::$options = $options;
@@ -240,11 +250,11 @@ abstract class Framework {
 		$clean = [];
 		foreach ( $defaults as $name => $default_value ) {
 			$clean[ $name ] = $default_value;
-			if ( ( ( $default_value === 'true' ) || ( $default_value === 'false' ) ) ) {
-				if ( isset( $options[ $name ] ) && ( $options[ $name ] === 'true' ) ) {
-					$clean[ $name ] = 'true';
+			if ( ( ( $default_value === static::$on ) || ( $default_value === static::$off ) ) ) {
+				if ( isset( $options[ $name ] ) && ( $options[ $name ] === static::$on ) ) {
+					$clean[ $name ] = static::$on;
 				} else {
-					$clean[ $name ] = 'false';
+					$clean[ $name ] = static::$off;
 				}
 			} elseif ( isset( $options[ $name ] ) ) {
 				if ( is_int( $default_value ) ) {
@@ -261,6 +271,15 @@ abstract class Framework {
 		}
 
 		return $clean;
+	}
+
+	/**
+	 * @param string $option
+	 *
+	 * @return bool
+	 */
+	static function is_on( $option ) {
+		return static::get_option( $option ) === static::$on;
 	}
 
 	/**
@@ -400,7 +419,7 @@ abstract class Framework {
 				ob_end_flush();
 				break;
 			case 'checkbox':
-				$checked = ( $options[ $name ] === 'true' ) ? 'checked' : '';
+				$checked = ( $options[ $name ] === static::$on ) ? 'checked' : '';
 				//if(empty($description))
 				//    wp_die('checkbox field needs description');
 				ob_start();
@@ -581,14 +600,17 @@ abstract class Framework {
 					<?php submit_button(); ?>
                 </div>
             </form>
-            <br><?php //TODO make this optional and check 3rd party  ?>
-            <form action="options.php" method="post"
-                  onsubmit="return confirm('<?php echo static::$confirmation ?>');">
-				<?php settings_fields( "Settings_" . static::$option ); ?>
-                <input type="hidden" name="<?php echo static::$option ?>" value="reset_defaults"/>
-                <input type="submit" name="restore" class="button"
-                       value="<?php echo static::$reset_string ?>"/>
-            </form>
+			<?php if ( static::$reset_button ): ?>
+                <br>
+                <form action="options.php" method="post"
+                      onsubmit="return confirm('<?php echo static::$confirmation ?>');">
+					<?php settings_fields( "Settings_" . static::$option ); ?>
+                    <input type="hidden" name="<?php echo static::$option ?>"
+                           value="reset_defaults"/>
+                    <input type="submit" name="restore" class="button"
+                           value="<?php echo static::$reset_string ?>"/>
+                </form>
+			<?php endif ?>
 			<?php static::after_form() ?>
         </div>
 		<?php
@@ -622,6 +644,14 @@ abstract class Framework {
 		}
 
 		return self::$defaults;
+	}
+
+	static function before_form() {
+		echo '';
+	}
+
+	static function after_form() {
+		echo '';
 	}
 
 	/**
@@ -698,13 +728,5 @@ abstract class Framework {
 		 * Allow 3rd party add-on's or extensions to add other sections
 		 */
 		return apply_filters( self::$option . '_admin_sections', $sections );
-	}
-
-	static function before_form() {
-		echo '';
-	}
-
-	static function after_form() {
-		echo '';
 	}
 }

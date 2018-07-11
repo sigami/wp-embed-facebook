@@ -13,7 +13,7 @@ class Widget extends \WP_Widget {
 		parent::__construct(
 			'wef_widget', // Base ID
 			esc_html__( 'WP Embed Facebook', 'wp-embed-facebook' ), // Name
-			array( 'description' => esc_html__( 'Shortcode widget', 'wp-embed-facebook' ), ) // Args
+			[ 'description' => esc_html__( 'Shortcode widget', 'wp-embed-facebook' ), ] // Args
 		);
 	}
 
@@ -28,9 +28,10 @@ class Widget extends \WP_Widget {
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			echo $args['before_title'] . apply_filters( 'widget_title',
+					$instance['title'] ) . $args['after_title'];
 		}
-		echo do_shortcode($instance['shortcode']);
+		echo do_shortcode( $instance['shortcode'] );
 		echo $args['after_widget'];
 	}
 
@@ -44,18 +45,26 @@ class Widget extends \WP_Widget {
 	 * @return string
 	 */
 	public function form( $instance ) {
-		$title = ! empty( $instance['title'] ) ? $instance['title'] : '';
+		$title     = ! empty( $instance['title'] ) ? $instance['title'] : '';
 		$shortcode = ! empty( $instance['shortcode'] ) ? $instance['shortcode'] : '';
 		?>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'wp-embed-facebook' ); ?></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'shortcode' ) ); ?>"><?php esc_attr_e( 'Shortcode:', 'wp-embed-facebook' ); ?><br>
-			<small>Example: [fb_plugin like]</small></label>
-			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'shortcode' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'shortcode' ) ); ?>" type="text" value="<?php echo esc_attr( $shortcode ); ?>">
-		</p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:',
+					'wp-embed-facebook' ); ?></label>
+            <input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"
+                   name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text"
+                   value="<?php echo esc_attr( $title ); ?>">
+        </p>
+        <p>
+            <label for="<?php echo esc_attr( $this->get_field_id( 'shortcode' ) ); ?>"><?php esc_attr_e( 'Shortcode:',
+					'wp-embed-facebook' ); ?><br>
+                <small>Example: [embedfb https://www.facebook... ] or [fb_plugin like]</small>
+            </label>
+            <input class="widefat"
+                   id="<?php echo esc_attr( $this->get_field_id( 'shortcode' ) ); ?>"
+                   name="<?php echo esc_attr( $this->get_field_name( 'shortcode' ) ); ?>"
+                   type="text" value="<?php echo esc_attr( $shortcode ); ?>">
+        </p>
 		<?php
 		return true;
 	}
@@ -71,7 +80,7 @@ class Widget extends \WP_Widget {
 	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
+		$instance          = [];
 		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
 
 		$instance['shortcode'] = ( ! empty( $new_instance['shortcode'] ) ) ? strip_tags( $new_instance['shortcode'] ) : '';

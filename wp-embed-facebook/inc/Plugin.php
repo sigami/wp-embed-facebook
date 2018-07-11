@@ -254,7 +254,7 @@ final class Plugin extends Framework {
 					],
 					[
 						'title'       => __( 'Page plugin',
-								'wp-embed-facebook' ).'<small style="font-weight: 300"> [fb_plugin  page href=]</small>',
+								'wp-embed-facebook' ) . '<small style="font-weight: 300"> [fb_plugin  page href=]</small>',
 						'description' => Social_Plugins::get_links( 'page' ),
 						'fields'      => [
 							[

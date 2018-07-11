@@ -69,13 +69,13 @@ class Embed_FB {
 		}
 
 		return sprintf( __( /** @lang text */
-		'You are using the [facebook] shortcode wrong. See examples <a title="Examples" target="_blank" href="%s" >here</a>.',
+			'You are using the [facebook] shortcode wrong. See examples <a title="Examples" target="_blank" href="%s" >here</a>.',
 			'wp-embed-facebook' ), 'http://www.wpembedfb.com/demo-site/category/custom-embeds/' );
 	}
 
 	/**
-     * Run rabbit
-     *
+	 * Run rabbit
+	 *
 	 * @param      $match
 	 * @param null $url
 	 * @param null $atts
@@ -246,44 +246,10 @@ class Embed_FB {
 		} else {
 			switch ( $type ) {
 				case 'page' :
-					$fb_data = self::fb_api_get( $fb_id, $juice, $type );
-					if ( ! self::valid_fb_data( $fb_data ) ) {
-						return $fb_data;
-					}
-					if ( isset( $fb_data['is_community_page'] ) && $fb_data['is_community_page'] == "1" ) {
-						$template_name = 'com-page';
-					} else {
-						$default = 'page';
-						/**
-						 * Add a new template for a specific facebook category
-						 *
-						 * for example a Museum create the new template at your-theme/plugins/wp-embed-facebook/museum.php
-						 * then on functions.php of your theme
-						 *
-						 * add_filter( 'wpemfb_category_template', 'your_function', 10, 2 );
-						 *
-						 * function your_function( $default, $category ) {
-						 *      if($category == 'Museum/art gallery')
-						 *          return 'museum';
-						 *      else
-						 *      return $default;
-						 * }
-						 *
-						 * @updated 2.0
-						 * @since   1.0
-						 *
-						 * @param string $default file full path
-						 * @param array  $fb_data ['category']  data from facebook
-						 */
-						$template_name = apply_filters( 'wpemfb_category_template', $default,
-							$fb_data['category'] );
-					}
-					break;
 				case 'photo' :
 				case 'post':
 				case 'video' :
 				case 'album' :
-				case 'event' :
 					$fb_data       = self::fb_api_get( $fb_id, $juice, $type );
 					$template_name = $type;
 					break;
@@ -361,7 +327,7 @@ class Embed_FB {
 						break;
 					case 'page' :
 						$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : Plugin::get_option( 'max_posts' );
-						$api_string = $fb_id . '?fields=name,picture,is_community_page,link,id,cover,category,website,genre,fan_count';
+						$api_string = $fb_id . '?locale='.Plugin::get_option('sdk_lang').'&fields=name,picture,is_community_page,link,id,cover,category,website,genre,fan_count';
 						if ( intval( $num_posts ) > 0 ) {
 							$api_string .= ',posts.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
 						}
@@ -372,11 +338,8 @@ class Embed_FB {
 					case 'photo' :
 						$api_string = $fb_id . '?fields=id,source,link,likes.limit(1).summary(true),comments.limit(1).summary(true)';
 						break;
-					case 'event' :
-						$api_string = $fb_id . '?fields=id,name,start_time,end_time,owner,place,picture,timezone,cover';
-						break;
 					case 'post' :
-						$api_string = $fb_id . '?fields=from{id,name,likes,link},id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)';
+						$api_string = $fb_id . '?locale='.Plugin::get_option('sdk_lang').'&fields=from{id,name,likes,link},id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)';
 						break;
 					default :
 						$api_string = $fb_id;
@@ -434,7 +397,7 @@ class Embed_FB {
 			$fb_data = '<p><a href="https://www.facebook.com/' . $url . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
 			if ( is_super_admin() ) {
 				$fb_data .= '<br><span style="color: #4a0e13">' . sprintf( __( /** @lang text */
-				'<small>To embed this type of content you need to setup a facebook app on <a href="%s" title="WP Embed Facebook Settings">settings</a></small>',
+						'<small>To embed this type of content you need to setup a facebook app on <a href="%s" title="WP Embed Facebook Settings">settings</a></small>',
 						'wp-embed-facebook' ), Admin::$url ) . '</span>';
 			}
 			$fb_data .= '</p>';
@@ -553,47 +516,4 @@ class Embed_FB {
 
 		return false;
 	}
-
-	/* DISPLAY UTILITIES */
-
-	static function make_clickable( $text ) {
-		if ( empty( $text ) ) {
-			return $text;
-		}
-
-		return wpautop( self::rel_nofollow( make_clickable( $text ) ) );
-	}
-
-	static function rel_nofollow( $text ) {
-		$text = stripslashes( $text );
-
-		return preg_replace_callback( /** @lang text */
-			'|<a (.+?)>|i', [ __CLASS__, 'nofollow_callback' ], $text );
-	}
-
-	static function nofollow_callback( $matches ) {
-		$text = $matches[1];
-		$text = str_replace( [ ' rel="nofollow"', " rel='nofollow'" ], '', $text );
-
-		return "<a $text rel=\"nofollow\">";
-	}
-
-	/**
-	 * If a user has a lot of websites registered on fb this function will only link to the first
-	 * one
-	 *
-	 * @param string $urls separated by spaces
-	 *
-	 * @return string first url
-	 */
-	static function getwebsite( $urls ) {
-		$url = explode( ' ', trim( $urls ) );
-
-		if ( preg_match( '/https:/', $url[0] ) ) {
-			return $url[0];
-		}
-
-		return 'http://' . $url[0];
-	}
-
 }

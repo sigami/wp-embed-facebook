@@ -387,10 +387,6 @@ class Social_Plugins {
 				'docs' => 'https://developers.facebook.com/docs/plugins/embedded-posts/',
 				'demo' => 'http://www.wpembedfb.com/demo-site/?p=94'
 			],
-			'follow'   => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/follow-button/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=89'
-			]
 		];
 
 	static function get_links( $type, $link = true ) {
@@ -438,7 +434,7 @@ class Social_Plugins {
 	/**
 	 * Gets the HTML code of any social plugin if any
 	 *
-	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post|follow
+	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post
 	 * @param array  $options Defaults are WEF_Social_Plugin::$type
 	 *
 	 * @see WEF_Social_Plugins::$quote
@@ -451,7 +447,6 @@ class Social_Plugins {
 	 * @see WEF_Social_Plugins::$page
 	 * @see WEF_Social_Plugins::$comments
 	 * @see WEF_Social_Plugins::$post
-	 * @see WEF_Social_Plugins::$follow
 	 *
 	 * @return string
 	 */
