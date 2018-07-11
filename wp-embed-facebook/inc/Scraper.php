@@ -18,7 +18,7 @@ class Scraper {
 	}
 
 	private function __construct() {
-
+		//TODO add link to scrape url manually on selected post types
 	}
 
 	/**

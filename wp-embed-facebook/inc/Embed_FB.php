@@ -195,6 +195,8 @@ class Embed_FB {
 				}
 			} elseif ( in_array( 'photos', $juiceArray ) || in_array( 'photo.php', $juiceArray ) ) {
 				$type = 'photo';
+			} elseif ( end( $juiceArray ) == 'events' ) {
+				$type = 'events';
 			} elseif ( in_array( 'events', $juiceArray ) ) {
 				$type = 'event';
 			} elseif ( in_array( 'videos', $juiceArray ) || in_array( 'video.php', $juiceArray ) ) {
@@ -248,7 +250,6 @@ class Embed_FB {
 				case 'page' :
 				case 'photo' :
 				case 'post':
-				case 'video' :
 				case 'album' :
 					$fb_data       = self::fb_api_get( $fb_id, $juice, $type );
 					$template_name = $type;
@@ -265,9 +266,13 @@ class Embed_FB {
 		}
 
 		if ( ! self::valid_fb_data( $fb_data ) ) {
+			if ( is_string( $fb_data ) ) {
+				return $fb_data;
+			}
+
 			return print_r( $fb_data, true );
 		}
-		$template = self::locate_template( $template_name );
+
 		//get default variables to use on templates
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$width = ! empty( self::$width ) ? self::$width : Plugin::get_option( 'max_width' );
@@ -275,9 +280,9 @@ class Embed_FB {
 		ob_start();
 		//show embed post on admin
 		if ( is_admin()
-		     || ( isset( $_GET['action'] ) && $_GET['action'] = 'cs_render_element' )//X Theme compat
-		     || ( isset( $_GET['et_fb'] ) && $_GET['et_fb'] = '1' )//Divi builder compat
-		     || ( wp_doing_ajax() )//ajax compat
+		     || wp_doing_ajax()
+		     || ( isset( $_GET['action'] ) && $_GET['action'] == 'cs_render_element' )//X Theme compat
+		     || isset( $_GET['et_fb'] ) //Divi builder compat
 		) : ?>
             <script>(function (d, s, id) {
                     let js, fjs = d.getElementsByTagName(s)[0];
@@ -292,6 +297,7 @@ class Embed_FB {
 		//I could have hardcoded this but... I know you will leave it there :)
 		echo apply_filters( 'wef_embedded_with',
 			'<!-- Embedded with WP Embed Facebook - http://wpembedfb.com -->' );
+		$template = self::locate_template( $template_name );
 		/**
 		 * Change the file to include on a certain embed.
 		 *
@@ -318,80 +324,70 @@ class Embed_FB {
 	 */
 	static function fb_api_get( $fb_id, $url, $type = "" ) {
 		if ( Helpers::has_fb_app() ) {
-			$fbsdk = self::get_fbsdk();
-			try {
-				switch ( $type ) {
-					case 'album' :
-						self::$num_photos = is_numeric( self::$num_photos ) ? self::$num_photos : Plugin::get_option( 'max_photos' );
-						$api_string       = $fb_id . '?fields=name,id,from,description,count,photos.fields(name,picture,source,id).limit(' . self::$num_photos . ')';
-						break;
-					case 'page' :
-						$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : Plugin::get_option( 'max_posts' );
-						$api_string = $fb_id . '?locale='.Plugin::get_option('sdk_lang').'&fields=name,picture,is_community_page,link,id,cover,category,website,genre,fan_count';
-						if ( intval( $num_posts ) > 0 ) {
-							$api_string .= ',posts.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
-						}
-						break;
-					case 'video' :
-						$api_string = $fb_id . '?fields=id,source,picture,from';
-						break;
-					case 'photo' :
-						$api_string = $fb_id . '?fields=id,source,link,likes.limit(1).summary(true),comments.limit(1).summary(true)';
-						break;
-					case 'post' :
-						$api_string = $fb_id . '?locale='.Plugin::get_option('sdk_lang').'&fields=from{id,name,likes,link},id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)';
-						break;
-					default :
-						$api_string = $fb_id;
-						break;
-				}
-				//echo "type";
-				/**
-				 * Filter the fist fbsdk query
-				 *
-				 * @since 1.9
-				 *
-				 * @param string $api_string The fb api request string according to type
-				 * @param string $fb_id      The id of the object being requested.
-				 * @param string $type       The detected type of embed
-				 *
-				 */
-				$fb_data     = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . apply_filters( 'wpemfb_api_string',
-						$api_string, $fb_id, $type ) );
-				$api_string2 = '';
+			$fb_data = apply_filters( 'wpemfb_custom_fb_data', [], $type, $fb_id, $url );
+			if ( empty( $fb_data ) ) {
+				$fbsdk = FB_API::instance();
+				try {
+					switch ( $type ) {
+						case 'album' :
+							self::$num_photos = is_numeric( self::$num_photos ) ? self::$num_photos : Plugin::get_option( 'max_photos' );
+							$api_string       = $fb_id . '?fields=name,id,from,description,count,photos.fields(name,picture,source,id).limit(' . self::$num_photos . ')';
+							break;
+						case 'page' :
+							$num_posts  = is_numeric( self::$num_posts ) ? self::$num_posts : Plugin::get_option( 'max_posts' );
+							$api_string = $fb_id . '?locale=' . Plugin::get_option( 'sdk_lang' ) . '&fields=name,picture,is_community_page,link,id,cover,category,website,genre,fan_count';
+							if ( intval( $num_posts ) > 0 ) {
+								$api_string .= ',posts.limit(' . $num_posts . '){id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)}';
+							}
+							break;
+						case 'photo' :
+							$api_string = $fb_id . '?fields=id,source,link,likes.limit(1).summary(true),comments.limit(1).summary(true)';
+							break;
+						case 'post' :
+							$api_string = $fb_id . '?locale=' . Plugin::get_option( 'sdk_lang' ) . '&fields=from{id,name,likes,link},id,full_picture,type,via,source,parent_id,call_to_action,story,place,child_attachments,icon,created_time,message,description,caption,name,shares,link,picture,object_id,likes.limit(1).summary(true),comments.limit(1).summary(true)';
+							break;
+						default :
+							$api_string = $fb_id;
+							break;
+					}
+					/**
+					 * Filter the fist fbsdk query
+					 *
+					 * @since 1.9
+					 *
+					 * @param string $api_string The fb api request string according to type
+					 * @param string $fb_id      The id of the object being requested.
+					 * @param string $type       The detected type of embed
+					 *
+					 */
+					$fb_data     = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . apply_filters( 'wpemfb_api_string',
+							$api_string, $fb_id, $type ) );
+					$api_string2 = '';
 
-				/**
-				 * Filter the second fbsdk query if necessary
-				 *
-				 * @since 1.9
-				 *
-				 * @param string $api_string2 The second request string empty if not necessary
-				 * @param array  $fb_data     The result from the first query
-				 * @param string $type        The detected type of embed
-				 *
-				 */
-				$api_string2 = apply_filters( 'wpemfb_2nd_api_string', $api_string2, $fb_data,
-					$type );
+					/**
+					 * Filter the second fbsdk query if necessary
+					 *
+					 * @since 1.9
+					 *
+					 * @param string $api_string2 The second request string empty if not necessary
+					 * @param array  $fb_data     The result from the first query
+					 * @param string $type        The detected type of embed
+					 *
+					 */
+					$api_string2 = apply_filters( 'wpemfb_2nd_api_string', $api_string2, $fb_data,
+						$type );
 
-				if ( ! empty( $api_string2 ) ) {
-					$extra_data = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . $api_string2 );
-					$fb_data    = array_merge( $fb_data, $extra_data );
+					if ( ! empty( $api_string2 ) ) {
+						$extra_data = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . $api_string2 );
+						$fb_data    = array_merge( $fb_data, $extra_data );
+					}
+				} catch ( \Exception $e ) {
+					$fb_data = '<p><a href="https://www.facebook.com/' . $url . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
+					if ( is_super_admin() ) {
+						$fb_data .= '<br><small style="color: #4a0e13">' . __( 'Error' ) . ':&nbsp;' . $e->getMessage() . ' (only visible to admins)</small>';
+					}
+					$fb_data .= '</p>';
 				}
-				/**
-				 * Filter all data received from facebook.
-				 *
-				 * @since 1.9
-				 *
-				 * @param array  $fb_data the final result
-				 * @param string $type    The detected type of embed
-				 */
-				$fb_data = apply_filters( 'wpemfb_fb_data', $fb_data, $type );
-			} catch ( \Exception $e ) {
-				$fb_data = '<p><a href="https://www.facebook.com/' . $url . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
-				if ( is_super_admin() ) {
-					$fb_data .= '<br><small style="color: #4a0e13">' . __( 'Error' ) . ':&nbsp;' . $e->getMessage() . ' (only visible to admins)</small>';
-				}
-				$fb_data .= '</p>';
 			}
 		} else {
 			$fb_data = '<p><a href="https://www.facebook.com/' . $url . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
@@ -402,6 +398,15 @@ class Embed_FB {
 			}
 			$fb_data .= '</p>';
 		}
+		/**
+		 * Filter fb_data
+		 *
+		 * @since 1.9
+		 *
+		 * @param array  $fb_data the final result
+		 * @param string $type    The detected type of embed
+		 */
+		$fb_data = apply_filters( 'wpemfb_fb_data', $fb_data, $type );
 
 		return $fb_data;
 	}
@@ -469,8 +474,7 @@ class Embed_FB {
 				case 'page':
 				case 'photo':
 				case 'post':
-				case 'video':
-					self::$raw = ( Plugin::get_option( 'raw_' . $type ) == 'false' ) ? false : true;
+					self::$raw = ( Plugin::get_option( 'raw_' . $type ) === 'false' ) ? false : true;
 					break;
 				default:
 					self::$raw = true;
@@ -501,9 +505,8 @@ class Embed_FB {
 			'plugins/wp-embed-facebook/custom-embeds/' . $template_name . '.php',
 			'plugins/wp-embed-facebook/' . $theme . '/' . $template_name . '.php',
 		] );
-		$file    = 'templates/custom-embeds/' . $template_name . '.php';
 		if ( empty( $located ) ) {
-			$located = Plugin::path() . $file;
+			$located = Plugin::path() . 'templates/custom-embeds/' . $template_name . '.php';;
 		}
 
 		return $located;

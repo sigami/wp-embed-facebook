@@ -1,10 +1,10 @@
-window.fbAsyncInit = function() {
+window.fbAsyncInit = function () {
     FB.init({
         appId: WEF.fb_id,
         version: WEF.version,
         xfbml: true
     });
-    if(!(typeof WEF.ajaxurl === "undefined")){
+    if (!(typeof WEF.ajaxurl === "undefined")) {
         FB.Event.subscribe('comment.create', wef_comment_callback);
         FB.Event.subscribe('comment.remove', wef_comment_callback);
     }
@@ -21,9 +21,9 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-const wef_serialize = function(obj, prefix) {
+const wef_serialize = function (obj, prefix) {
     let str = [], p;
-    for(p in obj) {
+    for (p in obj) {
         if (obj.hasOwnProperty(p)) {
             const k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
             str.push((v !== null && typeof v === "object") ?
@@ -34,7 +34,7 @@ const wef_serialize = function(obj, prefix) {
     return str.join("&");
 };
 
-const wef_comment_callback = function(response) {
+const wef_comment_callback = function (response) {
 
     // console.log(response);
 
@@ -48,9 +48,18 @@ const wef_comment_callback = function(response) {
     //     }
     // };
 
-    const data  = wef_serialize({ action : 'wpemfb_comments', response : response });
+    const data = wef_serialize({action: 'wpemfb_comments', response: response});
 
     wef_ajax.open("POST", WEF.ajaxurl, true);
     wef_ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     wef_ajax.send(data);
 };
+
+if (WEF.hasOwnProperty('adaptive')) {
+    (function ($) {
+        $(".wef-measure").each(function () {
+            $(this).next().attr("data-width", $(this).outerWidth() + "px")
+        })
+    })(jQuery);
+}
+

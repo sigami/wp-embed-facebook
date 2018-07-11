@@ -98,6 +98,7 @@ class Magic_Embeds {
 
 	static function wp_enqueue_scripts() {
 		//Legacy for custom templates previous to version 3.0
+		// now add /plugins/wp-embed-facebook/custom-embeds/ to your theme
 		foreach ( [ 'default', 'classic', 'elegant' ] as $theme ) {
 			$on_theme = locate_template( "/plugins/wp-embed-facebook/$theme/$theme.css" );
 			if ( ! empty( $on_theme ) ) {
@@ -120,13 +121,12 @@ class Magic_Embeds {
 			}
 		}
 		if ( ! empty( $translation_array ) ) {
-			//TODO use something like wp_add_inline_script('wpemfb-lightbox','new Lightbox(WEF_LB)') for LightBox options naaaa
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
-		wp_register_script( 'wpemfb', Plugin::url() . 'inc/js/wpembedfb.min.js', [ 'jquery' ],
-			Plugin::PLUGIN_VERSION, true );
 
-		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', [],
+		$deps = ( $options['adaptive_fb_plugin'] == 'true' ) ? [ 'jquery' ] : [];
+
+		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', $deps,
 			Plugin::PLUGIN_VERSION );
 		$translation_array = [
 			'local'   => $options['sdk_lang'],
@@ -138,15 +138,17 @@ class Magic_Embeds {
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				];
 		}
+		if ( $options['adaptive_fb_plugin'] == 'true' ) {
+			$translation_array = $translation_array + [
+					'adaptive' => 1,
+				];
+		}
 		wp_localize_script( 'wpemfb-fbjs', 'WEF', $translation_array );
 
 		if ( $options['enq_when_needed'] == 'false' ) {
 			if ( $options['enq_lightbox'] == 'true' ) {
 				wp_enqueue_script( 'wpemfb-lightbox' );
 				wp_enqueue_style( 'wpemfb-lightbox' );
-			}
-			if ( $options['enq_wpemfb'] == 'true' ) {
-				wp_enqueue_script( 'wpemfb' );
 			}
 			if ( $options['enq_fbjs'] == 'true' ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );

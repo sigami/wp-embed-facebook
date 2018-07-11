@@ -37,10 +37,5 @@ if ( is_admin() ) {
 include Plugin::path().'inc/deprecated/deprecated.php';
 
 
-//TODO pasar todas las opciones
-//TODO probar los custom embeds con app token los q no funcionan pasarlos a premium
-//quitar com-page profile
-//TODO cambiar el css y js del lightbox para hacerlo hermetico
-//TODO actualizar version premium con el resto de los custom embeds
-
-//TODO delete all that cannot longer be done
+//TODO pass options to new format
+//TODO change lightbox css to make it more hermetic

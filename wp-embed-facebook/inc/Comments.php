@@ -143,8 +143,13 @@ class  Comments {
 			return;
 		}
 
+		$fbapi = FB_API::instance();
+
+		$old_token = $fbapi->getAccessToken();
+		$fbapi->setAccessToken(null);
 		$data = FB_API::instance()
 		              ->run( "?fields=share{comment_count}&id=" . home_url( "/?p=$post_id" ) );
+		$fbapi->setAccessToken($old_token);
 
 		if ( ! is_wp_error( $data )
 		     && isset( $data['share'] )

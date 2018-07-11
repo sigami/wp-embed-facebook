@@ -47,7 +47,6 @@ module.exports = function (grunt) {
             main: {
                 files: {
                     '<%= pkg.name %>/inc/js/fb.min.js': ['<%= pkg.name %>/inc/js/fb.js'],
-                    '<%= pkg.name %>/inc/js/wpembedfb.min.js': ['<%= pkg.name %>/inc/js/wpembedfb.js'],
                     '<%= pkg.name %>/inc/wef-lightbox/js/lightbox.min.js': ['<%= pkg.name %>/inc/wef-lightbox/js/lightbox.js']
                 },
                 options: {

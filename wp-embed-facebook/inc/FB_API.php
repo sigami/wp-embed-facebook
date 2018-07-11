@@ -45,7 +45,7 @@ class FB_API {
 		$this->app_id           = Plugin::get_option( 'app_id' );
 		$this->app_secret       = Plugin::get_option( 'app_secret' );
 		$this->app_access_token = "{$this->app_id}|{$this->app_secret}";
-		$this->access_token     = $this->app_access_token;
+		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token : null;
 	}
 
 	/**
@@ -146,7 +146,10 @@ class FB_API {
 		} else {
 			$base_url .= trim( $string, '/' );
 		}
-		$vars['access_token'] = $this->access_token;
+
+		if ( $this->access_token !== null ) {
+			$vars['access_token'] = $this->access_token;
+		}
 
 		$url = esc_url_raw( add_query_arg( $vars, $base_url ) );
 

@@ -82,7 +82,6 @@ final class Plugin extends Framework {
 				                  'raw_page'                       => 'false',
 				                  'enqueue_style'                  => 'true',
 				                  'enq_lightbox'                   => 'true',
-				                  'enq_wpemfb'                     => 'true',
 				                  'enq_fbjs'                       => 'true',
 				                  'ev_local_tz'                    => 'false',
 				                  'close_warning2'                 => 'false',
@@ -114,7 +113,7 @@ final class Plugin extends Framework {
 				                  'auto_comments_post_types'       => 'post',
 				                  'comments_count_active'          => 'true',
 				                  'comments_open_graph'            => 'true',
-				                  //				                  'scrape_open_graph'              => 'true',
+				                  //				                  'scrape_open_graph'              => 'true',//TODO get real options from file
 				                  'lightbox_att'                   => 'data-lightbox="roadtrip"',
 				                  'event_start_time_format'        => 'l, j F Y g:i a',
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
@@ -144,7 +143,7 @@ final class Plugin extends Framework {
         <br>
         <strong><?php _e( 'Example:', 'wp-embed-facebook' ) ?></strong>
         <br>
-		<?php _e( 'Embed a like button for the curent page:', 'wp-embed-facebook' ) ?>
+		<?php _e( 'Embed a like button for the current page:', 'wp-embed-facebook' ) ?>
         <br>
         [fb_plugin like share=true layout=button_count]&nbsp;
 		<?php _e( 'add help=1 to view all available options and defaults.', 'wp-embed-facebook' );
