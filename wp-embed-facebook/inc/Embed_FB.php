@@ -276,13 +276,14 @@ class Embed_FB {
 		//get default variables to use on templates
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		$width = ! empty( self::$width ) ? self::$width : Plugin::get_option( 'max_width' );
+		$theme = ! empty( self::$theme ) ? self::$theme : Plugin::get_option( 'theme' );
 		/** @noinspection PhpUnusedLocalVariableInspection */
 		ob_start();
 		//show embed post on admin
 		if ( is_admin()
 		     || wp_doing_ajax()
 		     || ( isset( $_GET['action'] ) && $_GET['action'] == 'cs_render_element' )//X Theme compat
-		     || isset( $_GET['et_fb'] ) //Divi builder compat
+		     || isset( $_GET['et_fb'] ) //Divi builder compatibility. The most awesome builder BTW
 		) : ?>
             <script>(function (d, s, id) {
                     let js, fjs = d.getElementsByTagName(s)[0];

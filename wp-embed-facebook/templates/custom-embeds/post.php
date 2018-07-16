@@ -2,7 +2,7 @@
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Social_Plugins;
 $fb_post = $fb_data ?>
-<div class="wef-default" style="max-width: <?php echo $width ?>px" >
+<div class="wef-container wef-<?php echo $theme ?>" style="max-width: <?php echo $width ?>px" >
 	<div class="wef-col-3 wef-text-center">
 		<a href="https://www.facebook.com/<?php echo $fb_post['from']['id'] ?>" target="_blank" rel="nofollow">
 			<img src="https://graph.facebook.com/<?php echo $fb_post['from']['id'] ?>/picture" width="50px" height="50px" />

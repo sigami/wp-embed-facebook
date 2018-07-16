@@ -14,7 +14,10 @@ module.exports = function (grunt) {
                 options: {
                     livereload: reload
                 },
-                files: '<%= pkg.name %>/**/*.sass',
+                files: [
+                    '<%= pkg.name %>/**/*.sass',
+                    '<%= pkg.name %>/**/*.scss'
+                ],
                 tasks: ['sass']
             },
             uglify: {
@@ -38,8 +41,8 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.css': '<%= pkg.name %>/inc/wef-lightbox/css/lightbox.sass',
-                    '<%= pkg.name %>/templates/custom_embeds/styles.css': '<%= pkg.name %>/templates/custom_embeds/styles.scss',
+                    '<%= pkg.name %>/templates/lightbox/css/lightbox.css': '<%= pkg.name %>/templates/lightbox/css/lightbox.sass',
+                    '<%= pkg.name %>/templates/custom-embeds/styles.css': '<%= pkg.name %>/templates/custom-embeds/styles.scss',
                 }
             }
         },

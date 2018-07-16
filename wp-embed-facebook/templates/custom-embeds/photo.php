@@ -1,7 +1,7 @@
 <?php
 use SIGAMI\WP_Embed_FB\Plugin;
 ?>
-<div class="wef-default" style="max-width: <?php echo $width ?>px" >
+<div class="wef-container wef-<?php echo $theme ?>" style="max-width: <?php echo $width ?>px" >
 	<a href="<?php /** @noinspection PhpUndefinedVariableInspection */
 	echo $fb_data['link'] ?>" target="_blank" rel="nofollow">
 		<img src="<?php echo $fb_data['source'] ?>" width="100%" height="auto" >

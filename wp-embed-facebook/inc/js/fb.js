@@ -12,7 +12,7 @@ window.fbAsyncInit = function () {
 };
 
 (function (d, s, id) {
-    let js, fjs = d.getElementsByTagName(s)[0];
+    var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s);
     js.id = id;
@@ -21,11 +21,11 @@ window.fbAsyncInit = function () {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-const wef_serialize = function (obj, prefix) {
-    let str = [], p;
+var wef_serialize = function (obj, prefix) {
+    var str = [], p;
     for (p in obj) {
         if (obj.hasOwnProperty(p)) {
-            const k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+            var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
             str.push((v !== null && typeof v === "object") ?
                 wef_serialize(v, k) :
                 encodeURIComponent(k) + "=" + encodeURIComponent(v));
@@ -34,11 +34,11 @@ const wef_serialize = function (obj, prefix) {
     return str.join("&");
 };
 
-const wef_comment_callback = function (response) {
+var wef_comment_callback = function (response) {
 
     // console.log(response);
 
-    const wef_ajax = new XMLHttpRequest();
+    var wef_ajax = new XMLHttpRequest();
 
     // wef_ajax.onreadystatechange = function()
     // {
@@ -48,7 +48,7 @@ const wef_comment_callback = function (response) {
     //     }
     // };
 
-    const data = wef_serialize({action: 'wpemfb_comments', response: response});
+    var data = wef_serialize({action: 'wpemfb_comments', response: response});
 
     wef_ajax.open("POST", WEF.ajaxurl, true);
     wef_ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

@@ -27,6 +27,9 @@ class Magic_Embeds {
 			add_filter( 'plugins_loaded', __CLASS__ . '::plugins_loaded' );
 		}
 
+		/** @see Magic_Embeds::wp_enqueue_scripts */
+		add_action( 'wp_enqueue_scripts', __CLASS__ . '::wp_enqueue_scripts' );
+
 		/** @see Magic_Embeds::the_content */
 		add_filter( 'the_content', __CLASS__ . '::the_content' );
 
@@ -52,9 +55,9 @@ class Magic_Embeds {
 
 	static function init() {
 		if ( Helpers::has_fb_app() ) {
-			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.3 ) {
+			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.6 ) {
 				$options                = Plugin::get_option();
-				$options['sdk_version'] = 'v2.11';
+				$options['sdk_version'] = 'v3.0';
 				Plugin::set_options( $options );
 			}
 		}

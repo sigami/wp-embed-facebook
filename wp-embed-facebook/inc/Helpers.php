@@ -36,7 +36,7 @@ class Helpers {
 
 	static function has_fb_app() {
 		$options = Plugin::get_option();
-		if ( abs( $options['app_secret'] ) === 0 || abs( $options['app_id'] ) === 0 ) {
+		if ( empty($options['app_secret']) || empty($options['app_id']) ) {
 			return false;
 		}
 

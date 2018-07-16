@@ -3,7 +3,7 @@ use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Social_Plugins;
 use SIGAMI\WP_Embed_FB\Embed_FB;
 ?>
-<div class="wef-default" style="max-width: <?php echo $width ?>px" >
+<div class="wef-container wef-<?php echo $theme ?>" style="max-width: <?php echo $width ?>px" >
 	<?php if(isset($fb_data['cover'])) : ?>
 		<div class="wef-relative-container wef-cover"><div class="wef-relative" style="background-image: url('<?php echo $fb_data['cover']['source'] ?>'); background-position-y: <?php echo $fb_data['cover']['offset_y'] ?>%" onclick="window.open('https://www.facebook.com/<?php echo $fb_data['id'] ?>', '_blank')"></div></div>
 	<?php endif; ?>

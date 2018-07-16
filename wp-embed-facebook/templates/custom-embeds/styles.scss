@@ -1,7 +1,9 @@
-/**
-You may ask why this prefix ? It will help you to white label you custom embeds using custom templates :)
- */
+
+//You may ask why this prefix ? It will help you to white label you custom embeds using custom templates :)
 $pf: wef-;
+
+//Set a custom number of cols for your custom embeds
+$max-cols: 12;
 
 //Main Styles
 .#{$pf}container {
@@ -24,9 +26,9 @@ $pf: wef-;
       float: left;
     }
 
-    @for $i from 1 through 12 {
+    @for $i from 1 through $max-cols {
       .#{$pf}col-#{$i} {
-        width: 100%/$i;
+        width: $i/$max-cols * 100%;
         display: table-cell;
         float: left;
       }

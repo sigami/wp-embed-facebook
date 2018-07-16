@@ -1,7 +1,7 @@
 <?php
 use SIGAMI\WP_Embed_FB\Plugin;
 ?>
-<div class="wef-default" style="max-width: <?php echo $width ?>px">
+<div class="wef-container wef-<?php echo $theme ?>" style="max-width: <?php echo $width ?>px">
 	<div class="wef-row">
 		<div class="wef-col-3 wef-text-center">
 			<a href="https://facebook.com/<?php /** @noinspection PhpUndefinedVariableInspection */
