@@ -9,7 +9,7 @@ namespace SIGAMI\WP_Embed_FB;
  */
 final class Plugin extends Framework {
 
-	const PLUGIN_VERSION = '2.9.10';
+	const VER = '2.9.11';
 
 	static $option    = 'wpemfb_options';
 	static $menu_slug = 'embedfacebook';

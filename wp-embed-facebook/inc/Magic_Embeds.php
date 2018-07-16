@@ -102,16 +102,16 @@ class Magic_Embeds {
 		foreach ( [ 'default', 'classic', 'elegant' ] as $theme ) {
 			$on_theme = locate_template( "/plugins/wp-embed-facebook/$theme/$theme.css" );
 			if ( ! empty( $on_theme ) ) {
-				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::PLUGIN_VERSION );
+				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::VER );
 			}
 		}
 		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css',
-			[], Plugin::PLUGIN_VERSION );
+			[], Plugin::VER );
 		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'inc/wef-lightbox/css/lightbox.css',
-			[], Plugin::PLUGIN_VERSION );
+			[], Plugin::VER );
 		wp_register_script( 'wpemfb-lightbox',
 			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ],
-			Plugin::PLUGIN_VERSION );
+			Plugin::VER );
 		$lb_defaults       = Helpers::get_lb_defaults();
 		$options           = Plugin::get_option();
 		$translation_array = [];
@@ -127,7 +127,7 @@ class Magic_Embeds {
 		$deps = ( $options['adaptive_fb_plugin'] == 'true' ) ? [ 'jquery' ] : [];
 
 		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', $deps,
-			Plugin::PLUGIN_VERSION );
+			Plugin::VER );
 		$translation_array = [
 			'local'   => $options['sdk_lang'],
 			'version' => $options['sdk_version'],

@@ -21,8 +21,11 @@ class Admin {
 		self::$url = admin_url( 'options-general.php?page=' . Plugin::$menu_slug );
 
 		//notices
-		add_action( 'admin_notices', __CLASS__ . '::admin_notices' );
-		add_action( 'wp_ajax_wpemfb_close_warning', __CLASS__ . '::wpemfb_close_warning' );
+		if ( ! Plugin::is_on( 'close_warning2' ) ) {
+			add_action( 'admin_notices', __CLASS__ . '::admin_notices' );
+			add_action( 'wp_ajax_wpemfb_close_warning', __CLASS__ . '::wpemfb_close_warning' );
+			add_action( 'in_admin_footer', __CLASS__ . '::in_admin_footer' );
+		}
 
 		//editor style
 		add_action( 'admin_init', __CLASS__ . '::admin_init' );
@@ -32,22 +35,23 @@ class Admin {
 
 		add_filter( 'plugin_action_links_' . plugin_basename( Plugin::$FILE ),
 			__CLASS__ . '::add_action_link' );
+
 	}
 
 	static function admin_notices() {
-		if ( ( Plugin::get_option( 'close_warning2' ) == 'false' ) ) :
-			?>
-            <div class="notice wpemfb_warning is-dismissible">
-                <h2>WP Embed Facebook</h2>
-                <p>
-					<?php
-					printf( __( 'To enable comment moderation and embed albums, events, profiles and video as HTML5 setup a facebook app on <a id="wef_settings_link" href="%s">settings</a>',
-						'wp-embed-facebook' ), Admin::$url )
-					?>
-                </p>
-            </div>
+		ob_start();
+		?>
+        <div class="notice wpemfb_warning is-dismissible">
+            <h2>WP Embed Facebook</h2>
+            <p>
+				<?php
+				printf( __( 'To enable comment moderation and embed albums, events, profiles and video as HTML5 setup a facebook app on <a id="wef_settings_link" href="%s">settings</a>',
+					'wp-embed-facebook' ), Admin::$url )
+				?>
+            </p>
+        </div>
 		<?php
-		endif;
+		echo ob_get_clean();
 	}
 
 	static function wpemfb_close_warning() {
@@ -61,23 +65,21 @@ class Admin {
 
 	static function in_admin_footer() {
 		ob_start();
-		if ( Plugin::get_option( 'close_warning2' ) == 'false' ) :
-			?>
-            <script type="text/javascript">
-                jQuery(document).on('click', '.wpemfb_warning .notice-dismiss', function () {
-                    jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'});
+		?>
+        <script type="text/javascript">
+            jQuery(document).on('click', '.wpemfb_warning .notice-dismiss', function () {
+                jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'});
+            });
+
+            jQuery(document).on('click', '#wef_settings_link', function (e) {
+                e.preventDefault();
+                jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'}, function () {
+                    window.location = "<?php echo Admin::$url; ?>"
                 });
 
-                jQuery(document).on('click', '#wef_settings_link', function (e) {
-                    e.preventDefault();
-                    jQuery.post(ajaxurl, {action: 'wpemfb_close_warning'}, function () {
-                        window.location = "<?php echo Admin::$url; ?>"
-                    });
-
-                });
-            </script>
+            });
+        </script>
 		<?php
-		endif;
 		echo ob_get_clean();
 	}
 
@@ -92,12 +94,13 @@ class Admin {
 		}
 
 		wp_enqueue_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css', [],
-			Plugin::PLUGIN_VERSION );
+			Plugin::VER );
 	}
 
 	static function add_action_link( $links ) {
 		array_unshift( $links,
-			'<a title="WP Embed Facebook Settings" href="' . Admin::$url . '">' . __( "Settings" ) . '</a>' );
+			'<a title="WP Embed Facebook Settings" href="' . Admin::$url . '">' . __( "Settings" )
+			. '</a>' );
 
 		return $links;
 	}
@@ -111,11 +114,8 @@ class Admin {
 
 	static function mce_css( $css ) {
 
-		$styles = add_query_arg(
-			'version',
-			Plugin::PLUGIN_VERSION,
-			Plugin::url() . 'templates/custom-embeds/styles.css'
-		);
+		$styles = add_query_arg( 'version', Plugin::VER,
+			Plugin::url() . 'templates/custom-embeds/styles.css' );
 
 		if ( ! empty( $css ) ) {
 			$css .= ',';
