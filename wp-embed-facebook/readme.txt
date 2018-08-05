@@ -147,6 +147,13 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 3.0.0 =
+Translated API calls
+Url scraper
+Universal options page
+Comments count and order now on
+
+
 = 2.2.4 =
 * Fixed: Missing icons on custom embeds
 * Added: Facebook SDK v2.12

@@ -97,9 +97,6 @@ class Embed_FB {
 					wp_enqueue_style( 'wpemfb-lightbox' );
 				}
 			}
-			if ( Plugin::get_option( 'enq_wpemfb' ) == 'true' ) {
-				wp_enqueue_script( 'wpemfb' );
-			}
 			if ( Plugin::get_option( 'enq_fbjs' ) == 'true' ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
@@ -125,7 +122,7 @@ class Embed_FB {
 	static function get_type_and_id( $juice, $original ) {
 		$has_fb_app = Helpers::has_fb_app();
 		if ( $has_fb_app ) {
-			$fbsdk = self::get_fbsdk();
+			$fbsdk = FB_API::instance();
 		}
 		$fb_id = null;
 		$type  = null;
@@ -484,13 +481,6 @@ class Embed_FB {
 
 			return self::$raw;
 		}
-	}
-
-	/**
-	 * @return FB_API
-	 */
-	static function get_fbsdk() {
-		return FB_API::instance();
 	}
 
 	/**

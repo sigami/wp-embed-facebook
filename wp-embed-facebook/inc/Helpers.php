@@ -36,7 +36,7 @@ class Helpers {
 
 	static function has_fb_app() {
 		$options = Plugin::get_option();
-		if ( empty($options['app_secret']) || empty($options['app_id']) ) {
+		if ( empty( $options['app_secret'] ) || empty( $options['app_id'] ) ) {
 			return false;
 		}
 
@@ -51,7 +51,8 @@ class Helpers {
 				if ( 0 == $current_offset ) {
 					$tzstring = 'Etc/GMT';
 				} else {
-					$tzstring = ( $current_offset < 0 ) ? 'Etc/GMT' . $current_offset : 'Etc/GMT+' . $current_offset;
+					$tzstring = ( $current_offset < 0 ) ? 'Etc/GMT' . $current_offset
+						: 'Etc/GMT+' . $current_offset;
 				}
 			}
 			self::$wp_timezone = $tzstring;
@@ -148,6 +149,20 @@ class Helpers {
 		$text = str_replace( [ ' rel="nofollow"', " rel='nofollow'" ], '', $text );
 
 		return "<a $text rel=\"nofollow\">";
+	}
+
+	static function get_api_versions() {
+		return array(
+			'v2.6'  => '2.6',
+			'v2.7'  => '2.7',
+			'v2.8'  => '2.8',
+			'v2.9'  => '2.9',
+			'v2.10' => '2.10',
+			'v2.11' => '2.11',
+			'v2.12' => '2.12',
+			'v3.0' => '3.0',
+			'v3.1' => '3.1',
+		);
 	}
 
 	static function get_fb_locales() {

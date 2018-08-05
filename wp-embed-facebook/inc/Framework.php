@@ -5,7 +5,7 @@ namespace SIGAMI\WP_Embed_FB;
 /**
  * Class Framework
  *
- * @version 2.3.2
+ * @version 2.3.4
  */
 abstract class Framework {
 
@@ -341,6 +341,7 @@ abstract class Framework {
             handleTabs(jQuery(window.location.hash));
             jQuery(window).bind('hashchange', function () {
                 handleTabs(jQuery(window.location.hash));
+                jQuery("html, body").animate({ scrollTop: 0 }, "slow");
             });
         </script>
 		<?php
@@ -475,6 +476,12 @@ abstract class Framework {
                     </td>
                 </tr>
 				<?php
+				ob_end_flush();
+				break;
+			case 'hidden':
+				ob_start();
+				$value_hidden = isset( $atts['value'] ) ? $atts['value'] : $options[ $name ];
+				echo '<input type="hidden" value="' . esc_attr( $value_hidden ) . '">';
 				ob_end_flush();
 				break;
 			default:

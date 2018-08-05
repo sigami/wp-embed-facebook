@@ -45,7 +45,8 @@ class FB_API {
 		$this->app_id           = Plugin::get_option( 'app_id' );
 		$this->app_secret       = Plugin::get_option( 'app_secret' );
 		$this->app_access_token = "{$this->app_id}|{$this->app_secret}";
-		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token : null;
+		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token
+			: null;
 	}
 
 	/**
@@ -87,8 +88,7 @@ class FB_API {
 		$args['grant_type']        = 'fb_exchange_token';
 		$args['fb_exchange_token'] = $user_token;
 
-		$string = add_query_arg( $args,
-			'oauth/access_token' );
+		$string = add_query_arg( $args, 'oauth/access_token' );
 
 		return $this->run( $string );
 	}
@@ -154,6 +154,9 @@ class FB_API {
 		$url = esc_url_raw( add_query_arg( $vars, $base_url ) );
 
 		if ( $method == 'GET' ) {
+			if ( ! empty( $message ) ) {
+				$url = add_query_arg( $message, $url );
+			}
 			$response = wp_remote_get( $url );
 		} elseif ( $method == 'POST' ) {
 			$response = wp_remote_post( $url, ! empty( $message ) ? [ 'body' => $message ] : [] );
@@ -162,8 +165,8 @@ class FB_API {
 		}
 
 		if ( is_wp_error( $response ) ) {
-			throw new \Exception( $response->get_error_code() . '=>' . $response->get_error_message(),
-				500 );
+			throw new \Exception( $response->get_error_code() . '=>'
+			                      . $response->get_error_message(), 500 );
 		}
 
 		$response_code    = wp_remote_retrieve_response_code( $response );
@@ -178,19 +181,16 @@ class FB_API {
 			$code      = isset( $data['error_code'] ) ? $data['error_code'] : 0;
 
 			if ( isset( $data['error'] ) && is_array( $data['error'] ) ) {
-				$message   = $data['error']['message'];
+				$api_error = $data['error']['message'];
 				$code      = isset( $data['error']['code'] ) ? $data['error']['code'] : $code;
-				$api_error = true;
 			} elseif ( isset( $data['error_description'] ) ) {
-				$message   = $data['error_description'];
-				$api_error = true;
+				$api_error = $data['error_description'];
 			} elseif ( isset( $data['error_msg'] ) ) {
-				$message   = $data['error_msg'];
-				$api_error = true;
+				$api_error = $data['error_msg'];
 			}
 
-			if ( $api_error ) {
-				throw new \Exception( $message, (int) $code );
+			if ( $api_error !== false ) {
+				throw new \Exception( $api_error, (int) $code );
 			}
 		}
 

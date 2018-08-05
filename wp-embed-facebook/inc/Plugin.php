@@ -85,7 +85,6 @@ final class Plugin extends Framework {
 				                  'enq_fbjs'                       => 'true',
 				                  'ev_local_tz'                    => 'false',
 				                  'close_warning2'                 => 'false',
-				                  'force_app_token'                => 'true',
 				                  'video_download'                 => 'false',
 				                  'enq_fbjs_global'                => 'false',
 				                  'enq_when_needed'                => 'false',
@@ -126,7 +125,8 @@ final class Plugin extends Framework {
 	}
 
 	static function tabs() {
-		$comment_notes = sprintf( __( 'To enable comments moderation setup your App ID <a href="#fb_api">here</a>',
+		$comment_notes
+			           = sprintf( __( 'To enable comments moderation setup your App ID <a href="#fb_api">here</a>',
 			'wp-embed-facebook' ), Admin::$url );
 		$comment_notes .= '<br>';
 		$comment_notes .= '<small>';
@@ -145,11 +145,35 @@ final class Plugin extends Framework {
         <br>
 		<?php _e( 'Embed a like button for the current page:', 'wp-embed-facebook' ) ?>
         <br>
-        [fb_plugin like share=true layout=button_count]&nbsp;
-		<?php _e( 'add help=1 to view all available options and defaults.', 'wp-embed-facebook' );
+        <code class="shortcode_example">[fb_plugin like share=true layout=button_count]</code><br>
+		<?php _e( '<strong>add help=1</strong> to view all available options and defaults.',
+			'wp-embed-facebook' ); ?>
+        <br>
+		<?php _e( 'Like, Share, Save and Send buttons take the current page as default. To set a custom url use the href= attribute or uri= in case of the save button.',
+			'wp-embed-facebook' ) ?>
+		<?php
 		$social_plugins_desc = ob_get_clean();
+		ob_start();
+		?>
+        <p>
+			<?php _e( 'Custom embeds can be triggered using the [embedfb url] or [embed] shortcodes also by activating "Auto Embeds" on Magic Embeds section.',
+				'wp-embed-facebook' ) ?>
+            <br>
+            <strong><?php _e( 'Example:', 'wp-embed-facebook' ) ?></strong>
+            <br>
+            Page custom embed<br>
+            <code class="shortcode_example">[embedfb https://www.facebook.com/sydneyoperahouse/
+                social_plugin=false posts=2]</code>
+            <br>
+			<?php printf( __( '<a href="%s" title="WP Embed Facebook Shortcode" target="_blank">Read More</a>',
+				'wp-embed-facebook' ),
+				'http://www.wpembedfb.com/shortcode-attributes-and-examples/' ) ?>
+        </p>
+		<?php
+		$custom_embeds_desc = ob_get_clean();
 
 		return [
+			# Magic Embeds
 			[
 				'label'    => __( 'Magic Embeds', 'wp-embed-facebook' ),
 				'id'       => 'magic_embeds',
@@ -163,8 +187,7 @@ final class Plugin extends Framework {
 							[
 								'type'  => 'checkbox',
 								'name'  => 'auto_embed_active',
-								'label' => __( "Auto embed URL's on editor",
-									'wp-embed-facebook' ),
+								'label' => __( "Auto embed URL's on editor", 'wp-embed-facebook' ),
 							],
 							[
 								'type'       => 'number',
@@ -176,8 +199,7 @@ final class Plugin extends Framework {
 							[
 								'type'  => 'checkbox',
 								'name'  => 'video_as_post',
-								'label' => __( 'Embed video as post',
-									'wp-embed-facebook' ),
+								'label' => __( 'Embed video as post', 'wp-embed-facebook' ),
 							],
 						]
 					],
@@ -225,24 +247,24 @@ final class Plugin extends Framework {
 									__( 'Comments count get stored on _wef_comments_count post meta.',
 										'wp-embed-facebook' ),
 									__( 'You can refresh the comment count by updating the post',
-										'wp-embed-facebook' )
-								),
+										'wp-embed-facebook' ) ),
 							],
 							[
 								'type'        => 'checkbox',
 								'name'        => 'comments_open_graph',
 								'label'       => __( 'Add open graph meta', 'wp-embed-facebook' ),
-								'description' => sprintf( '%s<p class="description">%s<br>' . $comment_notes . '</p>',
+								'description' => sprintf( '%s<p class="description">%s<br>'
+								                          . $comment_notes . '</p>',
 									__( 'Needed to moderate comments', 'wp-embed-facebook' ),
 									sprintf( __( 'Disable this if you already have another plugin adding <a title="Moderation Setup Instructions" target="_blank" href="%s">the fb:app_id meta</a>',
 										'wp-embed-facebook' ),
-										'https://developers.facebook.com/docs/plugins/comments/#moderation-setup-instructions' )
-								),
+										'https://developers.facebook.com/docs/plugins/comments/#moderation-setup-instructions' ) ),
 							],
 						]
 					],
 				]
 			],
+			# Social Plugins
 			[
 				'label'    => __( 'Social Plugins', 'wp-embed-facebook' ),
 				'id'       => 'social_plugins',
@@ -252,38 +274,165 @@ final class Plugin extends Framework {
 						'description' => $social_plugins_desc,
 					],
 					[
-						'title'       => __( 'Page plugin',
-								'wp-embed-facebook' ) . '<small style="font-weight: 300"> [fb_plugin  page href=]</small>',
-						'description' => Social_Plugins::get_links( 'page' ),
-						'fields'      => [
+						'title'  => __( 'Adaptive view', 'wp-embed-facebook' ),
+						'fields' => [
 							[
-								'type'  => 'number',
-								'name'  => 'page_width',
-								'label' => __( 'width', 'wp-embed-facebook' )
-							]
+								'type'        => 'checkbox',
+								'name'        => 'adaptive_fb_plugin',
+								'label'       => __( 'Active', 'wp-embed-facebook' ),
+								'description' => __( 'Make social plugins adapt their width to parent container on page load',
+									'wp-embed-facebook' ),
+							],
+						]
+					],
+					[
+						'title'       => __( 'Page plugin', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'page' )
+						                 . '     <code class="shortcode_example">[fb_plugin page href=]</code>',
+						'fields'      => [
+							self::social_field( 'page', 'width' ),
+							self::social_field( 'page', 'height' ),
+							self::social_field( 'page', 'tabs',
+								__( 'Tabs separated by commas i.e. timeline,events,messages',
+									'wp-embed-facebook' ) ),
+							self::social_field( 'page', 'hide-cover' ),
+							self::social_field( 'page', 'hide-cta' ),
+							self::social_field( 'page', 'small-header' ),
+							self::social_field( 'page', 'adapt-container-width' ),
+						]
+					],
+					[
+						'title'       => __( 'Post plugin', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'post' )
+						                 . '     <code class="shortcode_example">[fb_plugin post href=]</code>',
+						'fields'      => [
+							self::social_field( 'post', 'width' ),
+							self::social_field( 'post', 'show-text' ),
+						]
+					],
+					[
+						'title'       => __( 'Video & Live Stream', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'video' )
+						                 . '     <code class="shortcode_example">[fb_plugin video href=]</code>',
+						'fields'      => [
+							self::social_field( 'video', 'allowfullscreen' ),
+							self::social_field( 'video', 'autoplay' ),
+							self::social_field( 'video', 'width' ),
+							self::social_field( 'video', 'show-text' ),
+							self::social_field( 'video', 'show-captions' )
+						]
+					],
+					[
+						'title'       => __( 'Single Comment', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'comment' )
+						                 . '     <code class="shortcode_example">[fb_plugin comment href=]</code>',
+						'fields'      => [
+							self::social_field( 'comment', 'width' ),
+							self::social_field( 'comment', 'include-parent' ),
+						]
+					],
+					[
+						'title'       => __( 'Comments plugin', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'comments' )
+						                 . '     <code class="shortcode_example">[fb_plugin comments]</code>'
+						                 . '<br>'
+						                 . __( 'Activate them on all your posts or custom post types on the "Magic embeds" section',
+								'wp-embed-facebook' ) . '<a href="'
+						                 . admin_url( "options-general.php?page=embedfacebook#magic_embeds" )
+						                 . '">here</a>',
+						'fields'      => [
+							self::social_field( 'comments', 'colorscheme' ),
+							self::social_field( 'comments', 'mobile' ),
+							self::social_field( 'comments', 'num_posts' ),
+							self::social_field( 'comments', 'order_by' ),
+							self::social_field( 'comments', 'width' ),
+						]
+					],
+					[
+						'title'       => __( 'Quote plugin', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'quote' )
+						                 . '     <code class="shortcode_example">[fb_plugin quote]</code>'
+						                 . '<br>'
+						                 . __( 'Activate them on all your posts or custom post types on the "Magic embeds" section',
+								'wp-embed-facebook' ) . '<a href="'
+						                 . admin_url( "options-general.php?page=embedfacebook#magic_embeds" )
+						                 . '">here</a>',
+						'fields'      => [
+							self::social_field( 'quote', 'layout' ),
+						]
+					],
+					[
+						'title'       => __( 'Save Button', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'save' )
+						                 . '     <code class="shortcode_example">[fb_plugin save]</code>',
+						'fields'      => [
+							self::social_field( 'save', 'size' ),
+						]
+					],
+					[
+						'title'       => __( 'Like Button', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'like' )
+						                 . '     <code class="shortcode_example">[fb_plugin like]</code>',
+						'fields'      => [
+							self::social_field( 'like', 'action' ),
+							self::social_field( 'like', 'colorscheme' ),
+							self::social_field( 'like', 'kid-directed-site' ),
+							self::social_field( 'like', 'layout' ),
+							self::social_field( 'like', 'ref',
+								__( 'A label for tracking referrals which must be less than 50 characters and can contain alphanumeric characters and some punctuation',
+									'wp-embed-facebook' ) ),
+							self::social_field( 'like', 'share' ),
+							self::social_field( 'like', 'show-faces' ),
+							self::social_field( 'like', 'size' ),
+							self::social_field( 'like', 'width' ),
+						]
+					],
+					[
+						'title'       => __( 'Send Button', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'send' )
+						                 . '     <code class="shortcode_example">[fb_plugin send]</code>',
+						'fields'      => [
+							self::social_field( 'send', 'colorscheme' ),
+							self::social_field( 'send', 'kid-directed-site' ),
+							self::social_field( 'send', 'ref',
+								__( 'A label for tracking referrals which must be less than 50 characters and can contain alphanumeric characters and some punctuation',
+									'wp-embed-facebook' ) ),
+						]
+					],
+					[
+						'title'       => __( 'Share Button', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'share' )
+						                 . '     <code class="shortcode_example">[fb_plugin share]</code>',
+						'fields'      => [
+							self::social_field( 'share', 'layout' ),
+							self::social_field( 'share', 'mobile_iframe' ),
 						]
 					]
 				]
 			],
+			# API
 			[
 				'label'    => __( 'API', 'wp-embed-facebook' ),
 				'id'       => 'fb_api',
 				'sections' => [
 					[
 						'title'       => __( 'Facebook API settings', 'wp-embed-facebook' ),
-						'description' => sprintf(
-							__( 'Creating a Facebook app is easy view the <a href="%s" target="_blank" title="WP Embed FB documentation">step by step guide</a> or view <a href="%s" target="_blank" title="Facebook Apps">your apps</a>.'
-								, 'wp-embed-facebook'
-							),
+						'description' => sprintf( __( 'Creating a Facebook app is easy view the <a href="%s" target="_blank" title="WP Embed FB documentation">step by step guide</a> or view <a href="%s" target="_blank" title="Facebook Apps">your apps</a>.',
+							'wp-embed-facebook' ),
 							'http://www.wpembedfb.com/blog/creating-a-facebook-app-the-step-by-step-guide/',
-							'https://developers.facebook.com/apps'
-						),
+							'https://developers.facebook.com/apps' ),
 						'fields'      => [
 							[
 								'type'   => 'select',
 								'name'   => 'sdk_lang',
 								'label'  => __( 'Social Plugins Language', 'wp-embed-facebook' ),
 								'values' => Helpers::get_fb_locales()
+							],
+							[
+								'type'   => 'select',
+								'name'   => 'sdk_version',
+								'label'  => __( 'API Version', 'wp-embed-facebook' ),
+								'values' => Helpers::get_api_versions()
 							],
 							[
 								'type'        => 'text',
@@ -303,24 +452,299 @@ final class Plugin extends Framework {
 					],
 				]
 			],
+			# Custom Embeds
 			[
 				'label'    => __( 'Custom Embeds', 'wp-embed-facebook' ),
 				'id'       => 'custom_embeds',
-				'sections' => []
+				'sections' => [
+					[
+						'title'       => __( 'Custom Embeds', 'wp-embed-facebook' ),
+						'description' => $custom_embeds_desc,
+					],
+					[
+						'title'       => __( 'For all embeds', 'wp-embed-facebook' ),
+						'description' => __( 'Change this for individual embeds using the shortcode attributes',
+								'wp-embed-facebook' )
+						                 . '<br><code class="shortcode_example">[embedfb https://ww... theme=classic]</code>',
+						'fields'      => [
+							[
+								'type'   => 'select',
+								'name'   => 'theme',
+								'label'  => __( 'Template', 'wp-embed-facebook' ),
+								'values' => [
+									'default' => 'Default',
+									'classic' => 'Classic',
+									'elegant' => 'Elegant'
+								]
+							],
+						]
+					],
+
+					[
+						'title'       => __( 'Albums', 'wp-embed-facebook' ),
+						'description' => __( 'Change this for individual embeds using the shortcode attributes',
+								'wp-embed-facebook' )
+						                 . '<br><code class="shortcode_example">[embedfb https://ww... photos=20]</code>',
+						'fields'      => [
+							[
+								'type'  => 'number',
+								'name'  => 'max_photos',
+								'label' => __( 'Maximum number of photos', 'wp-embed-facebook' ),
+							],
+
+						]
+					],
+					[
+						'title'       => __( 'Pages', 'wp-embed-facebook' ),
+						'description' => __( 'Change this for individual embeds using the shortcode attributes',
+								'wp-embed-facebook' )
+						                 . '<br><code class="shortcode_example">[embedfb https://ww... posts=2 social_plugin=false ]</code>',
+						'fields'      => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'raw_page',
+								'label' => __( 'Use custom embed by default on "Auto Embeds"',
+									'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'show_like',
+								'label' => __( 'Show like button', 'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'number',
+								'name'  => 'max_posts',
+								'label' => __( 'Number of posts', 'wp-embed-facebook' ),
+							],
+
+						]
+					],
+					[
+						'title'       => __( 'Photo', 'wp-embed-facebook' ),
+						'description' => __( 'Change this for individual embeds using the shortcode attributes',
+								'wp-embed-facebook' )
+						                 . '<br><code class="shortcode_example">[embedfb https://ww... social_plugin=false ]</code>',
+						'fields'      => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'raw_photo',
+								'label' => __( 'Use custom embed by default on "Auto Embeds"',
+									'wp-embed-facebook' ),
+							]
+
+						]
+					],
+					[
+						'title'       => __( 'Post', 'wp-embed-facebook' ),
+						'description' => __( 'Change this for individual embeds using the shortcode attributes',
+								'wp-embed-facebook' )
+						                 . '<br><code class="shortcode_example">[embedfb https://ww... social_plugin=false ]</code>',
+						'fields'      => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'raw_post',
+								'label' => __( 'Use custom embed by default on "Auto Embeds"',
+									'wp-embed-facebook' ),
+							],
+							[
+								'type'        => 'text',
+								'name'        => 'single_post_time_format',
+								'label'       => __( 'Time format', 'wp-embed-facebook' ),
+								'description' => '<a href="https://codex.wordpress.org/Formatting_Date_and_Time" target="_blank">'
+								                 . __( 'examples', 'wp-embed-facebook' ) . '<a/>'
+							]
+
+						]
+					]
+				]
 			],
+			# Lightbox
 			[
 				'label'    => __( 'Lightbox', 'wp-embed-facebook' ),
 				'id'       => 'ligthbox',
-				'sections' => []
+				'sections' => [
+					[
+						'title'  => __( 'Lightbox' ),
+						'fields' => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'LB_showImageNumberLabel',
+								'label' => __( 'Show Image Number Label', 'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'text',
+								'name'  => 'LB_albumLabel',
+								'label' => __( 'Album Label', 'wp-embed-facebook' ),
+							],
+							[
+								'type'       => 'number',
+								'name'       => 'LB_fadeDuration',
+								'label'      => __( 'Fade Duration', 'wp-embed-facebook' ),
+								'attributes' => [ 'min' => '0' ]
+							],
+							[
+								'type'       => 'number',
+								'name'       => 'LB_resizeDuration',
+								'label'      => __( 'Resize Duration', 'wp-embed-facebook' ),
+								'attributes' => [ 'min' => '0' ]
+							],
+							[
+								'type'       => 'number',
+								'name'       => 'LB_positionFromTop',
+								'label'      => __( 'Position From Top', 'wp-embed-facebook' ),
+								'attributes' => [ 'min' => '0' ]
+							],
+							[
+								'type'       => 'number',
+								'name'       => 'LB_maxHeight',
+								'label'      => __( 'Max Height', 'wp-embed-facebook' ),
+								'attributes' => [ 'min' => '0' ]
+							],
+							[
+								'type'       => 'number',
+								'name'       => 'LB_maxWidth',
+								'label'      => __( 'Max Width', 'wp-embed-facebook' ),
+								'attributes' => [ 'min' => '0' ]
+							],
+							[
+								'type'       => 'checkbox',
+								'name'       => 'LB_alwaysShowNavOnTouchDevices',
+								'label'      => __( 'Always Show Nav On TouchDevices',
+									'wp-embed-facebook' ),
+								'attributes' => ''
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'LB_fitImagesInViewport',
+								'label' => __( 'Fit Images In Viewport', 'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'LB_disableScrolling',
+								'label' => __( 'Disable Scrolling', 'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'LB_wrapAround',
+								'label' => __( 'Loop Through Album', 'wp-embed-facebook' ),
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'LB_wpGallery',
+								'label' => __( 'Use this lightbox on the [gallery] shortcode',
+									'wp-embed-facebook' ),
+							],
+						]
+
+					]
+				]
 			],
+			# Advanced
 			[
 				'label'    => __( 'Advanced', 'wp-embed-facebook' ),
 				'id'       => 'advanced',
-				'sections' => []
+				'sections' => [
+					[
+						'title'  => __( 'Enqueue styles and scripts', 'wp-embed-facebook' ),
+						'fields' => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'enq_when_needed',
+								'label' => __( 'Only when there is an embed present',
+									'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'permalink_on_social_plugins',
+								'label' => __( 'Use permalinks on social plugins urls',
+									'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'enq_fbjs',
+								'label' => __( 'Facebook SDK', 'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'enqueue_style',
+								'label' => __( 'Template Styles', 'wp-embed-facebook' )
+							]
+						]
+					],
+					[
+						'title'  => __( 'Lightbox', 'wp-embed-facebook' ),
+						'fields' => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'enq_lightbox',
+								'label' => __( 'Enqueue script', 'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'text',
+								'name'  => 'lightbox_att',
+								'label' => __( 'Attribute', 'wp-embed-facebook' )
+							],
+						]
+					],
+					[
+						'title'  => __( 'Other options', 'wp-embed-facebook' ),
+						'fields' => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'fb_root',
+								'label' => __( 'Add fb-root on top of content', 'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'checkbox',
+								'name'  => 'enq_fbjs_global',
+								'label' => __( 'Force Facebook SDK script on all site', 'wp-embed-facebook' )
+							],
+							[
+								'type'  => 'hidden',
+								'name'  => 'close_warning2',
+								'attributes' => ['value'=>'true']
+							],
+						]
+					]
+				]
 			],
 
 		];
 		//TODO add hidden field close_warning2 = false
+	}
+
+	/**
+	 * @param string $plugin
+	 * @param string $option
+	 * @param null   $description
+	 *
+	 * @return array
+	 */
+	static function social_field( $plugin, $option, $description = null ) {
+		$all_vars       = Social_Plugins::get_defaults( true );
+		$defaults       = $all_vars[ $plugin ];
+		$values         = $defaults[ $option ];
+		$field['name']  = $plugin . '_' . $option;
+		$field['label'] = $option;
+		if ( is_array( $values ) ) {
+			if ( ( $values[0] === self::$on || $values[0] === self::$off )
+			     && ( $values[1] === self::$on || $values[1] === self::$off ) ) {
+				$field['type'] = 'checkbox';
+			} else {
+				$field['type']   = 'select';
+				$field['values'] = $values;
+			}
+		} elseif ( is_numeric( $values ) ) {
+			$field['type'] = 'number';
+		} else {
+			$field['type'] = 'text';
+		}
+		if ( $description !== null ) {
+			$field['description'] = $description;
+		}
+
+		return $field;
+
 	}
 
 	static function before_form() {

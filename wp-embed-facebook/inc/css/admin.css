@@ -32,3 +32,14 @@
 input.button[name=restore] {
     float: right;
 }
+
+#social_plugins .form-table th {
+  padding: 5px 0 0 0;
+}
+#social_plugins .form-table td {
+  padding: 4px 0;
+}
+
+.shortcode_example{
+  margin-left: 20px;
+}

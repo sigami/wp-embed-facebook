@@ -51,11 +51,20 @@ final class WP_Embed_FB_Deprecated_API {
 		}
 	}
 
+	public function setAccessToken($token){
+		FB_API::instance()->setAccessToken($token);
+	}
+
+	public function getAccessToken(){
+		return FB_API::instance()->getAccessToken();
+	}
+
 	public function setExtendedAccessToken() {
 		$extended = FB_API::instance()->extendAccessToken( FB_API::instance()->getAccessToken() );
 		if ( ! is_wp_error( $extended ) ) {
 			FB_API::instance()->setAccessToken( $extended['token'] );//TODO test this
 		}
+		return $extended;
 	}
 }
 
