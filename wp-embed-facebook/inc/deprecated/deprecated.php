@@ -3,7 +3,51 @@
 use SIGAMI\WP_Embed_FB\Embed_FB;
 use SIGAMI\WP_Embed_FB\FB_API;
 use SIGAMI\WP_Embed_FB\Plugin;
+use SIGAMI\WP_Embed_FB\Helpers;
 
+final class WP_Embed_FB_Options {
+	protected static $instance = null;
+	static function instance(){
+		if(self::$instance === null){
+			self::$instance =  new self;
+		}
+		return self::$instance;
+	}
+	//This runs after plugin activation and update
+	protected function __construct() {
+		$this->remove_old_options();
+		$this->string_options_to_array();
+	}
+
+	function string_options_to_array(){
+		$options = Plugin::get_option();
+		foreach ($options as $key => $value){
+			if(in_array($key,['quote_post_types','auto_comments_post_types']) && is_string($value)){
+				$options[$value] = Helpers::string_to_array($value);
+			}
+		}
+		Plugin::set_options($options);
+	}
+
+	function remove_old_options(){
+		if ( get_option( 'wpemfb_theme' ) ) {
+			//upgrade options
+			$defaults = Plugin::get_option();
+			foreach ( Helpers::old_options() as $old_option ) {
+				if ( isset( $defaults[ $old_option ] ) ) {
+					$defaults[ $old_option ] = get_option( 'wpemfb_' . $old_option, $defaults[ $old_option ] );
+				}
+				delete_option( 'wpemfb_' . $old_option );
+			}
+			Plugin::set_options( $defaults );
+		}
+	}
+}
+
+add_action(Plugin::$option.'_activation','WP_Embed_FB_Options::instance');
+add_action(Plugin::$option.'_update','WP_Embed_FB_Options::instance');
+
+WP_Embed_FB_Options::instance();
 /**
  * Class WP_Embed_FB
  *

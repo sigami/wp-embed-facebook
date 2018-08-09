@@ -5,24 +5,9 @@ namespace SIGAMI\WP_Embed_FB;
 /**
  * Class Framework
  *
- * @version 2.3.4
+ * @version 2.5.1
  */
 abstract class Framework {
-
-	###########################################
-	# Cache of commonly used vars do not edit #
-	###########################################
-
-	/**
-	 * @var string __FILE__ constant from plugin FILE
-	 */
-	static $FILE = '';
-
-	protected static $defaults = null;
-	private static   $options  = null;
-	private static   $path     = null;
-	private static   $url      = null;
-	private static   $instance = null;
 
 	#################################################################
 	#  Replace this variables on Plugin Class constructor as needed #
@@ -73,6 +58,21 @@ abstract class Framework {
 	# Labels for reset options. Set i18n on constructor
 	protected static $reset_string = 'Reset to defaults';
 	protected static $confirmation = 'Are you sure?';
+
+	###########################################
+	# Cache of commonly used vars do not edit #
+	###########################################
+
+	/**
+	 * @var string __FILE__ constant from plugin FILE
+	 */
+	public static $FILE = '';
+
+	protected static $defaults = null;
+	private static   $options  = null;
+	private static   $path     = null;
+	private static   $url      = null;
+	private static   $instance = null;
 
 	static function instance( $file ) {
 		if ( self::$instance === null ) {
@@ -145,6 +145,7 @@ abstract class Framework {
 
 			static::$defaults_change = true;
 			static::get_option();
+			do_action( static::$option . '_' . __FUNCTION__ );
 		}
 	}
 
@@ -193,7 +194,7 @@ abstract class Framework {
 	 *                     options if $option is null;
 	 */
 	static function get_option( $option = null ) {
-		if ( ! is_array( self::$options ) ) {
+		if ( ! is_array( self::$options  ) ) {
 			$options = get_option( static::$option );
 			if ( is_array( $options ) ) {
 				#Sanitize options on install, update and on development also useful when you want to
@@ -205,8 +206,8 @@ abstract class Framework {
 					} else {
 						$compare = [];
 						foreach ( static::defaults() as $default_key => $default_value ) {
-							$compare[ $default_key ] = isset( $options[ $default_key ] ) ?
-								$options[ $default_key ] : $default_value;
+							$compare[ $default_key ] = isset( $options[ $default_key ] )
+								? $options[ $default_key ] : $default_value;
 						}
 						if ( $compare === $options ) {
 							self::$options = $options;
@@ -240,6 +241,7 @@ abstract class Framework {
 		$defaults = static::defaults();
 
 		if ( is_string( $options ) && ( $options == 'reset_defaults' ) ) {
+			do_action( self::$option . '_reset_defaults' );
 			return $defaults;
 		}
 
@@ -260,11 +262,9 @@ abstract class Framework {
 				if ( is_int( $default_value ) ) {
 					$options[ $name ] = (int) $options[ $name ];
 				}
-				if (
-					( is_string( $default_value ) && is_string( $options[ $name ] ) )
-					|| ( is_object( $default_value ) && is_object( $options[ $name ] ) )
-					|| ( is_array( $default_value ) && is_array( $options[ $name ] ) )
-				) {
+				if ( ( is_string( $default_value ) && is_string( $options[ $name ] ) )
+				     || ( is_object( $default_value ) && is_object( $options[ $name ] ) )
+				     || ( is_array( $default_value ) && is_array( $options[ $name ] ) ) ) {
 					$clean[ $name ] = $options[ $name ];
 				}
 			}
@@ -341,7 +341,7 @@ abstract class Framework {
             handleTabs(jQuery(window.location.hash));
             jQuery(window).bind('hashchange', function () {
                 handleTabs(jQuery(window.location.hash));
-                jQuery("html, body").animate({ scrollTop: 0 }, "slow");
+                jQuery("html, body").animate({scrollTop: 0}, "slow");
             });
         </script>
 		<?php
@@ -384,10 +384,16 @@ abstract class Framework {
 	 * @param array|null $atts        HTML attributes like example
 	 *                                ['required','max'=>20,'onclick'=>'do_something()']
 	 * @param array      $values      Option values for select and checklist fields
+	 * @param string     $option      Option to store the values
 	 */
-	static function field( $type, $name = '', $label = '', $description = '', $atts = null, $values = [] ) {
+	static function field(
+		$type, $name = '', $label = '', $description = '', $atts = null, $values = [], $option = ''
+	) {
+		if ( empty( $option ) ) {
+			$option = static::$option;
+		}
 		//TODO add aria-described-by on input that points to the id of description
-		$options    = apply_filters( static::$option . '_field_options', static::get_option() );
+		$options    = apply_filters( $option . '_field_options', static::get_option() );
 		$help_text  = ! empty( $description ) ? "<p class=\"description\">$description</p>" : "";
 		$attsString = '';
 		switch ( $type ) {
@@ -401,13 +407,14 @@ abstract class Framework {
                         <fieldset>
 							<?php
 							foreach ( $values as $value => $title ) :
-								$checked = ( in_array( $value,
-									$options[ $name ] ) ) ? 'checked' : '';
+								$checked = ( in_array( $value, $options[ $name ] ) ) ? 'checked'
+									: '';
 								?>
                                 <label for="<?php echo "{$name}_$value" ?>">
                                     <input type="checkbox" id="<?php echo "{$name}_$value" ?>"
-                                           name="<?php echo static::$option . "[$name][]" ?>"
-                                           value="<?php echo $value ?>" <?php echo $checked . ' ' . $attsString ?>/>
+                                           name="<?php echo $option . "[$name][]" ?>"
+                                           value="<?php echo $value ?>" <?php echo $checked . ' '
+									                                               . $attsString ?>/>
                                     <span><?php echo $title ?></span>
                                 </label>
                                 <br>
@@ -432,7 +439,7 @@ abstract class Framework {
                     <td>
                         <label for="users_can_register">
                             <input type="checkbox" id="<?php echo $name ?>"
-                                   name="<?php echo static::$option . "[$name]" ?>" <?php echo $checked ?>
+                                   name="<?php echo $option . "[$name]" ?>" <?php echo $checked ?>
                                    value="true" <?php echo self::atts2string( $atts ) ?>/>
 							<?php echo $description ?></label>
                     </td>
@@ -446,17 +453,18 @@ abstract class Framework {
 				?>
                 <tr valign="middle">
                     <th scope="row"><label
-                                for="<?php echo static::$option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo $option . "[$name]" ?>"><?php echo $label ?></label>
                     </th>
                     <td>
-                        <select name="<?php echo static::$option . "[$name]" ?>" <?php echo $attsString ?>>
+                        <select name="<?php echo $option . "[$name]" ?>" <?php echo $attsString ?>>
 							<?php
 							foreach ( $values as $value => $name ) :
 								if ( is_numeric( $value ) ) {
 									$value = $name;
 								}
 								?>
-                                <option value="<?php echo $value ?>" <?php echo $option == $value ? 'selected' : '' ?>><?php echo $name ?></option>
+                                <option value="<?php echo $value ?>" <?php echo $option == $value
+									? 'selected' : '' ?>><?php echo $name ?></option>
 							<?php endforeach; ?>
                         </select>
 						<?php echo $help_text ?>
@@ -492,12 +500,12 @@ abstract class Framework {
 				?>
                 <tr>
                     <th scope="row"><label
-                                for="<?php echo static::$option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo $option . "[$name]" ?>"><?php echo $label ?></label>
                     </th>
                     <td>
                         <input id="<?php echo $name ?>"
                                type="<?php echo $type ?>"
-                               name="<?php echo static::$option . "[$name]" ?>"
+                               name="<?php echo $option . "[$name]" ?>"
                                value="<?php echo esc_attr( $options[ $name ] ) ?>" <?php echo self::atts2string( $atts ) ?>>
 						<?php echo $help_text ?>
                     </td>
@@ -538,10 +546,11 @@ abstract class Framework {
 	static function parse_tabs( $tabs ) {
 		foreach ( $tabs as $tab ) {
 			$data = wp_parse_args( $tab, [
-				'label'      => '',
-				'id'         => '',
-				'sections'   => [],
-				'attributes' => []
+				'label'       => '',
+				'id'          => '',
+				'sections'    => [],
+				'attributes'  => [],
+				'description' => '',
 			] );
 			if ( ! isset( $data['attributes']['class'] ) ) {
 				$data['attributes']['class'] = 'section';
@@ -550,10 +559,11 @@ abstract class Framework {
 				$data['id'] = $data['attributes']['id'];
 			}
 			if ( empty( $data['id'] ) || empty( $data['label'] ) ) {
-				wp_die( 'You must set id and label at least. ' );
+				wp_die( 'You must set id and label at least. ' . print_r( $tabs, true ) );
 			}
 			$attributes = static::atts2string( $data['attributes'] );
 			echo "<section id='{$data['id']}' $attributes>";
+			echo $data['description'];
 			foreach ( $data['sections'] as $section ) {
 				$data = wp_parse_args( $section, [
 					'title'       => '',
@@ -591,6 +601,7 @@ abstract class Framework {
             <form action="options.php" method="post">
 				<?php
 				settings_fields( "Settings_" . static::$option );
+				do_action( static::$option . '_inside_form' );
 				?>
 				<?php if ( count( static::tabs() ) > 1 ) : ?>
                     <h2 class="nav-tab-wrapper">
@@ -631,7 +642,8 @@ abstract class Framework {
 	 * Set the correct text domain
 	 */
 	static function load_translation() {
-		load_plugin_textdomain( 'text_domain', false, 'lang/' );
+		load_plugin_textdomain( 'text_domain', false,
+			basename( dirname( static::$FILE ) ) . '/languages' );
 	}
 
 	/**

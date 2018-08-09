@@ -15,9 +15,7 @@ class Helpers {
 	static $lb_defaults = null;
 
 	static function string_to_array( $string ) {
-		$array = explode( ',', $string );
-
-		return array_map( 'trim', $array );
+		return explode( ',', trim( $string, ' ,' ) );
 	}
 
 	static function has_photon() {
@@ -152,7 +150,7 @@ class Helpers {
 	}
 
 	static function get_api_versions() {
-		return array(
+		return [
 			'v2.6'  => '2.6',
 			'v2.7'  => '2.7',
 			'v2.8'  => '2.8',
@@ -160,9 +158,9 @@ class Helpers {
 			'v2.10' => '2.10',
 			'v2.11' => '2.11',
 			'v2.12' => '2.12',
-			'v3.0' => '3.0',
-			'v3.1' => '3.1',
-		);
+			'v3.0'  => '3.0',
+			'v3.1'  => '3.1',
+		];
 	}
 
 	static function get_fb_locales() {

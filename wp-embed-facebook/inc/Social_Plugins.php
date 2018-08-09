@@ -465,7 +465,6 @@ class Social_Plugins {
 
 		$defaults = self::get_defaults();
 
-		$options = Plugin::get_option();
 		foreach ( $defaults[ $type ] as $key => $value ) {
 			if ( in_array( $key, Social_Plugins::$link_types ) ) {
 				$defaults[ $key ] = Helpers::get_true_url();
@@ -514,6 +513,7 @@ class Social_Plugins {
 
 			$data = shortcode_atts( $defaults[ $type ], $atts );
 
+
 			$ret = self::get( $type, $data );
 
 			if ( ( Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
@@ -535,6 +535,9 @@ class Social_Plugins {
 
 			if ( isset( $atts['debug'] ) ) {
 				$ret .= self::debug( $ret, $atts, $type );
+				//$ret .= print_r($ret,true);
+				$ret .= print_r($atts,true);
+				$ret .= print_r($data,true);
 			}
 
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );

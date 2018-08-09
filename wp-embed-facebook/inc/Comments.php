@@ -54,8 +54,7 @@ class  Comments {
 	static function active_on_post_type() {
 		global $post_type, $post;
 
-		$allowed_post_types = Helpers::string_to_array( trim( Plugin::get_option( 'auto_comments_post_types' ),
-			' ,' ) );
+		$allowed_post_types = Plugin::get_option( 'auto_comments_post_types' );
 
 		if ( in_array( self::$current_post_type, $allowed_post_types )
 		     || in_array( $post_type, $allowed_post_types )

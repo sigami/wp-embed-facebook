@@ -1,85 +1,122 @@
 === WP Embed Facebook ===
 Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
-Tags: Facebook, facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, facebook album, facebook albums, facebook photos, facebook photo, social,
-Requires at least: 4.9.5
+Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
+Requires at least: 4.5
 Tested up to: 4.9.5
+Requires PHP: 5.4
 Stable tag: 2.9.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
 
 == Description ==
 
-Automatically embed any type of content from Facebook directly into your site by simply copying the url into the editor.
+Automatically embed any content from Facebook directly into your site just by copying the URL into the editor.
 
-There are two types of embeds: Custom Embeds that which entirely native to this plugin and social plugins which are pieces of code created by Facebook developers
+Replace the WordPress comments system with Facebook comments on selected post types or manually using a shortcode.
+
+Scrape your shared URL's on Facebook on update or manually on selected post types.
+
+Use simple shortcodes to invoke like, send, share, save buttons or any other Facebook Social Plugin.
+
+= Supported Embeds =
+
+* Videos & Live Video
+* Albums
+* Photos
+* Fan pages
+* Groups
+* Page Events List
+* Posts
+* Profiles
+* Single Comment
+
+There are two types of embeds: Custom Embeds that are entirely native to this plugin and Social Plugins which are pieces of code created by Facebook developers.
 
 [All custom embeds examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/)
 
 [All social plugins examples](http://www.wpembedfb.com/demo-site/category/social-plugins/)
 
-As an alternative to automatically embed your content you can use the `[facebook url]` shortcode instead and pass on some parameters to change each embed [examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
+As an alternative to automatically embed your content, you can use the `[embedfb url]` shortcode instead and pass on some parameters to change each embed [examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
 
-You can also use the built in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
-
-= Supported Embeds =
-* Facebook Live Video
-* Facebook Videos
-* Facebook Albums
-* Facebook Page Events List
-* Facebook Photos
-* Facebook Fan pages
-* Facebook Profiles
-* Facebook Posts
-* Facebook Comment
+You can also use the built-in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
 
 = Facebook Social Plugins =
-Pieces of code crafted by Facebook developers for us mortals ( [official documentation](https://developers.facebook.com/docs/plugins/) ). Create a default instance with the shortcode: `[fb_plugin type]`
 
-Examples:
+**Shortcode variations**
 
-A like and share button for the current page (works on a sidebar)
+```
+[fb_plugin like]
+[fb_plugin send]
+[fb_plugin share]
+[fb_plugin save]
+[fb_plugin comments]
+[fb_plugin quote]
+[fb_plugin page href=]
+[fb_plugin post href=]
+[fb_plugin video href=]
+[fb_plugin group href=]
+[fb_plugin comment href=]
+```
 
-`[fb_plugin like share=true]`
+Change the default attributes for each plugin on settings or individually on using shortcode attributes, see the list of all available attributes using the "help" attribute like this: `[fb_plugin like help=1]` 
 
-Embed a complete Facebook fan page with latest post, events and the posibility to send a direct message
+For example: To embed a complete Facebook fan page with the latest post, events, and chat; use the shortcode like this:
 
-`[fb_plugin page href=https://www.facebook.com/sydneyoperahouse/ tabs=timeline,events,messages ] `
+`[fb_plugin page href=https://www.facebook.com/wpemf tabs=timeline,events,messages ] `
 
-Embed all upcoming events of a fan page
+To only show events use `tabs=events`. For posts use "timeline" and for chat use "messages".
 
-`[fb_plugin page href=https://www.facebook.com/wpemf/ small-header=true height=350 tabs=messages ]`
+Embed a share button for your main fan page
 
-See a lot more examples [here](http://www.wpembedfb.com/demo-site/category/social-plugins/).
+`[fb_plugin share href=https://www.facebook.com/wpemf layout=button_count ]`
+
+Remove the "href" attribute to share the current page even if its invoked from a widget.
+
+Find all possible attributes on the plugin settings "Social Plugins" section. See live examples [here](http://www.wpembedfb.com/demo-site/category/social-plugins/).
+
+= Custom Embeds =
+
+Set up the use of custom embeds when possible automatically on settings, or change the type of embed individually using the main shortcode.
+
+For example: To embed an album, individual photo, post or fan page from Facebook use the shortcode like this:
+
+`[embedfb href=https://www.facebook.com/... social_plugin=false ] `
+
+Set the number of photos on embedded albums using the "photos" attribute
+
+`[embedfb href=https://www.facebook.com/... photos=200 ]` 
+
+Select between different styles of embeds using the theme attribute
+
+`[embedfb href=https://www.facebook.com/... social_plugin=false theme=classic ] `
+
+Available themes are "default", "classic" and "elegant". Look on the FAQ on how to fully personalize your embeds.
 
 = Facebook Comments =
-Automatically replace the WordPress comments system with Facebook comments or manually using the shortcode `[fb_plugin comments]`.
 
-To enable moderation you have to set up a Facebook App ID and Secret also scrape the urls on Facebook more details inside the settings page.
+Automatically replace the WordPress comments system with Facebook comments on selected post types or manually using the shortcode `[fb_plugin comments]`.
+
+To enable moderation, scrape URLs and custom embeds you have to set up a Facebook App ID and Secret on the settings page.
 
 = The Quote Social Plugin =
-The last social plugin to come to life allows your visitors to share any part of your site just by selecting text. Activate it automatically on selected post types or by using the shortcode `[fb_plugin quote]`. [Demo](http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/).
+
+Allow your visitors to share text from your site just by selecting it. Activate it automatically on selected post types or using the shortcode `[fb_plugin quote]` [Demo](http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/).
 
 = Requirements =
-* Nothing to embed posts, pages, videos and comments.
+
+* Nothing to embed posts, pages, videos, and comments.
 * For custom embeds and comments moderation a Facebook App Id and Secret are required more details inside settings.
 
-**[One page live demo](http://www.wpembedfb.com/demo/)**
-
-**[Demo Site](http://www.wpembedfb.com/demo-site/)**
-
 = Contributing =
-If you found a bug or want to add an extra feature create a pull request on [github](https://github.com/sigami/wp-embed-facebook).
 
-= Premium extension =
-* "Elegant" custom embeds theme
+Feel like adding something? Create a pull request to the master branch on [github](https://github.com/sigami/wp-embed-facebook). All are welcome.
+
+= Extended Embeds Add-On =
+
+* Embed events you have been invited to, single event embed and full event shortcode
 * Embed full fan page shortcode
-* Embed albums with more that 100 photos
-* Features cooking
-    * Shortcode creator
-    * Special templates for albums and pages
 
 == Installation ==
 
@@ -88,7 +125,7 @@ If you found a bug or want to add an extra feature create a pull request on [git
 1. Create a Facebook App follow the [step by step guide](http://www.wpembedfb.com/creating-a-facebook-app-the-step-by-step-guide/).
 1. Copy the App Id and App Secret to the “Embed Facebook” page under the Settings section.
 1. Change settings to your liking.
-1. Enjoy and tell someone !
+1. Enjoy and tell someone!
 
 == Frequently Asked Questions ==
 
@@ -96,31 +133,37 @@ If you found a bug or want to add an extra feature create a pull request on [git
 
 You can overwrite the embed template with a custom one.
 
-1. Create a folder on **your theme** named "plugins".
-1. Inside that folder create a new one named "wp-embed-facebook".
-1. Inside that folder create a new one named "default".
-1. Copy the contents of “wp-embed-facebook/templates/default/” to “your-theme/plugins/wp-embed-facebook/default”
-1. Change the template files to what you want. Inside each file you can access the `$fb_data` array that contains the information retrieved from facebook.
+1. Create a folder on **your theme** named "plugins"
+1. Inside that folder create a new one named "wp-embed-facebook"
+1. Inside that folder create a new one named "default"
+1. Copy the contents of “wp-embed-facebook/custom-embeds/” to “your-theme/plugins/wp-embed-facebook/custom-embeds/”
+1. Change the template files to what you want. Inside each file, you can access the `$fb_data` array that contains the information retrieved from Facebook
 
 = I moved from another Facebook comments/like plugin and my comments don't show =
 
-Go to advanced section on settings and tick the option "Use permalinks on social plugins urls" if it does not work please create a support ticket mentioning the old comments plugin.
+Go to "Advanced" section on settings and tick the option "Use permalinks on social plugins URLs" if it does not work, please create a support ticket mentioning the old comments plugin.
 
-= How can I make my page load faster ? =
+= How can I make my page load faster? =
 
-Social plugins will load at its own time via JavaScript so you just have to wait on them, for custom embeds a cache plugin will greatly increase performance.
+Social plugins will load at its own time via JavaScript, so you have to wait on them, for custom embeds a cache plugin will significantly increase performance.
 
-= Why can't I embed a certain fan page getting error code 100 ? =
+= Why can't I embed a specific fan page getting error code 100? =
 
-The Facebook page your are trying to embed is not available to users logged out from Facebook.
+The Facebook page you are trying to embed is not available to users logged out from Facebook.
 
-= I cannot embed my photo stream =
+= I cannot embed my photostream =
 
-This plugin only works for embedding **albums**. Alternatives are being tested and they will be available very soon.
+This plugin only works for embedding **albums**.
 
-= Is there a way to embed an album with more than 100 photos ? =
+= Is there a way to embed an album with more than 100 photos? =
 
 Change the number of embedded photos on settings or use the shortcode like this [facebook album_url photos=200 ] This can only be achieved using the premium version.
+
+= How to get the correct URL from Facebook? =
+
+Time is the master. Right click on the video, post, album, etc. time of creation and copy the URL. 
+
+Buying the premium extensions helps to keep this project alive.
 
 = How I can guarantee that this software is kept up to date? =
 
@@ -133,7 +176,7 @@ Buying the premium extensions helps to keep this project alive.
 3. Video Social Plugin
 4. Video Custom Embed
 5. Album
-6. Album with more than 100 photos  (Premium only)
+6. An album with more than 100 photos  (Premium only)
 7. Event
 8. Full Event Shortcode (Premium only)
 9. Full Page Shortcode (Premium only)
@@ -148,11 +191,15 @@ Buying the premium extensions helps to keep this project alive.
 == Changelog ==
 
 = 3.0.0 =
-Translated API calls
-Url scraper
-Universal options page
-Comments count and order now on
-
+* Improved: Translated API calls
+* Added: Url scraper
+* Added: Group social plugin
+* Removed: Deprecated social plugins
+* Removed: Events custom embeds because Facebook API changes, however, some functionality is still there on the premium version
+* Improved: Universal options page
+* Fixed: Comments count and order now on
+* Added: Facebook SDK v3.1
+* Added: Compatibility for visual themes
 
 = 2.2.4 =
 * Fixed: Missing icons on custom embeds
@@ -196,7 +243,7 @@ Comments count and order now on
 * Improved: updated wp_get_sites for get_sites
 
 = 2.1.10 =
-* Improved: Deprecated Facebook sdk 2.1 and 2.2 automatically updates to 2.3
+* Improved: Deprecated Facebook SDK 2.1 and 2.2 automatically updates to 2.3
 * Improved: admin navigation
 
 = 2.1.9 =
@@ -208,10 +255,10 @@ Comments count and order now on
 * Fixed: Prevent wrong file load on theme templates @pierreg_
 
 = 2.1.7 =
-* Fixed: url understanding on page embeds when they have the format page-name-8798798
+* Fixed: URL understanding on page embeds when they have the format page-name-8798798
 * Fixed: website on custom embed fail on edge cases
 * Fixed: download video link
-* Added: spanish translations ES, MX, AR, CL, GT, PE, VE
+* Added: Spanish translations ES, MX, AR, CL, GT, PE, VE
 
 = 2.1.6 =
 * Fixed: missing posts from page embeds
@@ -239,13 +286,13 @@ Comments count and order now on
 * Fixed: includes giving problems in some sites.
 
 = 2.1.2 =
-* Added: [fb_plugin] shortcode to embed any type of social plugin
+* Added: [fb_plugin] shortcode to embed any social plugin
 * Added: Auto embed comments plugin to certain post types
 * Added: Auto embed quote plugin to certain post types
 * Added: Default options for all social plugins
 * Added: Advanced option to integrate other lightbox scripts to the album embeds
 * Improved: Admin area is more comprehensive with tons of examples
-* Improved: url recognition
+* Improved: URL recognition
 * Deprecated: Old functions on Wef_Social_Plugins class
 
 = 2.1.1 =
@@ -260,8 +307,8 @@ Comments count and order now on
 * Added: Github for development https://github.com/sigami/wp-embed-facebook
 
 = 2.1 =
-* Removed: all options and moved them to a single one 'wpemfb_options'
-* Removed: resize cover javascript it is now done with css
+* Removed: all options and moved them to a single one "wpemfb_options"
+* Removed: resize cover javascript it is now done with CSS
 * Fixed: timezone bug custom post and events
 * Added option to only load scripts when an embed is present
 * Added option to reset all options
@@ -280,7 +327,7 @@ Comments count and order now on
 * Added Lightbox Option Position From Top
 * Added Lightbox Option Resize Duration
 * Added Lightbox Option Fade Duration
-* Changed css on classic theme
+* Changed CSS on the classic theme
 
 = 2.0.9.1 =
 * Fixed: Admin notice bug
@@ -289,14 +336,14 @@ Comments count and order now on
 
 
 = 2.0.9 =
-* Fixed: css on footer when using different themes
+* Fixed: CSS on footer when using different themes
 * Changed: d all.js to sdk.js (bryant1410)
 * Optimization for sites with no Facebook App
 * Added error messages for special cases
 * Added advanced option for selecting Facebook SDK version
-* Fixed: locale error inside editor
+* Fixed: locale error inside the editor
 * Fixed: link underline in some themes
-* Fixed: several css and html structure nothing critical
+* Fixed: several CSS and HTML structure nothing critical
 
 = 2.0.8 =
 * Fix Event title css
@@ -318,7 +365,7 @@ Comments count and order now on
 * Added 'type' parameter to wpemfb_template filter
 * Fixed: https on all templates
 * Fixed: like and comment links on single post raw
-* Fixed: forced app token only if it has app
+* Fixed: forced app token only if it has an app
 * Fixed: admin shortcode references
 * Fixed: removed unused options on uninstall
 * Fixed: translations strings
@@ -336,7 +383,7 @@ Comments count and order now on
 * Added options for page social plugins
 * Changed admin layout
 * Does not need facebook app for simple embeds
-* More human friendly
+* More human-friendly
 
 = 2.0.1 =
 * Fixed: message on photo single post
@@ -345,7 +392,7 @@ Comments count and order now on
 * Fixed: language issue when embedding social plugins in admin
 * Fixed: time on events
 * Changed:  Facebook API to 2.4
-* Added a new parameters for shortcode 'social_plugin' and 'theme'
+* Added new parameters for shortcode "social_plugin" and "theme"
 * Fixed: shortcode use [facebook FB_Object_ID ]
 * Improved CSS and themes
 * New Embed Post Raw
@@ -421,15 +468,15 @@ Comments count and order now on
 
 = 1.8 =
 * Compatibility with twenty 15 theme
-* New css for embeds
-* Compatibility with premium plugin
+* New CSS for embeds
+* Compatibility with the premium plugin
 
 = 1.7.1 =
 * Documentation Changed: 
 * New advanced option
 
 = 1.7 =
-* Better detection of video urls
+* Better detection of video URLs
 * FB js now loaded via jquery
 * More comprehensive admin section
 * Fix album pictures not showing on chrome
@@ -496,3 +543,4 @@ Comments count and order now on
 
 = 2.2.2 =
 Added Facebook SDK v2.10
+	

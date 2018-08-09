@@ -90,6 +90,29 @@ class Magic_Embeds {
 	static function plugins_loaded() {
 		wp_embed_register_handler( "wpembedfb", "/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/",
 			__CLASS__ . '::embed_register_handler' );
+		//TODO finish this
+		//add_action('pre_get_posts',__CLASS__.'::pre_get_posts');
+		//add_action('current_screen',__CLASS__.'::pre_get_posts');
+	}
+
+	static function pre_get_posts(){
+		if(!self::active_on_post_type()){
+			wp_embed_unregister_handler('wpembedfb');
+		}
+	}
+
+	static function active_on_post_type() {
+		global $post_type, $post;
+
+		$allowed_post_types = Plugin::get_option( 'auto_embed_post_types' );
+
+		if ( in_array( $post_type, $allowed_post_types )
+		     || ( ( $post instanceof \WP_Post )
+		          && in_array( $post->post_type, $allowed_post_types ) ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	static function embed_register_handler(
@@ -110,10 +133,10 @@ class Magic_Embeds {
 		}
 		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css',
 			[], Plugin::VER );
-		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'inc/wef-lightbox/css/lightbox.css',
+		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'templates/lightbox/css/lightbox.css',
 			[], Plugin::VER );
 		wp_register_script( 'wpemfb-lightbox',
-			Plugin::url() . 'inc/wef-lightbox/js/lightbox.min.js', [ 'jquery' ],
+			Plugin::url() . 'templates/lightbox/js/lightbox.min.js', [ 'jquery' ],
 			Plugin::VER );
 		$lb_defaults       = Helpers::get_lb_defaults();
 		$options           = Plugin::get_option();

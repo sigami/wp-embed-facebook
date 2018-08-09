@@ -25,7 +25,7 @@ Plugin::instance( __FILE__ );
 
 Magic_Embeds::instance();
 
-if ( Plugin::get_option( 'auto_comments_active' ) === 'true' ) {
+if ( Plugin::is_on( 'auto_comments_active' ) ) {
 	Comments::instance();
 }
 
@@ -36,7 +36,7 @@ if ( is_admin() ) {
 //COMPATIBILITY
 include Plugin::path().'inc/deprecated/deprecated.php';
 
-
+//TODO finish scraper
 //TODO CHECK IF ALL OPTIIONS ARE THERE AND REMOVE OLD ONES
 //TODO change lightbox css to make it more hermetic
 //TODO PASS ADD ON TO NEW FORMAT

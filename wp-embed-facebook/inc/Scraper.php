@@ -19,6 +19,7 @@ class Scraper {
 
 	private function __construct() {
 		//TODO add link to scrape url manually on selected post types
+		//TODO add bundle scrape
 	}
 
 	/**
@@ -31,7 +32,7 @@ class Scraper {
 	static function save_post( $post_id, $post, $update ) {
 		$allowed_post_types = Helpers::string_to_array( trim( Plugin::get_option( 'auto_scrape_post_types' ),
 			' ,' ) );
-		if ( Plugin::get_option( 'auto_scrape_posts' ) === 'false'
+		if ( ! Plugin::is_on( 'auto_scrape_posts' )
 		     || wp_is_post_revision( $post_id )
 		     || ! $update
 		     || ! in_array( get_post_type( $post ), $allowed_post_types )

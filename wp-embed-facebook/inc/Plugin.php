@@ -15,9 +15,10 @@ final class Plugin extends Framework {
 	static $menu_slug = 'embedfacebook';
 	static $page_type = 'options';
 
+	static $debug = true;
+
 	protected function __construct( $file ) {
 
-		static::$defaults_change = false;
 
 		self::$page_title = __( 'Embed Facebook', 'wp-embed-facebook' );
 		self::$menu_title = __( 'Embed Facebook', 'wp-embed-facebook' );
@@ -26,6 +27,8 @@ final class Plugin extends Framework {
 		self::$confirmation = esc_attr__( 'Are you sure?', 'wp-embed-facebook' );
 
 		parent::__construct( $file );
+
+		static::$defaults_change = static::$debug;
 	}
 
 	static function load_translation() {
@@ -104,12 +107,12 @@ final class Plugin extends Framework {
 				                  'FB_plugins_as_iframe'           => 'false',
 				                  'adaptive_fb_plugin'             => 'false',
 				                  'quote_plugin_active'            => 'false',
-				                  'quote_post_types'               => 'post,page',
+				                  'quote_post_types'               => [ 'post', 'page' ],
 				                  'auto_embed_active'              => 'true',
 				                  //
-				                  //				                  'auto_embed_post_types'          => '',//TODO filter embed register handler per post_type
+				                  'auto_embed_post_types'          => [ 'post' ],//TODO test
 				                  'auto_comments_active'           => 'false',
-				                  'auto_comments_post_types'       => 'post',
+				                  'auto_comments_post_types'       => [ 'post' ],
 				                  'comments_count_active'          => 'true',
 				                  'comments_open_graph'            => 'true',
 				                  //				                  'scrape_open_graph'              => 'true',//TODO get real options from file
@@ -172,7 +175,10 @@ final class Plugin extends Framework {
 		<?php
 		$custom_embeds_desc = ob_get_clean();
 
-		return [
+		$post_types        = get_post_types( [ 'public' => true ] );
+		$public_post_types = array_combine( $post_types, $post_types );
+
+		$sections = [
 			# Magic Embeds
 			[
 				'label'    => __( 'Magic Embeds', 'wp-embed-facebook' ),
@@ -204,25 +210,6 @@ final class Plugin extends Framework {
 						]
 					],
 					[
-						'title'       => __( 'Quote Plugin', 'wp-embed-facebook' ),
-						'description' => __( 'The quote plugin lets people select text on your page and add it to their Facebook share.',
-							'wp-embed-facebook' ),
-						'fields'      => [
-							[
-								'type'  => 'checkbox',
-								'name'  => 'quote_plugin_active',
-								'label' => __( 'Active', 'wp-embed-facebook' ),
-							],
-							[
-								'type'        => 'text',
-								'name'        => 'quote_post_types',
-								'label'       => __( 'Post types', 'wp-embed-facebook' ),
-								'description' => __( 'Post types separated by commas i.e. post,page,attachment',
-									'wp-embed-facebook' )
-							],
-						]
-					],
-					[
 						'title'       => __( 'Comments', 'wp-embed-facebook' ),
 						'description' => __( 'Replace WP comments for FB comments on selected post types',
 							'wp-embed-facebook' ),
@@ -233,11 +220,10 @@ final class Plugin extends Framework {
 								'label' => __( 'Active', 'wp-embed-facebook' ),
 							],
 							[
-								'type'        => 'text',
+								'type'        => 'checklist',
 								'name'        => 'auto_comments_post_types',
 								'label'       => __( 'Post types', 'wp-embed-facebook' ),
-								'description' => __( 'Post types separated by commas i.e. post,page,attachment',
-									'wp-embed-facebook' )
+								'values'      => $public_post_types
 							],
 							[
 								'type'        => 'checkbox',
@@ -262,9 +248,29 @@ final class Plugin extends Framework {
 							],
 						]
 					],
+					[
+						'title'       => __( 'Quote Plugin', 'wp-embed-facebook' ),
+						'description' => __( 'The quote plugin lets people select text on your page and add it to their Facebook share.',
+							'wp-embed-facebook' ),
+						'fields'      => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'quote_plugin_active',
+								'label' => __( 'Active', 'wp-embed-facebook' ),
+							],
+							[
+								'type'        => 'checklist',
+								'name'        => 'quote_post_types',
+								'label'       => __( 'Post types', 'wp-embed-facebook' ),
+								'values'      => $public_post_types
+							],
+						]
+					],
+
 				]
 			],
 			# Social Plugins
+			//TODO add group
 			[
 				'label'    => __( 'Social Plugins', 'wp-embed-facebook' ),
 				'id'       => 'social_plugins',
@@ -320,6 +326,16 @@ final class Plugin extends Framework {
 							self::social_field( 'video', 'width' ),
 							self::social_field( 'video', 'show-text' ),
 							self::social_field( 'video', 'show-captions' )
+						]
+					],
+					[
+						'title'       => __( 'Group', 'wp-embed-facebook' ),
+						'description' => Social_Plugins::get_links( 'video' )
+						                 . '     <code class="shortcode_example">[fb_plugin group href=]</code>',
+						'fields'      => [
+							self::social_field( 'group', 'show-social-context' ),
+							self::social_field( 'group', 'show-metadata' ),
+							self::social_field( 'group', 'skin' ),
 						]
 					],
 					[
@@ -692,17 +708,19 @@ final class Plugin extends Framework {
 							[
 								'type'  => 'checkbox',
 								'name'  => 'fb_root',
-								'label' => __( 'Add fb-root on top of content', 'wp-embed-facebook' )
+								'label' => __( 'Add fb-root on top of content',
+									'wp-embed-facebook' )
 							],
 							[
 								'type'  => 'checkbox',
 								'name'  => 'enq_fbjs_global',
-								'label' => __( 'Force Facebook SDK script on all site', 'wp-embed-facebook' )
+								'label' => __( 'Force Facebook SDK script on all site',
+									'wp-embed-facebook' )
 							],
 							[
-								'type'  => 'hidden',
-								'name'  => 'close_warning2',
-								'attributes' => ['value'=>'true']
+								'type'       => 'hidden',
+								'name'       => 'close_warning2',
+								'attributes' => [ 'value' => 'true' ]
 							],
 						]
 					]
@@ -710,7 +728,8 @@ final class Plugin extends Framework {
 			],
 
 		];
-		//TODO add hidden field close_warning2 = false
+
+		return apply_filters( 'wpemfb_admin_sections', $sections );
 	}
 
 	/**
