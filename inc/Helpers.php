@@ -1,12 +1,16 @@
 <?php
 /**
- * Created for: wp-embed-facebook
- * By: Miguel Sirvent
- * Date: 6/06/18
- * Time: 08:10 PM
+ * Plugin Helpers.
+ *
+ * @package WP Embed Facebook
  */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 class Helpers {
 

@@ -1,5 +1,5 @@
 === WP Embed Facebook ===
-Contributors: poxtron
+Contributors: poxtron, nerdaryan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
 Requires at least: 4.5
@@ -60,7 +60,7 @@ You can also use the built-in WordPress `[embed]` [shortcode](https://codex.word
 [fb_plugin comment href=]
 ```
 
-Change the default attributes for each plugin on settings or individually on using shortcode attributes, see the list of all available attributes using the "help" attribute like this: `[fb_plugin like help=1]` 
+Change the default attributes for each plugin on settings or individually on using shortcode attributes, see the list of all available attributes using the "help" attribute like this: `[fb_plugin like help=1]`
 
 For example: To embed a complete Facebook fan page with the latest post, events, and chat; use the shortcode like this:
 
@@ -86,7 +86,7 @@ For example: To embed an album, individual photo, post or fan page from Facebook
 
 Set the number of photos on embedded albums using the "photos" attribute
 
-`[embedfb href=https://www.facebook.com/... photos=200 ]` 
+`[embedfb href=https://www.facebook.com/... photos=200 ]`
 
 Select between different styles of embeds using the theme attribute
 
@@ -161,7 +161,7 @@ Change the number of embedded photos on settings or use the shortcode like this 
 
 = How to get the correct URL from Facebook? =
 
-Time is the master. Right click on the video, post, album, etc. time of creation and copy the URL. 
+Time is the master. Right click on the video, post, album, etc. time of creation and copy the URL.
 
 Buying the premium extensions helps to keep this project alive.
 
@@ -472,7 +472,7 @@ Buying the premium extensions helps to keep this project alive.
 * Compatibility with the premium plugin
 
 = 1.7.1 =
-* Documentation Changed: 
+* Documentation Changed:
 * New advanced option
 
 = 1.7 =
@@ -543,4 +543,3 @@ Buying the premium extensions helps to keep this project alive.
 
 = 2.2.2 =
 Added Facebook SDK v2.10
-	

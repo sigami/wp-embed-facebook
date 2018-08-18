@@ -6,6 +6,11 @@
 
 namespace SIGAMI\WP_Embed_FB;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class Scraper {
 	private static $instance = null;
 

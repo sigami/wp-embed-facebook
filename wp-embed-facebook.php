@@ -1,19 +1,39 @@
 <?php
-/*
-Plugin Name: WP Embed Facebook
-Plugin URI: http://www.wpembedfb.com
-Description: Embed any public Facebook video, photo, album, event, page, comment, profile, or post. Add Facebook comments to all your site, insert Facebook social plugins (like, save, send, share, follow, quote, comments) anywhere on your site. View the <a href="http://www.wpembedfb.com/demo-site/" title="plugin website" target="_blank">demo site</a>.
-Author: Miguel Sirvent
-Version: 2.9.11
-Author URI: http://www.wpembedfb.com
-Text Domain: wp-embed-facebook
-Domain Path: /lang
-*/
+/**
+ * @author    Miguel Sirvent and Rahul Aryan
+ * @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
+ * @link      https://www.wpembedfb.com
+ * @package   WP Embed FB
+ *
+ * @wordpress-plugin
+ * Plugin Name: WP Embed Facebook
+ * Plugin URI:  http://www.wpembedfb.com
+ * Description: Embed any public Facebook video, photo, album, event, page,
+ * comment, profile, or post. Add Facebook comments to all your site, insert
+ * Facebook social plugins (like, save, send, share, follow, quote, comments)
+ * anywhere on your site. View the <a href="http://www.wpembedfb.com/demo-site/" title="plugin website" target="_blank">demo site</a>.
+ * Author:      Miguel Sirvent and Rahul Aryan
+ * Version:     2.9.11
+ * Author URI:  http://www.wpembedfb.com
+ * Text Domain: wp-embed-facebook
+ * Domain Path: /lang
+ */
 
 namespace SIGAMI\WP_Embed_FB;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 spl_autoload_register( __NAMESPACE__ . '\auto_loader' );
 
+/**
+ * Plugin class autoloader.
+ *
+ * @param string $class_name Class name to load.
+ * @return void
+ */
 function auto_loader( $class_name ) {
 	if ( false !== strpos( $class_name, __NAMESPACE__ ) ) {
 		$dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR;

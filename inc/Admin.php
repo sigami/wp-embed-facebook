@@ -1,6 +1,17 @@
 <?php
+/**
+ * Adds wp-admin related actions and filters.
+ *
+ * @package      WP Embed Facebook
+ * @subpackage   Admin
+ */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 class Admin {
 

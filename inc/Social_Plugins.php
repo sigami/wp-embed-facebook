@@ -1,11 +1,18 @@
 <?php
 /**
- * Group of static functions to render facebook social plugins on WordPress it has no dependencies.
+ * Group of static functions to render facebook social
+ * plugins on WordPress it has no dependencies.
  *
- * @author Miguel Sirvent
+ * @author  Miguel Sirvent
+ * @package WP Embed Facebook
  */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 class Social_Plugins {
 

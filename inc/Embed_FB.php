@@ -1,6 +1,16 @@
 <?php
+/**
+ * Shortcode helper.
+ *
+ * @package WP Embed Facebook
+ */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 class Embed_FB {
 	/**

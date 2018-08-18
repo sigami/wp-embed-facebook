@@ -1,10 +1,16 @@
 <?php
 /**
- * Created for: wp-embed-facebook
- * By: Miguel Sirvent
+ * API helper.
+ *
+ * @package WP Embed Facebook
  */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
  * Class FB_API

@@ -1,6 +1,16 @@
 <?php
+/**
+ * Comments helper.
+ *
+ * @package WP Embed Facebook
+ */
 
 namespace SIGAMI\WP_Embed_FB;
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 /**
  * Handles comments auto embeds and comment count synchronization. It includes all actions and
