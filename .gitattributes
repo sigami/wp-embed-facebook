@@ -1,0 +1,6 @@
+tests/ export-ignore
+phpdoc.dist.xml export-ignore
+phpunit.xml export-ignore
+Gruntfile.js export-ignore
+package.json export-ignore
+.gitignore export-ignore
