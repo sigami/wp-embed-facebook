@@ -80,3 +80,4 @@ svn
 
 npm-debug.log
 /wp-embed-facebook.code-workspace
+/*.code-workspace

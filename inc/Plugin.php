@@ -27,9 +27,10 @@ final class Plugin extends Framework {
 
 	static $debug = true;
 
+	/**
+	 * Class constructor.
+	 */
 	protected function __construct( $file ) {
-
-
 		self::$page_title = __( 'Embed Facebook', 'wp-embed-facebook' );
 		self::$menu_title = __( 'Embed Facebook', 'wp-embed-facebook' );
 
@@ -41,11 +42,21 @@ final class Plugin extends Framework {
 		static::$defaults_change = static::$debug;
 	}
 
+	/**
+	 * Load textdomain.
+	 */
 	static function load_translation() {
-		load_plugin_textdomain( 'wp-embed-facebook', false,
-			basename( dirname( self::$FILE ) ) . '/lang/' );
+		load_plugin_textdomain( 'wp-embed-facebook', false, basename( dirname( self::$FILE ) ) . '/lang/' );
 	}
 
+	/**
+	 * Plugin defaults.
+	 *
+	 * @since unknown
+	 * @since 3.0.0 Added default for `auto_scrape_post_types`.
+	 *
+	 * @return array
+	 */
 	static function defaults() {
 		if ( self::$defaults === null ) {
 			$locale = get_locale();
@@ -131,6 +142,8 @@ final class Plugin extends Framework {
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
 				                  'single_post_from_like'          => 'false',
 				                  'permalink_on_social_plugins'    => 'false',
+				                  'auto_scrape_posts'              => 'true',
+				                  'auto_scrape_post_types'         => [ 'post', 'page' ],
 			                  ] + $social_options;
 		}
 
