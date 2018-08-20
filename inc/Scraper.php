@@ -27,6 +27,22 @@ class Scraper {
 	private static $instance = null;
 
 	/**
+	 * Allowed post types to run scrape for.
+	 *
+	 * @var array
+	 * @since 3.0.0
+	 */
+	public $allowed_cpt = [];
+
+	/**
+	 * Is scrape on?
+	 *
+	 * @var boolean
+	 * @since 3.0.0
+	 */
+	public $scrape_on = false;
+
+	/**
 	 * Get singleton instance.
 	 *
 	 * @return Scraper Instance of `SIGAMI\WP_Embed_FB\Scraper`.
@@ -43,9 +59,14 @@ class Scraper {
 	 * Class constructor.
 	 */
 	private function __construct() {
-		add_action( 'save_post', [ $this, 'save_post' ], 10, 3 );
+		$this->allowed_cpt = Plugin::get_option( 'auto_scrape_post_types' );
+		$this->scrape_on   = Plugin::get_option( 'auto_scrape_posts' );
 
-		//TODO add link to scrape url manually on selected post types
+		add_action( 'save_post', [ $this, 'save_post' ], 10, 2 );
+		add_filter( 'post_row_actions', [ $this, 'actions' ], 10, 2 );
+		add_filter( 'page_row_actions', [ $this, 'actions' ], 10, 2 );
+		add_filter( 'admin_action_wef_scrape', [ $this, 'admin_action' ] );
+
 		//TODO add bundle scrape
 	}
 
@@ -54,19 +75,60 @@ class Scraper {
 	 *
 	 * @param integer  $post_id Post ID.
 	 * @param \WP_Post $post WP Post object.
-	 * @param boolean  $update  Is update or new.
 	 */
-	public function save_post( $post_id, $post, $update ) {
-		$allowed_post_types = Plugin::get_option( 'auto_scrape_post_types' );
-
-		if ( ! Plugin::is_on( 'auto_scrape_posts' )
+	public function save_post( $post_id, $post ) {
+		if ( ! $this->scrape_on
 			|| wp_is_post_revision( $post_id )
 			|| ! $update
-			|| ! in_array( get_post_type( $post ), $allowed_post_types, true )
+			|| ! in_array( get_post_type( $post ), $this->allowed_cpt, true )
 			|| 'publish' !== $post->post_status ) {
 			return;
 		}
 
 		FB_API::instance()->scrape_url( get_the_permalink( $post ) );
+	}
+
+	/**
+	 * Add custom post action link to scrape link.
+	 *
+	 * @param array    $actions Action links.
+	 * @param \WP_Post $post    Post object.
+	 * @return array
+	 * @author Rahul Aryan <rah12@live.com>
+	 * @since 3.0.0
+	 */
+	public function actions( $actions, $post ) {
+		if ( in_array( get_post_type( $post ), $this->allowed_cpt, true ) ) {
+			$nonce = wp_create_nonce( 'wef_scrape' );
+
+			$actions['wef_scrape'] = '<a href="' . admin_url( 'admin.php?action=wef_scrape&id=' . $post->ID . '&_nonce=' . $nonce ) . '">' . __( 'FB Scrape', 'wp-embed-facebook' ) . '</a>';
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Admin action for scraping link.
+	 *
+	 * @return void
+	 * @author Rahul Aryan <rah12@live.com>
+	 * @since 3.0.0
+	 */
+	public function admin_action() {
+		// Check nonce.
+		if ( ! wp_verify_nonce( Helpers::get_request( '_nonce' ), 'wef_scrape' ) || ! current_user_can( 'edit_posts' ) ) {
+			wp_die( esc_attr__( 'Trying to cheat!?', 'wp-embed-facebook' ) );
+		}
+
+		$post_id = (int) Helpers::get_request( 'id' );
+		$post    = get_post( $post_id );
+
+		// Trigger API.
+		$this->save_post( $post_id, $post );
+
+		// Redirect to previous page.
+		wp_redirect( $_SERVER['HTTP_REFERER'] );
+
+   		exit();
 	}
 }

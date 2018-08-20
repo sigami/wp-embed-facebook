@@ -321,4 +321,19 @@ class Helpers {
 			'sdk_version'
 		];
 	}
+
+	/**
+	 * Get $_POST or $_GET request.
+	 *
+	 * @param string $name    Name of request.
+	 * @param mixed  $default Default value if request not found.
+	 * @return mixed
+	 *
+	 * @author Rahul Aryan <rah12@live.com>
+	 *
+	 * @since 3.0.0
+	 */
+	public static function get_request( $name, $default = null ) {
+		return isset( $_REQUEST[ $name ] ) ? $_REQUEST[ $name ] : $default; // WPCS: input var ok. sanitization ok. CSRF ok.
+	}
 }
