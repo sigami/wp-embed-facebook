@@ -1,7 +1,11 @@
 <?php
 /**
- * Created for: wp-embed-facebook
- * By: Miguel Sirvent
+ * Handles link scrapping.
+ *
+ * @author     Miguel Sirvent and Rahul Aryan
+ * @package    WP Facebook Embed
+ * @subpackage Scraper
+ * @since      3.0.0
  */
 
 namespace SIGAMI\WP_Embed_FB;
@@ -11,17 +15,33 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Hooks for link scraping.
+ */
 class Scraper {
+	/**
+	 * Instance of this class.
+	 *
+	 * @var Scraper Instance of `SIGAMI\WP_Embed_FB\Scraper`.
+	 */
 	private static $instance = null;
 
-	static function instance() {
-		if ( self::$instance === null ) {
+	/**
+	 * Get singleton instance.
+	 *
+	 * @return Scraper Instance of `SIGAMI\WP_Embed_FB\Scraper`.
+	 */
+	public static function instance() {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
 
+	/**
+	 * Class constructor.
+	 */
 	private function __construct() {
 		//TODO add link to scrape url manually on selected post types
 		//TODO add bundle scrape
@@ -30,18 +50,18 @@ class Scraper {
 	/**
 	 * Update Facebook share cache on the updated post
 	 *
-	 * @param $post_id
-	 * @param $post \WP_Post
-	 * @param $update
+	 * @param integer  $post_id Post ID.
+	 * @param \WP_Post $post WP Post object.
+	 * @param boolean  $update  Is update or new.
 	 */
-	static function save_post( $post_id, $post, $update ) {
-		$allowed_post_types = Helpers::string_to_array( trim( Plugin::get_option( 'auto_scrape_post_types' ),
-			' ,' ) );
+	public function save_post( $post_id, $post, $update ) {
+		$allowed_post_types = Helpers::string_to_array( trim( Plugin::get_option( 'auto_scrape_post_types' ), ' ,' ) );
+
 		if ( ! Plugin::is_on( 'auto_scrape_posts' )
-		     || wp_is_post_revision( $post_id )
-		     || ! $update
-		     || ! in_array( get_post_type( $post ), $allowed_post_types )
-		     || $post->post_status != 'publish' ) {
+			|| wp_is_post_revision( $post_id )
+			|| ! $update
+			|| ! in_array( get_post_type( $post ), $allowed_post_types, true )
+			|| 'publish' !== $post->post_status ) {
 			return;
 		}
 
