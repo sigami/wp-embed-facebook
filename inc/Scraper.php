@@ -68,8 +68,6 @@ class Scraper {
 		add_filter( 'admin_action_wef_scrape', [ $this, 'admin_action' ] );
 		add_action( 'current_screen', [ $this, 'current_screen' ] );
 		add_action( 'admin_notices', [ $this, 'admin_notice' ] );
-
-		//TODO add bundle scrape
 	}
 
 	/**

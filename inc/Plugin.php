@@ -289,6 +289,24 @@ final class Plugin extends Framework {
 							],
 						]
 					],
+					[
+						'title'       => __( 'Scrape Links', 'wp-embed-facebook' ),
+						'description' => __( 'The quote plugin helps auto delete link cache and re-scrape it from facebook.',
+							'wp-embed-facebook' ),
+						'fields'      => [
+							[
+								'type'  => 'checkbox',
+								'name'  => 'auto_scrape_posts',
+								'label' => __( 'Active auto scrape links?', 'wp-embed-facebook' ),
+							],
+							[
+								'type'        => 'checklist',
+								'name'        => 'auto_scrape_post_types',
+								'label'       => __( 'Post types', 'wp-embed-facebook' ),
+								'values'      => $public_post_types
+							],
+						]
+					],
 
 				]
 			],
