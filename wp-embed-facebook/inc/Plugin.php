@@ -27,10 +27,9 @@ final class Plugin extends Framework {
 
 	static $debug = true;
 
-	/**
-	 * Class constructor.
-	 */
 	protected function __construct( $file ) {
+
+
 		self::$page_title = __( 'Embed Facebook', 'wp-embed-facebook' );
 		self::$menu_title = __( 'Embed Facebook', 'wp-embed-facebook' );
 
@@ -42,21 +41,11 @@ final class Plugin extends Framework {
 		static::$defaults_change = static::$debug;
 	}
 
-	/**
-	 * Load textdomain.
-	 */
 	static function load_translation() {
-		load_plugin_textdomain( 'wp-embed-facebook', false, basename( dirname( self::$FILE ) ) . '/lang/' );
+		load_plugin_textdomain( 'wp-embed-facebook', false,
+			basename( dirname( self::$FILE ) ) . '/lang/' );
 	}
 
-	/**
-	 * Plugin defaults.
-	 *
-	 * @since unknown
-	 * @since 3.0.0 Added default for `auto_scrape_post_types`.
-	 *
-	 * @return array
-	 */
 	static function defaults() {
 		if ( self::$defaults === null ) {
 			$locale = get_locale();
@@ -100,13 +89,16 @@ final class Plugin extends Framework {
 				                  'show_follow'                    => 'true',
 				                  'video_ratio'                    => 'false',
 				                  'video_as_post'                  => 'false',
+				                  'raw_video'                      => 'false',
 				                  'raw_photo'                      => 'false',
 				                  'raw_post'                       => 'false',
 				                  'raw_page'                       => 'false',
 				                  'enqueue_style'                  => 'true',
 				                  'enq_lightbox'                   => 'true',
 				                  'enq_fbjs'                       => 'true',
+				                  'ev_local_tz'                    => 'false',
 				                  'close_warning2'                 => 'false',
+				                  'video_download'                 => 'false',
 				                  'enq_fbjs_global'                => 'false',
 				                  'enq_when_needed'                => 'false',
 				                  //Lightbox options
@@ -139,8 +131,6 @@ final class Plugin extends Framework {
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
 				                  'single_post_from_like'          => 'false',
 				                  'permalink_on_social_plugins'    => 'false',
-				                  'auto_scrape_posts'              => 'true',
-				                  'auto_scrape_post_types'         => [ 'post', 'page' ],
 			                  ] + $social_options;
 		}
 
@@ -281,24 +271,6 @@ final class Plugin extends Framework {
 							[
 								'type'        => 'checklist',
 								'name'        => 'quote_post_types',
-								'label'       => __( 'Post types', 'wp-embed-facebook' ),
-								'values'      => $public_post_types
-							],
-						]
-					],
-					[
-						'title'       => __( 'Scrape Links', 'wp-embed-facebook' ),
-						'description' => __( 'The quote plugin helps auto delete link cache and re-scrape it from facebook.',
-							'wp-embed-facebook' ),
-						'fields'      => [
-							[
-								'type'  => 'checkbox',
-								'name'  => 'auto_scrape_posts',
-								'label' => __( 'Active auto scrape links?', 'wp-embed-facebook' ),
-							],
-							[
-								'type'        => 'checklist',
-								'name'        => 'auto_scrape_post_types',
 								'label'       => __( 'Post types', 'wp-embed-facebook' ),
 								'values'      => $public_post_types
 							],
