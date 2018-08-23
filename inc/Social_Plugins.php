@@ -468,6 +468,11 @@ class Social_Plugins {
 			$type_clean = $type;
 		}
 
+		/**
+		 * Before getting the HTML code of any social plugin.
+		 *
+		 * @since unknown
+		 */
 		do_action( 'wef_sp_get_action' );
 
 		$defaults = self::get_defaults();
@@ -527,6 +532,11 @@ class Social_Plugins {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 
+			/**
+			 * Action triggered while generating shortcode content.
+			 *
+			 * @since unknown
+			 */
 			do_action( 'wef_sp_shortcode_action' );
 
 			if ( isset( $defaults[ $type ]['width'] ) && $type != 'comments' && $type != 'page' ) {

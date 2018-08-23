@@ -116,7 +116,14 @@ class Embed_FB {
 			//Legacy support for custom embeds on
 			wp_enqueue_style( 'wpemfb-' . self::get_theme() );
 		}
+
+		/**
+		 * Action is triggered while generating embed code.
+		 *
+		 * @since unknown
+		 */
 		do_action( 'wp_embed_fb' );
+
 		$return = self::print_embed( $type_and_id['fb_id'], $type_and_id['type'], $juice );
 		self::clear_atts();
 
