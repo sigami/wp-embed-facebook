@@ -484,6 +484,14 @@ class Social_Plugins {
 				$defaults[ $key ] = $options["{$type}_$key"];
 			}
 		}
+
+		/**
+		 * Filter defaults options of social plugin.
+		 *
+		 * @param string $default Defaults.
+		 * @param string $type    Type of plugin.
+		 * @since unknown
+		 */
 		$filtered_options = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
 		$extra            = '';
 		$real_options     = [];
@@ -502,6 +510,16 @@ class Social_Plugins {
 			$extra .= "data-$option=\"$value\" ";
 		}
 
+		/**
+		 * Filter social plugin HTML output.
+		 *
+		 * @param string $html     HTML of social plugin.
+		 * @param string $type     Type.
+		 * @param mixed  $options  Options.
+		 * @param string $defaults Default options.
+		 *
+		 * @since unknown
+		 */
 		return apply_filters( 'wef_sp_get_filter', "<div class=\"fb-$type_clean\" $extra></div>",
 			$type, $options, $defaults );
 	}
@@ -557,6 +575,16 @@ class Social_Plugins {
 				$ret .= print_r($data,true);
 			}
 
+			/**
+			 * Filter social plugin shortcode output.
+			 *
+			 * @param string $ret      HTML output.
+			 * @param string $type     Type.
+			 * @param array  $atts     Attributes.
+			 * @param string $defaults Defaults option.
+			 *
+			 * @since unknown
+			 */
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
 		}
 

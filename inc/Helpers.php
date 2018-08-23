@@ -93,6 +93,14 @@ class Helpers {
 			'&#39;'
 		], $title ) ) ) );
 
+		/**
+		 * Filter lightbox title.
+		 *
+		 * @param string $clean_title Sanitized title with `data-title` attribute.
+		 * @param string $title       Raw title.
+		 *
+		 * @since unknown
+		 */
 		return apply_filters( 'wef_lightbox_title', 'data-title="' . $clean_title . '"', $title );
 	}
 

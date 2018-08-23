@@ -144,6 +144,12 @@ final class Plugin extends Framework {
 			                  ] + $social_options;
 		}
 
+		/**
+		 * Filter default options of the plugin.
+		 *
+		 * @param array $default Default options.
+		 * @since unknown
+		 */
 		return apply_filters( 'wpemfb_defaults', self::$defaults );
 	}
 
@@ -767,6 +773,11 @@ final class Plugin extends Framework {
 
 		];
 
+		/**
+		 * Filter plugin options.
+		 *
+		 * @param array $sections Plugin options.
+		 */
 		return apply_filters( 'wpemfb_admin_sections', $sections );
 	}
 
