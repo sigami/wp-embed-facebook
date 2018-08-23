@@ -60,7 +60,7 @@ class Scraper {
 	 */
 	private function __construct() {
 		$this->allowed_cpt = Plugin::get_option( 'auto_scrape_post_types' );
-		$this->scrape_on   = (bool) Plugin::get_option( 'auto_scrape_posts' );
+		$this->scrape_on   = Plugin::is_on( 'auto_scrape_posts' );
 
 		add_action( 'save_post', [ $this, 'save_post' ] );
 		add_filter( 'post_row_actions', [ $this, 'actions' ], 10, 2 );
