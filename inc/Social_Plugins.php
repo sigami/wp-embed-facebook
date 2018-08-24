@@ -468,6 +468,11 @@ class Social_Plugins {
 			$type_clean = $type;
 		}
 
+		/**
+		 * Before getting the HTML code of any social plugin.
+		 *
+		 * @since unknown
+		 */
 		do_action( 'wef_sp_get_action' );
 
 		$defaults = self::get_defaults();
@@ -479,6 +484,14 @@ class Social_Plugins {
 				$defaults[ $key ] = $options["{$type}_$key"];
 			}
 		}
+
+		/**
+		 * Filter defaults options of social plugin.
+		 *
+		 * @param string $default Defaults.
+		 * @param string $type    Type of plugin.
+		 * @since unknown
+		 */
 		$filtered_options = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
 		$extra            = '';
 		$real_options     = [];
@@ -497,6 +510,16 @@ class Social_Plugins {
 			$extra .= "data-$option=\"$value\" ";
 		}
 
+		/**
+		 * Filter social plugin HTML output.
+		 *
+		 * @param string $html     HTML of social plugin.
+		 * @param string $type     Type.
+		 * @param mixed  $options  Options.
+		 * @param string $defaults Default options.
+		 *
+		 * @since unknown
+		 */
 		return apply_filters( 'wef_sp_get_filter', "<div class=\"fb-$type_clean\" $extra></div>",
 			$type, $options, $defaults );
 	}
@@ -527,6 +550,11 @@ class Social_Plugins {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 
+			/**
+			 * Action triggered while generating shortcode content.
+			 *
+			 * @since unknown
+			 */
 			do_action( 'wef_sp_shortcode_action' );
 
 			if ( isset( $defaults[ $type ]['width'] ) && $type != 'comments' && $type != 'page' ) {
@@ -547,6 +575,16 @@ class Social_Plugins {
 				$ret .= print_r($data,true);
 			}
 
+			/**
+			 * Filter social plugin shortcode output.
+			 *
+			 * @param string $ret      HTML output.
+			 * @param string $type     Type.
+			 * @param array  $atts     Attributes.
+			 * @param string $defaults Defaults option.
+			 *
+			 * @since unknown
+			 */
 			return apply_filters( 'wef_sp_shortcode_filter', $ret, $type, $atts, $defaults );
 		}
 

@@ -40,8 +40,15 @@ class Widget extends \WP_Widget {
 	public function widget( $args, $instance ) {
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title',
-					$instance['title'] ) . $args['after_title'];
+			/**
+			 * Allow filtering widget title.
+			 *
+			 * @param string $title Title of widget.
+			 * @since unknown
+			 */
+			$title = apply_filters( 'widget_title', $instance['title'] );
+
+			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		echo do_shortcode( $instance['shortcode'] );
 		echo $args['after_widget'];

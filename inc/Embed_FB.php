@@ -95,11 +95,22 @@ class Embed_FB {
 	static function fb_embed( $match, $url = null, $atts = null ) {
 		$juice = $match[2];
 		self::set_atts( $atts );
-		$type_and_id = apply_filters( 'wpemfb_type_id', self::get_type_and_id( $juice, $url ),
-			$juice, $url );
+
+		/**
+		 * Allows filtering facebook embed id and type.
+		 *
+		 * @param string|array $id_type Type and id.
+		 * @param string       $juice   Juice.
+		 * @param string       $url     Url.
+		 *
+		 * @since unknown
+		 */
+		$type_and_id = apply_filters( 'wpemfb_type_id', self::get_type_and_id( $juice, $url ), $juice, $url );
+
 		if ( is_string( $type_and_id ) ) {
 			return $type_and_id;
 		}
+
 		if ( Plugin::get_option( 'enq_when_needed' ) == 'true' ) {
 			if ( $type_and_id['type'] == 'album' ) {
 				if ( Plugin::get_option( 'enq_lightbox' ) == 'true' ) {
@@ -116,7 +127,14 @@ class Embed_FB {
 			//Legacy support for custom embeds on
 			wp_enqueue_style( 'wpemfb-' . self::get_theme() );
 		}
+
+		/**
+		 * Action is triggered while generating embed code.
+		 *
+		 * @since unknown
+		 */
 		do_action( 'wp_embed_fb' );
+
 		$return = self::print_embed( $type_and_id['fb_id'], $type_and_id['type'], $juice );
 		self::clear_atts();
 
@@ -220,6 +238,7 @@ class Embed_FB {
 		 * @param array  $clean url parts of the request.
 		 */
 		$type = apply_filters( 'wpemfb_embed_type', $type, $juiceArray );
+
 		if ( ! $type ) {
 			if ( $has_fb_app ) {
 				try {
@@ -240,15 +259,37 @@ class Embed_FB {
 				$type = 'page';
 			}
 		}
+
+		/**
+		 * Filter the FB id.
+		 *
+		 * @param integer $fb_id      Facebook id.
+		 * @param array   $juiceArray Juice array.
+		 * @since unknown
+		 */
 		$fb_id = apply_filters( 'wpemfb_embed_fb_id', $fb_id, $juiceArray );
 
 		return [ 'type' => $type, 'fb_id' => $fb_id ];
 	}
 
 	static function print_embed( $fb_id, $type, $juice ) {
-		if ( $interrupt = apply_filters( 'wef_interrupt', '', $fb_id, $type, $juice ) ) {
+
+		/**
+		 * Short circuit `print_embed`. If `true` is returned.
+		 *
+		 * @param boolean $ret   Return.
+		 * @param integer $fb_id Facebook id.
+		 * @param string  $type  Type.
+		 * @param string  $juice Juice.
+		 *
+		 * @since unknwon
+		 */
+		$interrupt = apply_filters( 'wef_interrupt', '', $fb_id, $type, $juice );
+
+		if ( $interrupt ) {
 			return $interrupt;
 		}
+
 		if ( ! self::is_raw( $type ) ) {
 			$fb_data       = [ 'social_plugin' => true, 'link' => $juice, 'type' => $type ];
 			$template_name = 'social-plugin';
@@ -302,10 +343,19 @@ class Embed_FB {
                 }(document, 'script', 'facebook-jssdk'));
                 FB.XFBML.parse();</script>
 		<?php endif;
-		//I could have hardcoded this but... I know you will leave it there :)
-		echo apply_filters( 'wef_embedded_with',
-			'<!-- Embedded with WP Embed Facebook - http://wpembedfb.com -->' );
+
+		/**
+		 * Use this filter to remove `WP Embed Facebook` copyright comment from HTML.
+		 *
+		 * I could have hardcoded this but... I know you will leave it there :)
+		 *
+		 * @param string $text Copyright text.
+		 * @since unknown
+		 */
+		echo apply_filters( 'wef_embedded_with', '<!-- Embedded with WP Embed Facebook - http://wpembedfb.com -->' );
+
 		$template = self::locate_template( $template_name );
+
 		/**
 		 * Change the file to include on a certain embed.
 		 *
@@ -332,7 +382,17 @@ class Embed_FB {
 	 */
 	static function fb_api_get( $fb_id, $url, $type = "" ) {
 		if ( Helpers::has_fb_app() ) {
+
+			/**
+			 * Allow passing custom data before getting data from `WP_Embed_FB::$fbsdk->api('/'.$fb_id)`.
+			 *
+			 * @param array   $fb_data FB data.
+			 * @param string  $type    Type.
+			 * @param integer $fb_id   FB id.
+			 * @param string  $url     url.
+			 */
 			$fb_data = apply_filters( 'wpemfb_custom_fb_data', [], $type, $fb_id, $url );
+
 			if ( empty( $fb_data ) ) {
 				$fbsdk = FB_API::instance();
 				try {
@@ -368,8 +428,10 @@ class Embed_FB {
 					 * @param string $type       The detected type of embed
 					 *
 					 */
-					$fb_data     = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . apply_filters( 'wpemfb_api_string',
-							$api_string, $fb_id, $type ) );
+					$api_string = apply_filters( 'wpemfb_api_string', $api_string, $fb_id, $type );
+
+					$fb_data     = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . $api_string );
+
 					$api_string2 = '';
 
 					/**
@@ -382,8 +444,7 @@ class Embed_FB {
 					 * @param string $type        The detected type of embed
 					 *
 					 */
-					$api_string2 = apply_filters( 'wpemfb_2nd_api_string', $api_string2, $fb_data,
-						$type );
+					$api_string2 = apply_filters( 'wpemfb_2nd_api_string', $api_string2, $fb_data, $type );
 
 					if ( ! empty( $api_string2 ) ) {
 						$extra_data = $fbsdk->api( Plugin::get_option( 'sdk_version' ) . '/' . $api_string2 );
@@ -406,6 +467,7 @@ class Embed_FB {
 			}
 			$fb_data .= '</p>';
 		}
+
 		/**
 		 * Filter fb_data
 		 *
