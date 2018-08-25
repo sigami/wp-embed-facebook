@@ -386,7 +386,7 @@ class Social_Plugins {
 		],
 		'video'    => [
 			'docs' => 'plugins/embedded-video-player',
-			'demo' => 'social-plugins/single-comment',
+			'demo' => 'embedded-video-live-video-player',
 		],
 		'page'     => [
 			'docs' => 'plugins/page-plugin',
