@@ -3,8 +3,9 @@
  * Group of static functions to render facebook social
  * plugins on WordPress it has no dependencies.
  *
- * @author  Miguel Sirvent
+ * @author  Miguel Sirvent & Rahul Aryan
  * @package WP Embed Facebook
+ * @subpackage Classes
  */
 
 namespace SIGAMI\WP_Embed_FB;
@@ -14,6 +15,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Social plugin class.
+ *
+ * @since unknown
+ */
 class Social_Plugins {
 
 	/**
@@ -349,63 +355,64 @@ class Social_Plugins {
 	 * Associative array with the default variables interpreted by fb
 	 */
 	private static $defaults = null;
+
 	/**
 	 * Associative array containing links for demos and documentation
 	 */
-	private static $links
-		= [
-			'quote'    => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/quote',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=99'
-			],
-			'save'     => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/save',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=41'
-			],
-			'like'     => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/like-button',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=26'
-			],
-			'share'    => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/share-button/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=36'
-			],
-			'send'     => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/send-button',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=46'
-			],
-			'comment'  => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/embedded-comments/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=50'
-			],
-			'video'    => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/embedded-video-player/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=62'
-			],
-			'page'     => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/page-plugin/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=70'
-			],
-			'comments' => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/comments/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=105'
-			],
-			'post'     => [
-				'docs' => 'https://developers.facebook.com/docs/plugins/embedded-posts/',
-				'demo' => 'http://www.wpembedfb.com/demo-site/?p=94'
-			],
-		];
+	const DOC_LINKS	= array(
+		'quote'    => [
+			'docs' => 'plugins/quote',
+			'demo' => 'social-plugins/quote',
+		],
+		'save'     => [
+			'docs' => 'plugins/save',
+			'demo' => 'social-plugins/save-button',
+		],
+		'like'     => [
+			'docs' => 'plugins/like-button',
+			'demo' => 'social-plugins/like-button',
+		],
+		'share'    => [
+			'docs' => 'plugins/share-button',
+			'demo' => 'social-plugins/share-button',
+		],
+		'send'     => [
+			'docs' => 'plugins/send-button',
+			'demo' => 'social-plugins/send-button',
+		],
+		'comment'  => [
+			'docs' => 'plugins/embedded-comments',
+			'demo' => 'social-plugins/single-comment',
+		],
+		'video'    => [
+			'docs' => 'plugins/embedded-video-player',
+			'demo' => 'social-plugins/single-comment',
+		],
+		'page'     => [
+			'docs' => 'plugins/page-plugin',
+			'demo' => 'social-plugins/page-embed',
+		],
+		'comments' => [
+			'docs' => 'plugins/comments',
+			'demo' => 'social-plugins/comments-plugin',
+		],
+		'post'     => [
+			'docs' => 'plugins/embedded-posts',
+			'demo' => 'social-plugins/post-embed',
+		],
+	);
 
 	static function get_links( $type, $link = true ) {
 		$ret = '';
-		if ( isset( self::$links[ $type ] ) ) {
+
+		if ( isset( self::DOC_LINKS[ $type ] ) ) {
 			if ( $link ) {
 				$ret = '<small>';
-				$ret .= '<a href="' . self::$links[ $type ]['demo'] . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
-				$ret .= '<a href="' . self::$links[ $type ]['docs'] . '" target="_blank" title="Official FB documentation">Info</a>';
+				$ret .= '<a href="http://www.wpembedfb.com/' . user_trailingslashit( self::DOC_LINKS[ $type ]['demo'] ) . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
+				$ret .= '<a href="https://developers.facebook.com/docs/' . user_trailingslashit( self::DOC_LINKS[ $type ]['docs'] ) . '" target="_blank" title="Official FB documentation">Info</a>';
 				$ret .= '</small>';
 			} else {
-				$ret = self::$links[ $type ];
+				$ret = self::DOC_LINKS[ $type ];
 			}
 		}
 
@@ -421,6 +428,7 @@ class Social_Plugins {
 			unset( $vars['defaults'] );
 			unset( $vars['links'] );
 			unset( $vars['link_types'] );
+
 			foreach ( $vars as $type => $options ) {
 				foreach ( $options as $option => $default ) {
 					if ( is_array( $default ) ) {
