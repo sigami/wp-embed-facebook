@@ -213,7 +213,15 @@ class  Comments {
 			}
 			update_post_meta( $post_id, '_wef_comment_count', intval( $count ) );
 
-			//TODO save info of the last 50 comments for recent comments widget on extended embeds
+			/**
+			 * Action triggered after posts comments counts get updated.
+			 *
+			 * @param integer $post_id  Post id.
+			 * @param object  $response Facebook event response.
+			 *
+			 * @todo save info of the last 50 comments for recent comments widget on extended embeds.
+			 * @since unknown
+			 */
 			do_action( 'wef_updated_comment', $post_id, $_POST['response'] );
 		}
 		wp_die();
