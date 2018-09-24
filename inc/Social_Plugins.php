@@ -357,62 +357,79 @@ class Social_Plugins {
 	private static $defaults = null;
 
 	/**
-	 * Associative array containing links for demos and documentation
+	 * Associative array containing links for demos and documentation.
+	 *
+	 * @param false|string $feature Feature slug.
+	 * @return array|false
 	 */
-	const DOC_LINKS	= array(
-		'quote'    => [
-			'docs' => 'plugins/quote',
-			'demo' => 'social-plugins/quote',
-		],
-		'save'     => [
-			'docs' => 'plugins/save',
-			'demo' => 'social-plugins/save-button',
-		],
-		'like'     => [
-			'docs' => 'plugins/like-button',
-			'demo' => 'social-plugins/like-button',
-		],
-		'share'    => [
-			'docs' => 'plugins/share-button',
-			'demo' => 'social-plugins/share-button',
-		],
-		'send'     => [
-			'docs' => 'plugins/send-button',
-			'demo' => 'social-plugins/send-button',
-		],
-		'comment'  => [
-			'docs' => 'plugins/embedded-comments',
-			'demo' => 'social-plugins/single-comment',
-		],
-		'video'    => [
-			'docs' => 'plugins/embedded-video-player',
-			'demo' => 'embedded-video-live-video-player',
-		],
-		'page'     => [
-			'docs' => 'plugins/page-plugin',
-			'demo' => 'social-plugins/page-embed',
-		],
-		'comments' => [
-			'docs' => 'plugins/comments',
-			'demo' => 'social-plugins/comments-plugin',
-		],
-		'post'     => [
-			'docs' => 'plugins/embedded-posts',
-			'demo' => 'social-plugins/post-embed',
-		],
-	);
+	private static function doc_links( $feature = false ) {
+		$links = [
+			'quote'    => [
+				'docs' => 'plugins/quote',
+				'demo' => 'social-plugins/quote',
+			],
+			'save'     => [
+				'docs' => 'plugins/save',
+				'demo' => 'social-plugins/save-button',
+			],
+			'like'     => [
+				'docs' => 'plugins/like-button',
+				'demo' => 'social-plugins/like-button',
+			],
+			'share'    => [
+				'docs' => 'plugins/share-button',
+				'demo' => 'social-plugins/share-button',
+			],
+			'send'     => [
+				'docs' => 'plugins/send-button',
+				'demo' => 'social-plugins/send-button',
+			],
+			'comment'  => [
+				'docs' => 'plugins/embedded-comments',
+				'demo' => 'social-plugins/single-comment',
+			],
+			'video'    => [
+				'docs' => 'plugins/embedded-video-player',
+				'demo' => 'embedded-video-live-video-player',
+			],
+			'page'     => [
+				'docs' => 'plugins/page-plugin',
+				'demo' => 'social-plugins/page-embed',
+			],
+			'comments' => [
+				'docs' => 'plugins/comments',
+				'demo' => 'social-plugins/comments-plugin',
+			],
+			'post'     => [
+				'docs' => 'plugins/embedded-posts',
+				'demo' => 'social-plugins/post-embed',
+			],
+		];
+
+		if ( false === $feature ) {
+			return $links;
+		}
+
+		if ( ! isset( $links[ $feature ] ) ) {
+			return false;
+		}
+
+		return $links[ $feature ];
+	}
 
 	static function get_links( $type, $link = true ) {
 		$ret = '';
 
-		if ( isset( self::DOC_LINKS[ $type ] ) ) {
+		$doc_link = self::doc_links( $type );
+
+		if ( false !== $doc_link ) {
 			if ( $link ) {
 				$ret = '<small>';
-				$ret .= '<a href="http://www.wpembedfb.com/' . user_trailingslashit( self::DOC_LINKS[ $type ]['demo'] ) . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
-				$ret .= '<a href="https://developers.facebook.com/docs/' . user_trailingslashit( self::DOC_LINKS[ $type ]['docs'] ) . '" target="_blank" title="Official FB documentation">Info</a>';
+				$ret .= '<a href="http://www.wpembedfb.com/' . user_trailingslashit( $doc_link['demo'] ) . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
+				$ret .= '<a href="https://developers.facebook.com/docs/' . user_trailingslashit( $doc_link['docs'] ) . '" target="_blank" title="Official FB documentation">Info</a>';
 				$ret .= '</small>';
 			} else {
-				$ret = self::DOC_LINKS[ $type ];
+				$ret = $doc_link[ $type ];
 			}
 		}
 
@@ -430,6 +447,7 @@ class Social_Plugins {
 			unset( $vars['link_types'] );
 
 			foreach ( $vars as $type => $options ) {
+
 				foreach ( $options as $option => $default ) {
 					if ( is_array( $default ) ) {
 						$vars[ $type ][ $option ] = $all_options ? $default : $default[0];
