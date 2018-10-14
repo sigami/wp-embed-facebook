@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class Framework
  *
- * @version 2.5.1
+ * @version 2.6.0
  */
 abstract class Framework {
 
@@ -188,7 +188,7 @@ abstract class Framework {
 	 * Plugin::set_options(Plugin::defaults());
 	 *
 	 * </code>
-	 * @param array $options
+	 * @param array|string $options
 	 */
 	static function set_options( $options ) {
 		update_option( static::$option, $options, true );
@@ -204,7 +204,7 @@ abstract class Framework {
 	 *                     options if $option is null;
 	 */
 	static function get_option( $option = null ) {
-		if ( ! is_array( self::$options  ) ) {
+		if ( ! is_array( self::$options ) ) {
 			$options = get_option( static::$option );
 			if ( is_array( $options ) ) {
 				#Sanitize options on install, update and on development also useful when you want to
@@ -216,8 +216,8 @@ abstract class Framework {
 					} else {
 						$compare = [];
 						foreach ( static::defaults() as $default_key => $default_value ) {
-							$compare[ $default_key ] = isset( $options[ $default_key ] )
-								? $options[ $default_key ] : $default_value;
+							$compare[ $default_key ] = isset( $options[ $default_key ] ) ? $options[ $default_key ]
+								: $default_value;
 						}
 						if ( $compare === $options ) {
 							self::$options = $options;
@@ -301,16 +301,15 @@ abstract class Framework {
 
 			if ( static::$page_type == 'menu' ) {
 				$options_page = call_user_func( $function, static::$page_title, static::$menu_title,
-					static::$capability, static::$menu_slug, get_called_class() . '::display_page',
-					static::$icon, static::$position );
+					static::$capability, static::$menu_slug, get_called_class() . '::display_page', static::$icon,
+					static::$position );
 			} elseif ( static::$page_type == 'submenu' ) {
-				$options_page = call_user_func( $function, static::$parent_slug,
-					static::$page_title, static::$menu_title, static::$capability,
-					static::$menu_slug, get_called_class() . '::display_page' );
+				$options_page = call_user_func( $function, static::$parent_slug, static::$page_title,
+					static::$menu_title, static::$capability, static::$menu_slug,
+					get_called_class() . '::display_page' );
 			} else {
 				$options_page = call_user_func( $function, static::$page_title, static::$menu_title,
-					static::$capability, static::$menu_slug,
-					get_called_class() . '::display_page' );
+					static::$capability, static::$menu_slug, get_called_class() . '::display_page' );
 			}
 
 			if ( false === $options_page ) {
@@ -334,25 +333,25 @@ abstract class Framework {
 		ob_start();
 		?>
         <script type="text/javascript">
-            const sections = jQuery('.section');
-            const tabs = jQuery(".nav-tab-wrapper a");
-            const handleTabs = function (hash) {
-                sections.hide();
-                if (hash.length) {
-                    hash.show();
-                    jQuery.each(tabs, function (key, value) {
-                        jQuery(value).removeClass("nav-tab-active");
-                    });
-                    tabs.eq(hash.index()).addClass('nav-tab-active');
-                } else {
-                    sections.first().show();
-                }
-            };
+          const sections = jQuery('.section');
+          const tabs = jQuery(".nav-tab-wrapper a");
+          const handleTabs = function (hash) {
+            sections.hide();
+            if (hash.length) {
+              hash.show();
+              jQuery.each(tabs, function (key, value) {
+                jQuery(value).removeClass("nav-tab-active");
+              });
+              tabs.eq(hash.index()).addClass('nav-tab-active');
+            } else {
+              sections.first().show();
+            }
+          };
+          handleTabs(jQuery(window.location.hash));
+          jQuery(window).bind('hashchange', function () {
             handleTabs(jQuery(window.location.hash));
-            jQuery(window).bind('hashchange', function () {
-                handleTabs(jQuery(window.location.hash));
-                jQuery("html, body").animate({scrollTop: 0}, "slow");
-            });
+            jQuery("html, body").animate({scrollTop: 0}, "slow");
+          });
         </script>
 		<?php
 		echo ob_get_clean();
@@ -371,6 +370,7 @@ abstract class Framework {
 			}
 			if ( ! empty( $description ) ) {
 				echo "<p>$description</p>";
+
 			}
 			?>
             <table class="form-table">
@@ -396,14 +396,16 @@ abstract class Framework {
 	 * @param array      $values      Option values for select and checklist fields
 	 * @param string     $option      Option to store the values
 	 */
-	static function field(
-		$type, $name = '', $label = '', $description = '', $atts = null, $values = [], $option = ''
-	) {
-		if ( empty( $option ) ) {
-			$option = static::$option;
+	static function field( $type, $name = '', $label = '', $description = '', $atts = null, $values = [], $option = '' ) {
+		if ( empty( $option ) || $option == static::$option ) {
+			$option  = static::$option;
+			$options = apply_filters( $option . '_field_options', static::get_option() );
+		} else {
+			$options = (array) get_option( $option );
 		}
-		//TODO add aria-described-by on input that points to the id of description
-		$options    = apply_filters( $option . '_field_options', static::get_option() );
+
+		//TODO add aria-described-by on input that points to the id of description but first find out how to test them
+
 		$help_text  = ! empty( $description ) ? "<p class=\"description\">$description</p>" : "";
 		$attsString = '';
 		switch ( $type ) {
@@ -417,14 +419,12 @@ abstract class Framework {
                         <fieldset>
 							<?php
 							foreach ( $values as $value => $title ) :
-								$checked = ( in_array( $value, $options[ $name ] ) ) ? 'checked'
-									: '';
+								$checked = ( in_array( $value, $options[ $name ] ) ) ? 'checked' : '';
 								?>
                                 <label for="<?php echo "{$name}_$value" ?>">
                                     <input type="checkbox" id="<?php echo "{$name}_$value" ?>"
                                            name="<?php echo $option . "[$name][]" ?>"
-                                           value="<?php echo $value ?>" <?php echo $checked . ' '
-									                                               . $attsString ?>/>
+                                           value="<?php echo $value ?>" <?php echo $checked . ' ' . $attsString ?>/>
                                     <span><?php echo $title ?></span>
                                 </label>
                                 <br>
@@ -473,8 +473,8 @@ abstract class Framework {
 									$value = $name;
 								}
 								?>
-                                <option value="<?php echo $value ?>" <?php echo $option == $value
-									? 'selected' : '' ?>><?php echo $name ?></option>
+                                <option value="<?php echo $value ?>" <?php echo $option == $value ? 'selected'
+									: '' ?>><?php echo $name ?></option>
 							<?php endforeach; ?>
                         </select>
 						<?php echo $help_text ?>
@@ -589,10 +589,11 @@ abstract class Framework {
 						'description' => '',//help text
 						'values'      => [],//values for checklist
 						'attributes'  => [],//html attributes
+						'option'      => static::$option,
 					] );
 					static::field( $field_data['type'], $field_data['name'], $field_data['label'],
-						$field_data['description'], $field_data['attributes'],
-						$field_data['values'] );
+						$field_data['description'], $field_data['attributes'], $field_data['values'],
+                        $field_data['option'] );
 				}
 				static::field_group();
 			}
@@ -652,8 +653,7 @@ abstract class Framework {
 	 * Set the correct text domain
 	 */
 	static function load_translation() {
-		load_plugin_textdomain( 'text_domain', false,
-			basename( dirname( static::$FILE ) ) . '/languages' );
+		load_plugin_textdomain( 'text_domain', false, basename( dirname( static::$FILE ) ) . '/languages' );
 	}
 
 	/**
