@@ -294,13 +294,13 @@ final class Plugin extends Framework {
 					],
 					[
 						'title'       => __( 'Scrape Links', 'wp-embed-facebook' ),
-						'description' => __( 'The quote plugin helps auto delete link cache and re-scrape it from facebook.',
+						'description' => __( 'Automatically refresh how your share looks on FB on post update',
 							'wp-embed-facebook' ),
 						'fields'      => [
 							[
 								'type'  => 'checkbox',
 								'name'  => 'auto_scrape_posts',
-								'label' => __( 'Active auto scrape links?', 'wp-embed-facebook' ),
+								'label' => __( 'Active', 'wp-embed-facebook' ),
 							],
 							[
 								'type'        => 'checklist',
