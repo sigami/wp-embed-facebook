@@ -39,20 +39,19 @@ class FB_API {
 	/**
 	 * @return FB_API
 	 */
-	static function instance() {
+	static function instance($app_id = null, $app_secret = null) {
 		if ( static::$instance === null ) {
-			static::$instance = new static();
+			static::$instance = new static($app_id,$app_secret);
 		}
 
 		return static::$instance;
 	}
 
-	protected function __construct() {
-		$this->app_id           = Plugin::get_option( 'app_id' );
-		$this->app_secret       = Plugin::get_option( 'app_secret' );
+	protected function __construct($app_id = null,$app_secret = null) {
+		$this->app_id           = $app_id === null ? Plugin::get_option( 'app_id' ) : $app_id;
+		$this->app_secret       = $app_secret === null ? Plugin::get_option( 'app_secret' ) : $app_secret;
 		$this->app_access_token = "{$this->app_id}|{$this->app_secret}";
-		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token
-			: null;
+		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token : null;
 	}
 
 	/**
