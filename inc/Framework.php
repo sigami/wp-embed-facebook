@@ -1,9 +1,4 @@
 <?php
-/**
- * Framework.
- *
- * @package WP Embed Facebook
- */
 
 namespace SIGAMI\WP_Embed_FB;
 
@@ -252,6 +247,7 @@ abstract class Framework {
 
 		if ( is_string( $options ) && ( $options == 'reset_defaults' ) ) {
 			do_action( self::$option . '_reset_defaults' );
+
 			return $defaults;
 		}
 
@@ -396,7 +392,8 @@ abstract class Framework {
 	 * @param array      $values      Option values for select and checklist fields
 	 * @param string     $option      Option to store the values
 	 */
-	static function field( $type, $name = '', $label = '', $description = '', $atts = null, $values = [], $option = '' ) {
+	static function field( $type, $name = '', $label = '', $description = '', $atts = null, $values = [], $option = ''
+	) {
 		if ( empty( $option ) || $option == static::$option ) {
 			$option  = static::$option;
 			$options = apply_filters( $option . '_field_options', static::get_option() );
@@ -593,7 +590,7 @@ abstract class Framework {
 					] );
 					static::field( $field_data['type'], $field_data['name'], $field_data['label'],
 						$field_data['description'], $field_data['attributes'], $field_data['values'],
-                        $field_data['option'] );
+						$field_data['option'] );
 				}
 				static::field_group();
 			}
