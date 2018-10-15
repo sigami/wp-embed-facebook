@@ -1,4 +1,4 @@
-1<?php
+<?php
 use SIGAMI\WP_Embed_FB\Embed_FB;
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Helpers;
@@ -42,7 +42,6 @@ $link_info = $name . $description . $caption;
 <hr class="wef-hr">
 <div class="wef-row">
 	<div class="wef-col-12">
-		<?php //echo '<pre>'.wpautop(print_r($fb_post,true)).'</pre>'; ?>
 		<?php echo $story ?>
 		<p class="wef-post-time"><?php echo $time ?></p>
 		<?php
@@ -53,7 +52,7 @@ $link_info = $name . $description . $caption;
 					$raw = Embed_FB::$raw;
 					$width_r = Embed_FB::$width;
 					Embed_FB::$raw = true;
-					Embed_FB::$width = $width - 40;
+					Embed_FB::$width = (int) str_replace(['px','%'],[],$width) - 40;
 					echo $wp_embed->shortcode(array('src' => $link));
 					Embed_FB::$raw = $raw;
 					Embed_FB::$width = $width_r;
@@ -136,9 +135,9 @@ $link_info = $name . $description . $caption;
 		<a class="wef-post-likes"
 		   href="<?php echo "https://www.facebook.com/" . $linkArray[0] . "/posts/" . $linkArray[1] ?> "
 		   target="_blank" rel="nofollow" title="<?php echo esc_attr($title_count) ?>">
-			<?php echo isset($fb_post['likes']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/like.png" /> ' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['comments']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/comments.png" /> ' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
-			<?php echo isset($fb_post['shares']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'inc/images/share.png" /> ' . $fb_post['shares']['count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['likes']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'templates/images/like.png" /> ' . $fb_post['likes']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['comments']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'templates/images/comments.png" /> ' . $fb_post['comments']['summary']['total_count'] . ' ' : "" ?>
+			<?php echo isset($fb_post['shares']) ? ' <img width="16px" height="16px" src="'.Plugin::url().'templates/images/share.png" /> ' . $fb_post['shares']['count'] . ' ' : "" ?>
 		</a>
 	</div>
 </div>

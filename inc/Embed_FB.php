@@ -151,6 +151,9 @@ class Embed_FB {
 		$has_fb_app = Helpers::has_fb_app();
 		if ( $has_fb_app ) {
 			$fbsdk = FB_API::instance();
+			$access_token = apply_filters('wef_access_token',$fbsdk->getAccessToken());
+
+			$fbsdk->setAccessToken($access_token);
 		}
 		$fb_id = null;
 		$type  = null;
@@ -290,7 +293,7 @@ class Embed_FB {
 			return $interrupt;
 		}
 
-		if ( ! self::is_raw( $type ) ) {
+		if ( ! self::is_raw( $type ) || $type == 'video' ) {
 			$fb_data       = [ 'social_plugin' => true, 'link' => $juice, 'type' => $type ];
 			$template_name = 'social-plugin';
 		} else {

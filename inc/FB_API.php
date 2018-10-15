@@ -156,7 +156,7 @@ class FB_API {
 			$vars['access_token'] = $this->access_token;
 		}
 
-		$url = esc_url_raw( add_query_arg( $vars, $base_url ) );
+		$url = add_query_arg( $vars, $base_url );
 
 		if ( $method == 'GET' ) {
 			if ( ! empty( $message ) ) {
