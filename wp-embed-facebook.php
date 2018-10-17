@@ -17,6 +17,7 @@
  * Author URI:  http://www.wpembedfb.com
  * Text Domain: wp-embed-facebook
  * Domain Path: /lang
+ * GitHub Plugin URI: sigami/wp-embed-facebook
  */
 
 namespace SIGAMI\WP_Embed_FB;
