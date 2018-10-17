@@ -439,8 +439,6 @@ class Social_Plugins {
 	static function get_defaults( $all_options = false ) {
 
 		if ( self::$defaults === null || $all_options ) {
-			//TODO check if it fails with namespace
-			//get_class_vars(get_class($this))
 			$vars = get_class_vars( __CLASS__ );
 			unset( $vars['defaults'] );
 			unset( $vars['links'] );
@@ -467,19 +465,19 @@ class Social_Plugins {
 	/**
 	 * Gets the HTML code of any social plugin if any
 	 *
-	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post
-	 * @param array  $options Defaults are WEF_Social_Plugin::$type
+	 * @see Social_Plugins::$quote
+	 * @see Social_Plugins::$save
+	 * @see Social_Plugins::$like
+	 * @see Social_Plugins::$share
+	 * @see Social_Plugins::$send
+	 * @see Social_Plugins::$comment
+	 * @see Social_Plugins::$video
+	 * @see Social_Plugins::$page
+	 * @see Social_Plugins::$comments
+	 * @see Social_Plugins::$post
 	 *
-	 * @see WEF_Social_Plugins::$quote
-	 * @see WEF_Social_Plugins::$save
-	 * @see WEF_Social_Plugins::$like
-	 * @see WEF_Social_Plugins::$share
-	 * @see WEF_Social_Plugins::$send
-	 * @see WEF_Social_Plugins::$comment
-	 * @see WEF_Social_Plugins::$video
-	 * @see WEF_Social_Plugins::$page
-	 * @see WEF_Social_Plugins::$comments
-	 * @see WEF_Social_Plugins::$post
+	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post
+	 * @param array  $options Defaults are Social_Plugins::$type
 	 *
 	 * @return string
 	 */
@@ -501,13 +499,25 @@ class Social_Plugins {
 		 */
 		do_action( 'wef_sp_get_action' );
 
-		$defaults = self::get_defaults();
-
-		foreach ( $defaults[ $type ] as $key => $value ) {
+		$defaults     = self::get_defaults();
+		$settings     = Plugin::get_option();
+		$real_options = $defaults[ $type ];
+		foreach ( $defaults[ $type ] as $key => $def_value ) {
 			if ( in_array( $key, Social_Plugins::$link_types ) ) {
-				$defaults[ $key ] = Helpers::get_true_url();
+				if ( empty( $options[ $key ] ) ) {
+					$real_options[ $key ] = Helpers::get_true_url();
+				} else {
+					$real_options[ $key ] = $options[ $key ];
+				}
 			} else {
-				$defaults[ $key ] = $options["{$type}_$key"];
+				//use settings value first then overwrite them with shortcode attributes if necessary
+				if ( $settings["{$type}_$key"] != $def_value ) {
+					$real_options[ $key ] = $settings["{$type}_$key"];
+				}
+				if ( isset( $options[ $key ] ) && $options[ $key ] != $real_options[ $key ] ) {
+					
+					$real_options[ $key ] = $options[ $key ];
+				}
 			}
 		}
 
@@ -518,23 +528,14 @@ class Social_Plugins {
 		 * @param string $type    Type of plugin.
 		 * @since unknown
 		 */
-		$filtered_options = apply_filters( 'wef_sp_defaults', $defaults[ $type ], $type );
+		$filtered_options = apply_filters( 'wef_sp_defaults', $real_options, $type );
 		$extra            = '';
-		$real_options     = [];
-		foreach ( $defaults[ $type ] as $option => $def_value ) {
-			if ( isset( $options[ $option ] ) && ( $options[ $option ] != $def_value ) ) {
-				$real_options[ $option ] = $options[ $option ];
-			} elseif ( isset( $filtered_options[ $option ] ) && ( $filtered_options[ $option ] != $def_value ) ) {
-				$real_options[ $option ] = $filtered_options[ $option ];
-			}
-			if ( isset( $real_options[ $option ] ) && ( $real_options[ $option ] == $def_value ) ) {
-				unset( $real_options[ $option ] );
+		foreach ( $filtered_options as $option => $value ) {
+			if ( $defaults[ $type ][ $option ] != $value ) {
+				$extra .= "data-$option=\"$value\" ";
 			}
 		}
-
-		foreach ( $real_options as $option => $value ) {
-			$extra .= "data-$option=\"$value\" ";
-		}
+		$extra = trim( $extra );
 
 		/**
 		 * Filter social plugin HTML output.
@@ -566,11 +567,8 @@ class Social_Plugins {
 			) {
 				return self::usage( $type );
 			}
-
-			$data = shortcode_atts( $defaults[ $type ], $atts );
-
-
-			$ret = self::get( $type, $data );
+			
+			$ret = self::get( $type, $atts );
 
 			if ( ( Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
@@ -597,8 +595,8 @@ class Social_Plugins {
 			if ( isset( $atts['debug'] ) ) {
 				$ret .= self::debug( $ret, $atts, $type );
 				//$ret .= print_r($ret,true);
-				$ret .= print_r($atts,true);
-				$ret .= print_r($data,true);
+				//$ret .= print_r($atts,true);
+				//$ret .= print_r($data,true);
 			}
 
 			/**

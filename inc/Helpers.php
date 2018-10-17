@@ -38,11 +38,12 @@ class Helpers {
 
 	static function has_fb_app() {
 		$options = Plugin::get_option();
+		$has_app = true;
 		if ( empty( $options['app_secret'] ) || empty( $options['app_id'] ) ) {
-			return false;
+			$has_app = false;
 		}
 
-		return true;
+		return apply_filters('wef_has_fb_app',$has_app);
 	}
 
 	static function get_timezone() {
