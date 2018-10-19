@@ -57,9 +57,6 @@ if ( is_admin() ) {
 //COMPATIBILITY
 include Plugin::path().'inc/deprecated/deprecated.php';
 
-// Get scraper instance.
-Scraper::instance();
-
 //TODO CHECK IF ALL OPTIIONS ARE THERE AND REMOVE OLD ONES
 //TODO change lightbox css to make it more hermetic
 //TODO PASS ADD ON TO NEW FORMAT

@@ -200,10 +200,8 @@ final class Plugin extends Framework {
         </p>
 		<?php
 		$custom_embeds_desc = ob_get_clean();
-
 		$post_types        = get_post_types( [ 'public' => true ] );
 		$public_post_types = array_combine( $post_types, $post_types );
-
 		$sections = [
 			# Magic Embeds
 			[
@@ -292,25 +290,6 @@ final class Plugin extends Framework {
 							],
 						]
 					],
-					[
-						'title'       => __( 'Scrape Links', 'wp-embed-facebook' ),
-						'description' => __( 'Automatically refresh how your share looks on FB on post update',
-							'wp-embed-facebook' ),
-						'fields'      => [
-							[
-								'type'  => 'checkbox',
-								'name'  => 'auto_scrape_posts',
-								'label' => __( 'Active', 'wp-embed-facebook' ),
-							],
-							[
-								'type'        => 'checklist',
-								'name'        => 'auto_scrape_post_types',
-								'label'       => __( 'Post types', 'wp-embed-facebook' ),
-								'values'      => $public_post_types
-							],
-						]
-					],
-
 				]
 			],
 			# Social Plugins
