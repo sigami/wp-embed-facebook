@@ -447,7 +447,7 @@ abstract class Framework {
                         <label for="users_can_register">
                             <input type="checkbox" id="<?php echo $name ?>"
                                    name="<?php echo $option . "[$name]" ?>" <?php echo $checked ?>
-                                   value="true" <?php echo self::atts2string( $atts ) ?>/>
+                                   value="<?php echo static::$on ?>" <?php echo self::atts2string( $atts ) ?>/>
 							<?php echo $description ?></label>
                     </td>
                 </tr>
