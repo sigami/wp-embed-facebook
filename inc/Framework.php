@@ -10,7 +10,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class Framework
  *
- * @version 2.6.0
+ * @version 2.6.1
  */
 abstract class Framework {
 
@@ -405,10 +405,9 @@ abstract class Framework {
 
 		$help_text  = ! empty( $description ) ? "<p class=\"description\">$description</p>" : "";
 		$attsString = '';
+		ob_start();
 		switch ( $type ) {
 			case 'checklist':
-
-				ob_start();
 				?>
                 <tr>
                     <th><?php echo $label ?></th>
@@ -431,13 +430,11 @@ abstract class Framework {
                     </td>
                 </tr>
 				<?php
-				ob_end_flush();
 				break;
 			case 'checkbox':
 				$checked = ( $options[ $name ] === static::$on ) ? 'checked' : '';
 				//if(empty($description))
 				//    wp_die('checkbox field needs description');
-				ob_start();
 				?>
                 <tr valign="middle">
                     <th scope="row">
@@ -452,11 +449,8 @@ abstract class Framework {
                     </td>
                 </tr>
 				<?php
-				ob_end_flush();
 				break;
 			case 'select' :
-				$option = $options[ $name ];
-				ob_start();
 				?>
                 <tr valign="middle">
                     <th scope="row"><label
@@ -465,23 +459,21 @@ abstract class Framework {
                     <td>
                         <select name="<?php echo $option . "[$name]" ?>" <?php echo $attsString ?>>
 							<?php
-							foreach ( $values as $value => $name ) :
-								if ( is_numeric( $value ) ) {
-									$value = $name;
+							foreach ( $values as $value => $option_label ) :
+								if ( is_numeric( $value ) && strpos($option_label,' ') === false ) {
+									$value = $option_label;
 								}
 								?>
-                                <option value="<?php echo $value ?>" <?php echo $option == $value ? 'selected'
-									: '' ?>><?php echo $name ?></option>
+                                <option value="<?php echo $value ?>" <?php echo $options[ $name ] == $value ? 'selected'
+									: '' ?>><?php echo $option_label ?></option>
 							<?php endforeach; ?>
                         </select>
 						<?php echo $help_text ?>
                     </td>
                 </tr>
 				<?php
-				ob_end_flush();
 				break;
 			case 'string' :
-				ob_start();
 				?>
                 <tr valign="middle">
                     <th><?php echo $label ?></th>
@@ -491,16 +483,12 @@ abstract class Framework {
                     </td>
                 </tr>
 				<?php
-				ob_end_flush();
 				break;
 			case 'hidden':
-				ob_start();
 				$value_hidden = isset( $atts['value'] ) ? $atts['value'] : $options[ $name ];
 				echo '<input type="hidden" value="' . esc_attr( $value_hidden ) . '">';
-				ob_end_flush();
 				break;
 			default:
-				ob_start();
 				if ( ! isset( $atts['class'] ) ) {
 					$atts['class'] = 'regular-text';
 				}
@@ -518,9 +506,9 @@ abstract class Framework {
                     </td>
                 </tr>
 				<?php
-				ob_end_flush();
 				break;
 		}
+		ob_end_flush();
 	}
 
 	/**
