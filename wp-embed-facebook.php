@@ -16,7 +16,6 @@
  * Version:     2.9.11
  * Author URI:  http://www.wpembedfb.com
  * Text Domain: wp-embed-facebook
- * Domain Path: /lang
  * GitHub Plugin URI: sigami/wp-embed-facebook
  */
 
@@ -57,6 +56,4 @@ if ( is_admin() ) {
 //COMPATIBILITY
 include Plugin::path().'inc/deprecated/deprecated.php';
 
-//TODO CHECK IF ALL OPTIIONS ARE THERE AND REMOVE OLD ONES
 //TODO change lightbox css to make it more hermetic
-//TODO PASS ADD ON TO NEW FORMAT
