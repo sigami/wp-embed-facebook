@@ -148,13 +148,10 @@ class Embed_FB {
 	 * @return array|string
 	 */
 	static function get_type_and_id( $juice, $original ) {
-		$has_fb_app = Helpers::has_fb_app();
-		if ( $has_fb_app ) {
-			$fbsdk = FB_API::instance();
-			$access_token = apply_filters('wef_access_token',$fbsdk->getAccessToken());
-
-			$fbsdk->setAccessToken($access_token);
-		}
+		$has_fb_app   = Helpers::has_fb_app();
+		$fbsdk        = FB_API::instance();
+		$access_token = apply_filters( 'wef_access_token', $fbsdk->getAccessToken() );
+		$fbsdk->setAccessToken( $access_token );
 		$fb_id = null;
 		$type  = null;
 		if ( ( $pos = strpos( $juice, "?" ) ) !== false ) {
@@ -270,7 +267,7 @@ class Embed_FB {
 		 * @param array   $juiceArray Juice array.
 		 * @since unknown
 		 */
-		$fb_id = apply_filters( 'wpemfb_embed_fb_id', $fb_id, $juiceArray );
+		$fb_id = apply_filters( 'wpemfb_embed_fb_id', $fb_id, $juiceArray, $type );
 
 		return [ 'type' => $type, 'fb_id' => $fb_id ];
 	}
@@ -454,9 +451,18 @@ class Embed_FB {
 						$fb_data    = array_merge( $fb_data, $extra_data );
 					}
 				} catch ( \Exception $e ) {
-					$fb_data = '<p><a href="https://www.facebook.com/' . $url . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
+
+					$fb_data = '<p><a href="https://www.facebook.com/' . $url
+					           . '" target="_blank" rel="nofollow">https://www.facebook.com/' . $url . '</a>';
 					if ( is_super_admin() ) {
-						$fb_data .= '<br><small style="color: #4a0e13">' . __( 'Error' ) . ':&nbsp;' . $e->getMessage() . ' (only visible to admins)</small>';
+						$fb_data .= '<br><small style="color: #4a0e13">' . __( 'Error' ) . ':&nbsp;' . $e->getMessage()
+						            . ' (only visible to admins)</small>';
+						if ( $type == 'event' || $type == 'events' ) {
+							$fb_data .= '<br><small style="color: #114ac2">'
+							            . sprintf( __( 'You can embed this resource with Extended Embeds Add-on visit %s to know more',
+									'wp-embed-facebook' ), 'https://wpembedfb.com' ) . '</small>';
+							$fb_data .= '</p>';
+						}
 					}
 					$fb_data .= '</p>';
 				}
