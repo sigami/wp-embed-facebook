@@ -351,7 +351,7 @@ final class Plugin extends Framework {
 					],
 					[
 						'title'       => __( 'Group', 'wp-embed-facebook' ),
-						'description' => Social_Plugins::get_links( 'video' )
+						'description' => Social_Plugins::get_links( 'group' )
 						                 . '     <code class="shortcode_example">[fb_plugin group href=]</code>',
 						'fields'      => [
 							self::social_field( 'group', 'show-social-context' ),
@@ -418,18 +418,6 @@ final class Plugin extends Framework {
 							self::social_field( 'like', 'show-faces' ),
 							self::social_field( 'like', 'size' ),
 							self::social_field( 'like', 'width' ),
-						]
-					],
-					[
-						'title'       => __( 'Send Button', 'wp-embed-facebook' ),
-						'description' => Social_Plugins::get_links( 'send' )
-						                 . '     <code class="shortcode_example">[fb_plugin send]</code>',
-						'fields'      => [
-							self::social_field( 'send', 'colorscheme' ),
-							self::social_field( 'send', 'kid-directed-site' ),
-							self::social_field( 'send', 'ref',
-								__( 'A label for tracking referrals which must be less than 50 characters and can contain alphanumeric characters and some punctuation',
-									'wp-embed-facebook' ) ),
 						]
 					],
 					[

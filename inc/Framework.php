@@ -294,6 +294,10 @@ abstract class Framework {
 		return static::get_option( $option ) === static::$on;
 	}
 
+	static function get_option_name(){
+	    return static::$option;
+    }
+
 	/**
 	 * Add page to Settings
 	 */

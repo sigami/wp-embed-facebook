@@ -175,13 +175,13 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/send-button
 	 */
-	static $send
-		= [
-			'href'              => '',
-			'colorscheme'       => [ 'light', 'dark' ],
-			'kid-directed-site' => [ 'false', 'true' ],
-			'ref'               => '',
-		];
+	//static $send
+	//	= [
+	//		'href'              => '',
+	//		'colorscheme'       => [ 'light', 'dark' ],
+	//		'kid-directed-site' => [ 'false', 'true' ],
+	//		'ref'               => '',
+	//	];
 	/**
 	 * Group
 	 *
@@ -404,6 +404,10 @@ class Social_Plugins {
 				'docs' => 'plugins/embedded-posts',
 				'demo' => 'social-plugins/post-embed',
 			],
+			'group'     => [
+				'docs' => 'plugins/group-plugin',
+				'demo' => 'social-plugins/group',
+			],
 		];
 
 		if ( false === $feature ) {
@@ -510,15 +514,10 @@ class Social_Plugins {
 					$real_options[ $key ] = $options[ $key ];
 				}
 			} else {
-				//use settings value first then overwrite them with shortcode attributes if necessary
 				if ( $settings["{$type}_$key"] != $def_value ) {
 					$def_value = $settings["{$type}_$key"];
 				}
 				$real_options[ $key ] = isset( $options[ $key ] ) ? $options[ $key ] : $def_value;
-				//if ( isset( $options[ $key ] ) && $options[ $key ] != $real_options[ $key ] ) {
-				//
-				//
-				//}
 			}
 		}
 
@@ -627,7 +626,7 @@ class Social_Plugins {
 		$atts_raw_string = '';
 		unset( $atts_raw['debug'] );
 		foreach ( $atts_raw as $key => $value ) {
-			$atts_raw_string .= "$key=$value ";
+			$atts_raw_string .= "$key=\"$value\" ";
 		}
 		$debug .= '<br><pre>';
 		$debug .= '<strong>';
