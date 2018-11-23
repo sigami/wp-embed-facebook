@@ -445,8 +445,8 @@ abstract class Framework {
 							foreach ( $values as $value => $title ) :
 								$checked = ( in_array( $value, $options[ $name ] ) ) ? 'checked' : '';
 								?>
-                                <label for="<?php echo "{$name}_$value" ?>">
-                                    <input type="checkbox" id="<?php echo "{$name}_$value" ?>"
+                                <label for="<?php echo esc_attr("{$option}_$name") ?>">
+                                    <input type="checkbox" id="<?php echo esc_attr("{$option}_$name") ?>"
                                            name="<?php echo $option . "[$name][]" ?>"
                                            value="<?php echo $value ?>" <?php echo $checked . ' ' . $attsString ?>/>
                                     <span><?php echo $title ?></span>
@@ -469,8 +469,8 @@ abstract class Framework {
 						<?php echo $label ?>
                     </th>
                     <td>
-                        <label for="users_can_register">
-                            <input type="checkbox" id="<?php echo $name ?>"
+                        <label for="<?php echo esc_attr("{$option}_$name") ?>">
+                            <input type="checkbox" id="<?php echo esc_attr("{$option}_$name") ?>"
                                    name="<?php echo $option . "[$name]" ?>" <?php echo $checked ?>
                                    value="<?php echo static::$on ?>" <?php echo self::atts2string( $atts ) ?>/>
 							<?php echo $description ?></label>
@@ -482,10 +482,10 @@ abstract class Framework {
 				?>
                 <tr valign="middle">
                     <th scope="row"><label
-                                for="<?php echo $option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo esc_attr("{$option}_$name") ?>"><?php echo $label ?></label>
                     </th>
                     <td>
-                        <select name="<?php echo $option . "[$name]" ?>" <?php echo $attsString ?>>
+                        <select id="<?php echo esc_attr("{$option}_$name") ?>" name="<?php echo $option . "[$name]" ?>" <?php echo $attsString ?>>
 							<?php
 							foreach ( $values as $value => $option_label ) :
 								if ( is_numeric( $value ) && strpos($option_label,' ') === false ) {
@@ -513,8 +513,13 @@ abstract class Framework {
 				<?php
 				break;
 			case 'hidden':
-				$value_hidden = isset( $atts['value'] ) ? $atts['value'] : $options[ $name ];
-				echo '<input type="hidden" value="' . esc_attr( $value_hidden ) . '">';
+				$value_hidden = esc_attr(isset( $atts['value'] ) ? $atts['value'] : $options[ $name ]);
+				?>
+                <input id="<?php echo esc_attr("{$option}_$name") ?>"
+                       type="hidden"
+                       name="<?php echo $option . "[$name]" ?>"
+                       value="<?php echo esc_attr($value_hidden) ?>" <?php echo self::atts2string( $atts ) ?>>
+                <?php
 				break;
 			default:
 				if ( ! isset( $atts['class'] ) ) {
@@ -523,10 +528,10 @@ abstract class Framework {
 				?>
                 <tr>
                     <th scope="row"><label
-                                for="<?php echo $option . "[$name]" ?>"><?php echo $label ?></label>
+                                for="<?php echo esc_attr("{$option}_$name") ?>"><?php echo $label ?></label>
                     </th>
                     <td>
-                        <input id="<?php echo $name ?>"
+                        <input id="<?php echo esc_attr("{$option}_$name") ?>"
                                type="<?php echo $type ?>"
                                name="<?php echo $option . "[$name]" ?>"
                                value="<?php echo esc_attr( $options[ $name ] ) ?>" <?php echo self::atts2string( $atts ) ?>>

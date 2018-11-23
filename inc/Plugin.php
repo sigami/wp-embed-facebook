@@ -144,8 +144,8 @@ final class Plugin extends Framework {
 				                  'single_post_time_format'        => 'l, j F Y g:s a',
 				                  'single_post_from_like'          => 'false',
 				                  'permalink_on_social_plugins'    => 'false',
-				                  'auto_scrape_posts'              => 'true',
-				                  'auto_scrape_post_types'         => [ 'post', 'page' ],
+				                  //'auto_scrape_posts'              => 'true',
+				                  //'auto_scrape_post_types'         => [ 'post', 'page' ],
 			                  ] + $social_options;
 		}
 
