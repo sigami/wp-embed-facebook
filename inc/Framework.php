@@ -10,7 +10,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Class Framework
  *
- * @version 2.6.1
+ * @version 2.6.3
  */
 abstract class Framework {
 
@@ -63,6 +63,10 @@ abstract class Framework {
 	# Labels for reset options. Set i18n on constructor
 	protected static $reset_string = 'Reset to defaults';
 	protected static $confirmation = 'Are you sure?';
+	/**
+	 * @var string internal control to redirect to current tab on save
+	 */
+	protected static $current_tab = '';
 
 	###########################################
 	# Cache of commonly used vars do not edit #
@@ -111,21 +115,23 @@ abstract class Framework {
 		add_action( 'upgrader_process_complete', get_called_class() . '::update', 10, 2 );
 
 		if ( is_admin() && is_string( static::$page_type ) ) {
-			/** @see Plugin_Framework::add_page() */
+			/** @see Framework::add_page() */
 			add_action( 'admin_menu', get_called_class() . '::add_page' );
-			/** @see Plugin_Framework::add_pager_script() */
+			/** @see Framework::add_pager_script() */
 			add_action( 'current_screen', get_called_class() . '::add_pager_script' );
+			/** @see Framework::redirect_to_tab() */
+			add_action('load-options.php', get_called_class() . '::redirect_to_tab' );
 		}
 	}
 
 	static function activation() {
 		static::$defaults_change = true;
 		static::get_option();
-		do_action( static::$option . '_' . __FUNCTION__ );
+		do_action( static::$option . '_' . __FUNCTION__, __FUNCTION__ );
 	}
 
 	static function uninstall() {
-		do_action( static::$option . '_' . __FUNCTION__ );
+		do_action( static::$option . '_' . __FUNCTION__, __FUNCTION__ );
 		if ( is_multisite() ) {
 			$sites = get_sites();
 			foreach ( $sites as $site ) {
@@ -139,7 +145,7 @@ abstract class Framework {
 	}
 
 	static function deactivation() {
-		do_action( static::$option . '_' . __FUNCTION__ );
+		do_action( static::$option . '_' . __FUNCTION__, __FUNCTION__ );
 	}
 
 	static function update( $object, $options ) {
@@ -150,7 +156,7 @@ abstract class Framework {
 
 			static::$defaults_change = true;
 			static::get_option();
-			do_action( static::$option . '_' . __FUNCTION__ );
+			do_action( static::$option . '_' . __FUNCTION__, __FUNCTION__ );
 		}
 	}
 
@@ -329,29 +335,47 @@ abstract class Framework {
 		ob_start();
 		?>
         <script type="text/javascript">
-          const sections = jQuery('.section');
-          const tabs = jQuery(".nav-tab-wrapper a");
           const handleTabs = function (hash) {
-            sections.hide();
+            const $sections = jQuery('.section');
+            const $tabs = jQuery(".nav-tab-wrapper a");
+            const $hash_input = jQuery('[name="<?php echo esc_attr(static::$option).'_hash' ?>"]');
+            $sections.hide();
             if (hash.length) {
               hash.show();
-              jQuery.each(tabs, function (key, value) {
+              jQuery.each($tabs, function (key, value) {
                 jQuery(value).removeClass("nav-tab-active");
               });
-              tabs.eq(hash.index()).addClass('nav-tab-active');
+              $tabs.eq(hash.index()).addClass('nav-tab-active');
+              $hash_input.attr('value',window.location.hash);
             } else {
-              sections.first().show();
+              $sections.first().show();
             }
           };
           handleTabs(jQuery(window.location.hash));
           jQuery(window).bind('hashchange', function () {
             handleTabs(jQuery(window.location.hash));
-            jQuery("html, body").animate({scrollTop: 0}, "slow");
+            // jQuery("html, body").animate({scrollTop: 0}, "slow");
           });
         </script>
 		<?php
 		echo ob_get_clean();
 	}
+
+	static function redirect_to_tab(){
+		if(isset($_REQUEST['option_page'])
+		   &&($_REQUEST['option_page'] === 'Settings_'.static::$option)){
+			if(isset($_POST[static::$option.'_hash'])){
+				static::$current_tab = $_POST[static::$option.'_hash'];
+				add_filter('wp_redirect',get_called_class().'::redirect_to_tab_filter');
+				unset($_POST[static::$option.'_hash']);
+				unset($_REQUEST[static::$option.'_hash']);
+			}
+		}
+    }
+
+    static function redirect_to_tab_filter($red){
+	    return $red . static::$current_tab;
+    }
 
 	/**
 	 * Render form sections
@@ -609,6 +633,7 @@ abstract class Framework {
 						?>
                     </h2><br>
 				<?php endif; ?>
+                <input type="hidden" name="<?php echo esc_attr(static::$option).'_hash' ?>" value="">
                 <div class="sections">
 					<?php static::parse_tabs( static::tabs() ) ?>
 					<?php submit_button(); ?>

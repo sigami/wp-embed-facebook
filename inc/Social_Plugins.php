@@ -512,12 +512,13 @@ class Social_Plugins {
 			} else {
 				//use settings value first then overwrite them with shortcode attributes if necessary
 				if ( $settings["{$type}_$key"] != $def_value ) {
-					$real_options[ $key ] = $settings["{$type}_$key"];
+					$def_value = $settings["{$type}_$key"];
 				}
-				if ( isset( $options[ $key ] ) && $options[ $key ] != $real_options[ $key ] ) {
-					
-					$real_options[ $key ] = $options[ $key ];
-				}
+				$real_options[ $key ] = isset( $options[ $key ] ) ? $options[ $key ] : $def_value;
+				//if ( isset( $options[ $key ] ) && $options[ $key ] != $real_options[ $key ] ) {
+				//
+				//
+				//}
 			}
 		}
 
@@ -531,9 +532,7 @@ class Social_Plugins {
 		$filtered_options = apply_filters( 'wef_sp_defaults', $real_options, $type );
 		$extra            = '';
 		foreach ( $filtered_options as $option => $value ) {
-			if ( $defaults[ $type ][ $option ] != $value ) {
-				$extra .= "data-$option=\"$value\" ";
-			}
+			$extra .= "data-$option=\"$value\" ";
 		}
 		$extra = trim( $extra );
 
@@ -599,6 +598,7 @@ class Social_Plugins {
 				//$ret .= print_r($data,true);
 			}
 
+			//return print_r($atts,true);
 			/**
 			 * Filter social plugin shortcode output.
 			 *

@@ -105,15 +105,6 @@ class Helpers {
 		return apply_filters( 'wef_lightbox_title', 'data-title="' . $clean_title . '"', $title );
 	}
 
-	//("uninstalled","deactivated","activated","reactivated")
-	protected static function whois( $install ) {
-		$home = home_url();
-		$home = esc_url( $home );
-		@file_get_contents( "http://www.wpembedfb.com/api/?whois=$install&site_url=$home" );
-
-		return true;
-	}
-
 	static function get_lb_defaults() {
 		if ( self::$lb_defaults === null ) {
 			$keys              = [
