@@ -54,12 +54,10 @@ class Magic_Embeds {
 		add_shortcode( 'fb_plugin', __NAMESPACE__ . '\Social_Plugins::shortcode' );
 
 		add_action( 'widgets_init', __CLASS__ . '::widgets_init' );
-		//TODO do some magic with [facebook] JetPack shortcode.
 
 	}
 
 	static function widgets_init() {
-		//TODO test widget 3.0
 		register_widget( '\SIGAMI\WP_Embed_FB\Widget' );
 	}
 
@@ -195,7 +193,7 @@ class Magic_Embeds {
 		}
 
 		if ( ( $options['auto_comments_active'] == 'true' ) && is_single() ) {
-			$array          = Helpers::string_to_array( $options['auto_comments_post_types'] );
+			$array          = $options['auto_comments_post_types'];
 			$queried_object = get_queried_object();
 			if ( in_array( $queried_object->post_type, $array ) ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );

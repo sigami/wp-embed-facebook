@@ -79,7 +79,7 @@ class Embed_FB {
 
 		return sprintf( __( /** @lang text */
 			'You are using the [facebook] shortcode wrong. See examples <a title="Examples" target="_blank" href="%s" >here</a>.',
-			'wp-embed-facebook' ), 'http://www.wpembedfb.com/demo-site/category/custom-embeds/' );
+			'wp-embed-facebook' ), 'http://www.wpembedfb.com' );
 	}
 
 	/**
@@ -135,6 +135,9 @@ class Embed_FB {
 		do_action( 'wp_embed_fb' );
 
 		$return = self::print_embed( $type_and_id['fb_id'], $type_and_id['type'], $juice );
+		if(is_wp_error($return)){
+		    $return = $return->get_error_message();
+        }
 		self::clear_atts();
 
 		return $return;
@@ -296,7 +299,7 @@ class Embed_FB {
 			return $interrupt;
 		}
 
-		if ( ! self::is_raw( $type ) || $type == 'video' ) {
+		if ( ! self::is_raw( $type ) || $type == 'video' || $type == 'group' ) {
 			$fb_data       = [ 'social_plugin' => true, 'link' => $juice, 'type' => $type ];
 			$template_name = 'social-plugin';
 		} else {
@@ -321,7 +324,7 @@ class Embed_FB {
 
 		if ( ! self::valid_fb_data( $fb_data ) ) {
 			if ( is_string( $fb_data ) ) {
-				return $fb_data;
+				return new \WP_Error('api_error',$fb_data);
 			}
 
 			return print_r( $fb_data, true );

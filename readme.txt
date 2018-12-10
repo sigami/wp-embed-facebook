@@ -3,7 +3,7 @@ Contributors: poxtron, nerdaryan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
 Requires at least: 4.5
-Tested up to: 4.9.5
+Tested up to: 5.0
 Requires PHP: 5.4
 Stable tag: 2.9.11
 License: GPLv2 or later
@@ -12,11 +12,9 @@ Embed any public Facebook video, page, comment, event, album, photo, profile. Ad
 
 == Description ==
 
-Automatically embed any content from Facebook directly into your site just by copying the URL into the editor.
+Automatically embed any content from Facebook directly into your site just by copying the URL into the editor, using shortcodes or the new embed block.
 
 Replace the WordPress comments system with Facebook comments on selected post types or manually using a shortcode.
-
-Scrape your shared URL's on Facebook on update or manually on selected post types.
 
 Use simple shortcodes to invoke like, send, share, save buttons or any other Facebook Social Plugin.
 
@@ -109,14 +107,19 @@ Allow your visitors to share text from your site just by selecting it. Activate 
 * Nothing to embed posts, pages, videos, and comments.
 * For custom embeds and comments moderation a Facebook App Id and Secret are required more details inside settings.
 
+= Extended Embeds Add-On =
+
+* Scrape your shared URL's on Facebook on update or manually on selected post types
+* Simple Widget for generating custom embeds and social plugin shortcodes
+* Embed single events you have been invited to
+* Embed all upcomming events of your fan page
+* Embed the full content of a single event using the shortcode `[fbfullevent url]`
+* Custom embed for fan pages with posts, events and albums tabs using the shortcode `[bfullpage url]`
+* One accessible yearly payment for a license that you can use on all the sites you want :)
+
 = Contributing =
 
 Feel like adding something? Create a pull request to the master branch on [github](https://github.com/sigami/wp-embed-facebook). All are welcome.
-
-= Extended Embeds Add-On =
-
-* Embed events you have been invited to, single event embed and full event shortcode
-* Embed full fan page shortcode
 
 == Installation ==
 
@@ -198,7 +201,7 @@ Buying the premium extensions helps to keep this project alive.
 * Removed: Events custom embeds because Facebook API changes, however, some functionality is still there on the premium version
 * Improved: Universal options page
 * Fixed: Comments count and order now on
-* Added: Facebook SDK v3.1
+* Added: Facebook SDK v3.2
 * Added: Compatibility for visual themes
 
 = 2.2.4 =
