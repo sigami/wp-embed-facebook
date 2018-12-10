@@ -13,7 +13,7 @@ comment, profile, or post. Add Facebook comments to all your site, insert
 Facebook social plugins (like, save, send, share, follow, quote, comments)
 anywhere on your site. View the <a href="https://wpembedfb.com/features" title="plugin website" target="_blank">features</a>.
 Author: Miguel Sirvent
-Version: 2.9.9
+Version: 3.0.0
 Author URI: http://www.wpembedfb.com
 Text Domain: wp-embed-facebook
 GitHub Plugin URI: sigami/wp-embed-facebook
