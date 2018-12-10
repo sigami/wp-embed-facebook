@@ -317,10 +317,6 @@ abstract class Framework {
 				$options_page = call_user_func( $function, static::$page_title, static::$menu_title,
 					static::$capability, static::$menu_slug, get_called_class() . '::display_page' );
 			}
-
-			if ( false === $options_page ) {
-				wp_die( 'Invalid page: ' . static::$page_type . ' ' . $function );
-			}
 		} else {
 			wp_die( 'Invalid page page_type: ' . static::$page_type );
 		}
