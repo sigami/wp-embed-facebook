@@ -1,0 +1,45 @@
+.wef-content{
+    width: 72%;
+    float: left;
+    /*border-right: 1px solid gray;*/
+}
+.wef-sidebar{
+    width: 28%;
+    float: left;
+    text-align: center;
+    /*border-left: 1px solid gray;*/
+    /*padding: 0 10px;*/
+}
+
+@media (max-width: 870px) {
+    .wef-sidebar, .wef-content  {
+        width: 100% !important;
+    }
+}
+.wef-sidebar .button-red {
+    background: #D2002C none repeat scroll 0 0;
+    border-color: #AA0012;
+    box-shadow: 0 1px 0 rgba(230, 14, 23, 0.5) inset, 0 1px 0 rgba(173, 173, 173, 0.15);
+    color: #FFF;
+    text-decoration: none;
+}
+.wef-sidebar .button-red:focus, .wef-sidebar .button-red:hover {
+    background: #AB1F42 none repeat scroll 0 0;
+    border-color: #AA0012;
+    box-shadow: 0 1px 0 rgba(230, 14, 23, 0.5) inset;
+}
+
+input.button[name=restore] {
+    float: right;
+}
+
+#social_plugins .form-table th {
+  padding: 5px 0 0 0;
+}
+#social_plugins .form-table td {
+  padding: 4px 0;
+}
+
+.shortcode_example{
+  margin-left: 20px;
+}
