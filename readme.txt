@@ -5,7 +5,7 @@ Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, 
 Requires at least: 4.5
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
@@ -192,6 +192,9 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 3.0.3 =
+* Fixed: Jetpack photon compatibility
 
 = 3.0.2 =
 * Fixed: Login error for non admin users
@@ -550,5 +553,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 3.0.2 =
+= 3.0.3 =
 Completely rewritten to better keep up with FB updates really the best version yet!

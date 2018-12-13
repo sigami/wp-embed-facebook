@@ -1,6 +1,6 @@
 {
   "name": "wp-embed-facebook",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Development version of the WP Embed Facebook Plugin",
   "main": "wp-embed-facebook/wp-embed-facebook.php",
   "repository": {
