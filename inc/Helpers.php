@@ -26,7 +26,7 @@ class Helpers {
 		if ( self::$has_photon === null ) {
 			if ( class_exists( 'Jetpack' )
 			     && method_exists( 'Jetpack', 'get_active_modules' )
-			     && in_array( 'photon', Jetpack::get_active_modules() ) ) {
+			     && in_array( 'photon', \Jetpack::get_active_modules() ) ) {
 				self::$has_photon = true;
 			} else {
 				self::$has_photon = false;
