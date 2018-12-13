@@ -150,7 +150,6 @@ abstract class Framework {
 
 	static function update( $object, $options ) {
 		if ( $options['action'] == 'update'
-		     && $options['page_type'] == 'plugin'
 		     && isset( $options['plugins'] )
 		     && in_array( plugin_basename( static::$FILE ), $options['plugins'] ) ) {
 

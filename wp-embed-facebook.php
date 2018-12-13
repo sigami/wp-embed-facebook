@@ -4,16 +4,12 @@
 @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
 @link      https://www.wpembedfb.com
 @package   WP Embed FB
-
 @wordpress-plugin
 Plugin Name: WP Embed Facebook
 Plugin URI: http://www.wpembedfb.com
-Description: Embed any public Facebook video, photo, album, event, page,
-comment, profile, or post. Add Facebook comments to all your site, insert
-Facebook social plugins (like, save, send, share, follow, quote, comments)
-anywhere on your site. View the <a href="https://wpembedfb.com/features" title="plugin website" target="_blank">features</a>.
+Description: Embed any public Facebook video, photo, album, event, page, comment, profile, or post. Add Facebook comments to all your site, insert Facebook social plugins (like, save, send, share, follow, quote, comments) anywhere on your site. View the <a href="https://wpembedfb.com/features" title="plugin website" target="_blank">features</a>.
 Author: Miguel Sirvent
-Version: 3.0.0
+Version: 3.0.2
 Author URI: http://www.wpembedfb.com
 Text Domain: wp-embed-facebook
 GitHub Plugin URI: sigami/wp-embed-facebook

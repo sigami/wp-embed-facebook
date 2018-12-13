@@ -5,7 +5,7 @@ Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, 
 Requires at least: 4.5
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 3.0.0
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
@@ -32,19 +32,19 @@ Use simple shortcodes to invoke like, send, share, save buttons or any other Fac
 
 There are two types of embeds: Custom Embeds that are entirely native to this plugin and Social Plugins which are pieces of code created by Facebook developers.
 
-[All custom embeds examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/)
+[All custom embeds examples](https://wpembedfb.com/custom-embed/)
 
-[All social plugins examples](http://www.wpembedfb.com/demo-site/category/social-plugins/)
+[All social plugins examples](https://wpembedfb.com/social-plugin/)
 
-As an alternative to automatically embed your content, you can use the `[embedfb url]` shortcode instead and pass on some parameters to change each embed [examples](http://www.wpembedfb.com/demo-site/category/custom-embeds/).
+As an alternative to automatically embed your content, you can use the `[embedfb url]` shortcode instead and pass on some parameters to change each embed [examples](https://wpembedfb.com/documentation/wp-embed-facebook-shortcode-attributes-and-examples/).
 
-You can also use the built-in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds).
+You can also use the built-in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds) .
 
 = Facebook Social Plugins =
 
 **Shortcode variations**
 
-```
+`
 [fb_plugin like]
 [fb_plugin send]
 [fb_plugin share]
@@ -56,9 +56,9 @@ You can also use the built-in WordPress `[embed]` [shortcode](https://codex.word
 [fb_plugin video href=]
 [fb_plugin group href=]
 [fb_plugin comment href=]
-```
+`
 
-Change the default attributes for each plugin on settings or individually on using shortcode attributes, see the list of all available attributes using the "help" attribute like this: `[fb_plugin like help=1]`
+Change the default attributes for each plugin on settings or individually using shortcode attributes, see the list of all available attributes using the "help" attribute like this: `[fb_plugin like help=1]`
 
 For example: To embed a complete Facebook fan page with the latest post, events, and chat; use the shortcode like this:
 
@@ -125,7 +125,7 @@ Feel like adding something? Create a pull request to the master branch on [githu
 
 1. Download wp embed facebook plugin from [WordPress](http://wordpress.org/plugins/wp-embed-facebook)
 1. Extract to /wp-content/plugins/ folder, and activate the plugin in /wp-admin/.
-1. Create a Facebook App follow the [step by step guide](http://www.wpembedfb.com/creating-a-facebook-app-the-step-by-step-guide/).
+1. Create a Facebook App follow the [step by step guide](https://wpembedfb.com/documentation/creating-a-facebook-app-the-step-by-step-guide/).
 1. Copy the App Id and App Secret to the “Embed Facebook” page under the Settings section.
 1. Change settings to your liking.
 1. Enjoy and tell someone!
@@ -179,8 +179,8 @@ Buying the premium extensions helps to keep this project alive.
 3. Video Social Plugin
 4. Video Custom Embed
 5. Album
-6. An album with more than 100 photos  (Premium only)
-7. Event
+6. An album with more than 100 photos now on free version :)
+7. Event (Premium only)
 8. Full Event Shortcode (Premium only)
 9. Full Page Shortcode (Premium only)
 10. Fan page upcoming events (Premium only)
@@ -193,12 +193,18 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 3.0.2 =
+* Fixed: Login error for non admin users
+* Removed: Unused code 
+* Updated: Framework update action
+* Fixed: Broken links
+
 = 3.0.0 =
 * Improved: Translated API calls
 * Added: Url scraper
 * Added: Group social plugin
 * Removed: Deprecated social plugins
-* Removed: Events custom embeds because Facebook API changes, however, some functionality is still there on the premium version
+* Removed: Events custom embeds because Facebook API changes, however, you can embed events you have been invited to with the premium version
 * Improved: Universal options page
 * Fixed: Comments count and order now on
 * Added: Facebook SDK v3.2
@@ -544,5 +550,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 2.2.2 =
-Added Facebook SDK v2.10
+= 3.0.2 =
+Completely rewritten to better keep up with FB updates really the best version yet!
