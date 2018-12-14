@@ -83,7 +83,7 @@ final class WP_Embed_FB_Deprecated_API {
 	public function api( $string = '', $method = 'GET', $message = [] ) {
 		if ( ! class_exists( 'FacebookApiException' ) ) {
 			/** @noinspection PhpIncludeInspection */
-			require_once( Plugin::path() . 'deprecated/FacebookApiException.php' );
+			require_once( Plugin::path() . 'inc/deprecated/FacebookApiException.php' );
 		}
 		try {
 			FB_API::instance()->api( $string, $method, $message );

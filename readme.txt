@@ -5,7 +5,7 @@ Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, 
 Requires at least: 4.5
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
@@ -29,6 +29,7 @@ Use simple shortcodes to invoke like, send, share, save buttons or any other Fac
 * Posts
 * Profiles
 * Single Comment
+* Events (Premium)
 
 There are two types of embeds: Custom Embeds that are entirely native to this plugin and Social Plugins which are pieces of code created by Facebook developers.
 
@@ -38,7 +39,7 @@ There are two types of embeds: Custom Embeds that are entirely native to this pl
 
 As an alternative to automatically embed your content, you can use the `[embedfb url]` shortcode instead and pass on some parameters to change each embed [examples](https://wpembedfb.com/documentation/wp-embed-facebook-shortcode-attributes-and-examples/).
 
-You can also use the built-in WordPress `[embed]` [shortcode](https://codex.wordpress.org/Embeds) .
+You can also use the built-in WordPress `[embed]` shortcode .
 
 = Facebook Social Plugins =
 
@@ -72,7 +73,7 @@ Embed a share button for your main fan page
 
 Remove the "href" attribute to share the current page even if its invoked from a widget.
 
-Find all possible attributes on the plugin settings "Social Plugins" section. See live examples [here](http://www.wpembedfb.com/demo-site/category/social-plugins/).
+Find all possible attributes on the plugin settings "Social Plugins" section. See live examples [here](https://wpembedfb.com/social-plugin/).
 
 = Custom Embeds =
 
@@ -100,7 +101,7 @@ To enable moderation, scrape URLs and custom embeds you have to set up a Faceboo
 
 = The Quote Social Plugin =
 
-Allow your visitors to share text from your site just by selecting it. Activate it automatically on selected post types or using the shortcode `[fb_plugin quote]` [Demo](http://www.wpembedfb.com/demo-site/social-plugins/quote-plugin/).
+Allow your visitors to share text from your site just by selecting it. Activate it automatically on selected post types or using the shortcode `[fb_plugin quote]` To see it in action visit this plugin website and select any text [Demo](https://wpembedfb.com).
 
 = Requirements =
 
@@ -192,6 +193,11 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 3.0.4 =
+* Fixed: FaacebookApiException not found error
+* Fixed: String to array warning
+* Fixed: Broken links... some still there...
 
 = 3.0.3 =
 * Fixed: Jetpack photon compatibility
@@ -553,5 +559,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 3.0.3 =
+= 3.0.4 =
 Completely rewritten to better keep up with FB updates really the best version yet!

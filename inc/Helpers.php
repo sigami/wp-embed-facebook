@@ -19,6 +19,9 @@ class Helpers {
 	static $lb_defaults = null;
 
 	static function string_to_array( $string ) {
+		if(is_array($string)){
+			return $string;
+		}
 		return explode( ',', trim( $string, ' ,' ) );
 	}
 
