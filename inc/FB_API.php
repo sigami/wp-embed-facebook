@@ -37,20 +37,22 @@ class FB_API {
 	protected static $instance = null;
 
 	/**
+	 * Default instance created with plugin options.
+	 *
 	 * @return FB_API
 	 */
-	static function instance($app_id = null, $app_secret = null) {
+	static function instance() {
 		if ( static::$instance === null ) {
-			static::$instance = new static($app_id,$app_secret);
+			static::$instance = new static( Plugin::get_option( 'app_id' ), Plugin::get_option( 'app_secret' ) );
 		}
 
 		return static::$instance;
 	}
 
-	protected function __construct($app_id = null,$app_secret = null) {
-		$this->app_id           = $app_id === null ? Plugin::get_option( 'app_id' ) : $app_id;
-		$this->app_secret       = $app_secret === null ? Plugin::get_option( 'app_secret' ) : $app_secret;
-		$this->app_access_token = "{$this->app_id}|{$this->app_secret}";
+	public function __construct( $app_id = '', $app_secret = '' ) {
+		$this->app_id           = $app_id;
+		$this->app_secret       = $app_secret;
+		$this->app_access_token = "$app_id|$app_secret";
 		$this->access_token     = strlen( $this->app_access_token ) > 5 ? $this->app_access_token : null;
 	}
 
@@ -170,8 +172,7 @@ class FB_API {
 		}
 
 		if ( is_wp_error( $response ) ) {
-			throw new \Exception( $response->get_error_code() . '=>'
-			                      . $response->get_error_message(), 500 );
+			throw new \Exception( $response->get_error_code() . '=>' . $response->get_error_message(), 500 );
 		}
 
 		$response_code    = wp_remote_retrieve_response_code( $response );
@@ -204,8 +205,7 @@ class FB_API {
 		}
 
 		if ( 200 != $response_code || ! is_array( $data ) || empty( $data ) ) {
-			throw new \Exception( __( 'Unknown error occurred', 'wp-embed-facebook' ),
-				(int) $response_code );
+			throw new \Exception( __( 'Unknown error occurred', 'wp-embed-facebook' ), (int) $response_code );
 		}
 
 		return $data;

@@ -5,7 +5,7 @@ Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, 
 Requires at least: 4.5
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 3.0.4
+Stable tag: 3.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
