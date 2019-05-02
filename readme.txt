@@ -1,11 +1,11 @@
-=== WP Embed Facebook ===
+=== WP Embed FB ===
 Contributors: poxtron, nerdaryan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
-Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook publication, facebook publications, facebook event, facebook events, facebook pages, facebook page, facebook profiles, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
+Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook events, facebook pages, facebook page, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
 Requires at least: 4.5
-Tested up to: 5.0
+Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
@@ -161,7 +161,7 @@ This plugin only works for embedding **albums**.
 
 = Is there a way to embed an album with more than 100 photos? =
 
-Change the number of embedded photos on settings or use the shortcode like this [facebook album_url photos=200 ] This can only be achieved using the premium version.
+Change the number of embedded photos on settings or use the shortcode like this [embedfb album_url photos=200 ] This can only be achieved using the premium version.
 
 = How to get the correct URL from Facebook? =
 
@@ -193,6 +193,9 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 3.0.6 =
+* Updated: minimum version.
 
 = 3.0.4 =
 * Fixed: FaacebookApiException not found error
@@ -559,5 +562,5 @@ Buying the premium extensions helps to keep this project alive.
 
 == Upgrade Notice ==
 
-= 3.0.4 =
-Completely rewritten to better keep up with FB updates really the best version yet!
+= 3.0.6 =
+Version bump ready for WP 5.2

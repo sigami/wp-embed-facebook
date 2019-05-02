@@ -1,6 +1,6 @@
 {
   "name": "wp-embed-facebook",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Development version of the WP Embed Facebook Plugin",
   "main": "wp-embed-facebook/wp-embed-facebook.php",
   "repository": {
@@ -17,7 +17,9 @@
   "deployment_host": "wordpress",
   "devDependencies": {
     "grunt": "^1.0.1",
-    "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^3.3.0"
+  },
+  "dependencies": {
+    "grunt-contrib-sass": "^1.0.0"
   }
 }
