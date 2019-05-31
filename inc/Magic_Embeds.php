@@ -63,9 +63,9 @@ class Magic_Embeds {
 
 	static function init() {
 		if ( Helpers::has_fb_app() ) {
-			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.8 ) {
+			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.10 ) {
 				$options                = Plugin::get_option();
-				$options['sdk_version'] = 'v3.1';
+				$options['sdk_version'] = 'v3.3';
 				Plugin::set_options( $options );
 			}
 		}

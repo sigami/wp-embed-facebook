@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 final class Plugin extends Framework {
 
-	const VER = '3.0.6';
+	const VER = '3.0.7';
 
 	static $option    = 'wpemfb_options';
 	static $menu_slug = 'embedfacebook';
@@ -783,8 +783,8 @@ final class Plugin extends Framework {
 <!--                    👾</a>-->
 <!--            </h3>-->
             <hr>
-            <p><a href="http://www.wpembedfb.com" title="plugin website" target="_blank">
-                    <small><?php _e( 'Plugin Website', 'wp-embed-facebook' ) ?></small>
+            <p><a href="http://www.wpembedfb.com" title="WP Embed FB Extended" target="_blank">
+                    <img width="100%" height="auto" alt="WEF Extended" src="<?php echo self::url() . 'inc/banners/WPEmbedFBExtended.png'?>" />
                 </a></p>
 			<?php echo ob_get_clean(); ?>
 

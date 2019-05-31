@@ -1,18 +1,18 @@
-=== WP Embed FB ===
+=== Magic Embeds ===
 Contributors: poxtron, nerdaryan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook events, facebook pages, facebook page, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
 Requires at least: 4.5
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 3.0.6
+Stable tag: 3.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
 
 == Description ==
 
-Automatically embed any content from Facebook directly into your site just by copying the URL into the editor, using shortcodes or the new embed block.
+Formerly WP Embed Facebook. Automatically embed any content from Facebook directly into your site just by copying the URL into the editor, using shortcodes or the new embed block.
 
 Replace the WordPress comments system with Facebook comments on selected post types or manually using a shortcode.
 
@@ -193,6 +193,12 @@ Buying the premium extensions helps to keep this project alive.
 
 
 == Changelog ==
+
+= 3.0.7 =
+* Plugin Name changed to Magic Embeds to avoid legal issues
+* Fixed broken links
+* Updated api version to 3.3 and deprecated old versions
+* Added banner add for premium version
 
 = 3.0.6 =
 * Updated: minimum version.

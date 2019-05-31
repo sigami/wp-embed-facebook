@@ -390,7 +390,7 @@ class Social_Plugins {
 			],
 			'video'    => [
 				'docs' => 'plugins/embedded-video-player',
-				'demo' => 'embedded-video-live-video-player',
+				'demo' => 'social-plugins/embedded-video-live-video-player',
 			],
 			'page'     => [
 				'docs' => 'plugins/page-plugin',
@@ -565,7 +565,7 @@ class Social_Plugins {
 			) {
 				return self::usage( $type );
 			}
-			
+
 			$ret = self::get( $type, $atts );
 
 			if ( ( Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
@@ -592,12 +592,8 @@ class Social_Plugins {
 
 			if ( isset( $atts['debug'] ) ) {
 				$ret .= self::debug( $ret, $atts, $type );
-				//$ret .= print_r($ret,true);
-				//$ret .= print_r($atts,true);
-				//$ret .= print_r($data,true);
 			}
 
-			//return print_r($atts,true);
 			/**
 			 * Filter social plugin shortcode output.
 			 *
@@ -661,10 +657,9 @@ class Social_Plugins {
 			$string .= "$att=\"$default\" ";
 		}
 		ob_start();
-		echo '<p>' . __( 'Shortcode usage example:', 'wp-embed-facebook' ) . '</p>';
-		echo '<p>[fb_plugin ' . $type . $string . ' adaptive="false|true" ]</p>';
-		echo '<p>' . __( 'More information:',
-				'wp-embed-facebook' ) . ' ' . self::get_links( $type ) . '</p>';
+		echo sprintf( "<p>%s</p>", __( 'Shortcode usage example:', 'wp-embed-facebook' ) );
+		echo sprintf( "<p>[fb_plugin %s%s adaptive=\"false|true\" ]</p>", $type, $string );
+		echo sprintf( "<p>%s %s</p>", __( 'More information:', 'wp-embed-facebook' ), self::get_links( $type ) );
 
 		return ob_get_clean();
 	}
