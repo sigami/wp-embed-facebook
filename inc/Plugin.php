@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 final class Plugin extends Framework {
 
-	const VER = '3.0.7';
+	const VER = '3.0.8';
 
 	static $option    = 'wpemfb_options';
 	static $menu_slug = 'embedfacebook';
@@ -99,7 +99,7 @@ final class Plugin extends Framework {
 				                  'app_id'                         => '',
 				                  'app_secret'                     => '',
 				                  'theme'                          => 'default',
-				                  'sdk_version'                    => 'v3.2',
+				                  'sdk_version'                    => 'v6.0',
 				                  'show_like'                      => 'true',
 				                  'fb_root'                        => 'true',
 				                  'show_follow'                    => 'true',

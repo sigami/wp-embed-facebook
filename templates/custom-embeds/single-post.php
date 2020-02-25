@@ -7,10 +7,24 @@ $story = isset($fb_post['story']) ? '<p>' . $fb_post['story'] . '</p>' : '';
 
 $icon = isset($fb_post["icon"]) ? '<img class="wef-icon" title="Facebook ' . $fb_post["type"] . '" src="' . $fb_post["icon"] . '">' : '';
 
-$old_time_zone = date_default_timezone_get();
-date_default_timezone_set(Helpers::get_timezone());
-$time = $icon . date_i18n(Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
-date_default_timezone_set($old_time_zone);
+$start_time_format = Plugin::get_option( 'event_start_time_format' );
+if ( Plugin::get_option( 'ev_local_tz' ) == 'true' ) {
+    $timezone = Helpers::get_timezone();
+} else {
+    $timezone = isset( $fb_data['timezone'] ) ? $fb_data['timezone'] : WEF_Helpers::get_timezone();
+}
+if ( function_exists( 'wp_date' ) ) {
+    $format = Plugin::get_option('single_post_time_format');
+    $start_time = wp_date( $format, strtotime( $fb_post['created_time'] ), new \DateTimeZone( Helpers::get_timezone() )
+    );
+} else {
+    $old_time_zone = date_default_timezone_get();
+    date_default_timezone_set(Helpers::get_timezone());
+    $time = $icon . date_i18n(Plugin::get_option('single_post_time_format'), strtotime($fb_post['created_time']));
+    date_default_timezone_set($old_time_zone);
+}
+
+
 
 $description = isset($fb_post['description']) && !empty($fb_post['description']) ? Helpers::make_clickable($fb_post['description']) : '';
 
