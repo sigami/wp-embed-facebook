@@ -1,11 +1,11 @@
 === Magic Embeds ===
-Contributors: poxtron, nerdaryan
+Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook events, facebook pages, facebook page, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
 Requires at least: 4.5
-Tested up to: 5.2
+Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 3.0.8
+Stable tag: 3.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Embed any public Facebook video, page, comment, event, album, photo, profile. Add Facebook comments to all your site or embed any Social Plugin.
