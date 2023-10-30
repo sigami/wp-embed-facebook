@@ -1,6 +1,6 @@
 <?php
 /**
-@author    Miguel Sirvent and Rahul Aryan
+@author    Miguel Sirvent
 @license   GPL-3.0+ https://www.gnu.org/licenses/gpl-3.0.txt
 @link      https://www.wpembedfb.com
 @package   WP Embed FB
@@ -22,16 +22,17 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-spl_autoload_register( __NAMESPACE__ . '\auto_loader' );
+spl_autoload_register( 'SIGAMI\WP_Embed_FB\auto_loader' );
 
 /**
  * Plugin class autoloader.
  *
  * @param string $class_name Class name to load.
+ *
  * @return void
  */
-function auto_loader( $class_name ) {
-	if ( false !== strpos( $class_name, __NAMESPACE__ ) ) {
+function auto_loader( string $class_name ): void {
+	if ( str_starts_with( $class_name, __NAMESPACE__ ) ) {
 		$dir = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'inc' . DIRECTORY_SEPARATOR;
 		require_once $dir . str_replace( [ __NAMESPACE__, '\\' ], '', $class_name ) . '.php';
 	}
@@ -39,17 +40,15 @@ function auto_loader( $class_name ) {
 
 Plugin::instance( __FILE__ );
 
-Magic_Embeds::instance();
+Magic_Embeds::instance()->hooks();
 
 if ( Plugin::is_on( 'auto_comments_active' ) ) {
-	Comments::instance();
+	Comments::instance()->hooks();
 }
 
 if ( is_admin() ) {
-	Admin::instance();
+	Admin::instance()->hooks();
 }
 
-//COMPATIBILITY
-include Plugin::path().'inc/deprecated/deprecated.php';
-
-//TODO change lightbox css to make it more hermetic
+// Backwards compatibility. Maybe never going to be removed.
+require Plugin::path() . 'inc/deprecated/deprecated.php';

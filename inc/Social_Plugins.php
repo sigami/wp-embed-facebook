@@ -1,10 +1,10 @@
 <?php
 /**
- * Group of static functions to render facebook social
+ * Group of public static functions to render facebook social
  * plugins on WordPress it has no dependencies.
  *
  * @author  Miguel Sirvent & Rahul Aryan
- * @package WP Embed Facebook
+ * @package $fb_path
  * @subpackage Classes
  */
 
@@ -25,7 +25,7 @@ class Social_Plugins {
 	/**
 	 * @var array $link_types Link fields needed for rendering a social plugin
 	 */
-	static $link_types = [ 'href', 'uri' ];
+	public static array $link_types = [ 'href', 'uri' ];
 
 	/**
 	 * Quote Plugin
@@ -46,10 +46,10 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/quote
 	 */
-	static $quote
+	public static array $quote
 		= [
 			'href'   => '',
-			'layout' => [ 'quote', 'button' ]
+			'layout' => [ 'quote', 'button' ],
 		];
 	/**
 	 * Save Button
@@ -68,10 +68,10 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/save
 	 */
-	static $save
+	public static array $save
 		= [
 			'uri'  => '',
-			'size' => [ 'large', 'small' ]
+			'size' => [ 'large', 'small' ],
 		];
 	/**
 	 * Like Button
@@ -104,7 +104,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/like-button
 	 */
-	static $like
+	public static array $like
 		= [
 			'href'              => '',
 			'action'            => [ 'like', 'recommend' ],
@@ -115,7 +115,7 @@ class Social_Plugins {
 			'share'             => [ 'false', 'true' ],
 			'show-faces'        => [ 'true', 'false' ],
 			'size'              => [ 'small', 'large' ],
-			'width'             => '450'
+			'width'             => '450',
 		];
 	/**
 	 * Share Button
@@ -141,7 +141,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/share-button/
 	 */
-	static $share
+	public static array $share
 		= [
 			'href'          => '',
 			'layout'        => [
@@ -150,18 +150,15 @@ class Social_Plugins {
 				'icon',
 				'button_count',
 				'button',
-				'box_count'
+				'box_count',
 			],
 			'mobile_iframe' => [ 'false', 'true' ],
 		];
 	/**
 	 * Send Button
-	 *
 	 * The Send button lets people privately send content on your site to one or more friends in a
 	 * Facebook message.
-	 *
 	 * <code>
-	 *
 	 * href: The absolute URL of the page that will be quoted.
 	 * colorscheme: The color scheme used by the plugin.
 	 *              light
@@ -170,18 +167,18 @@ class Social_Plugins {
 	 * directed to children under 13 you must enable this ref: A label for tracking referrals which
 	 * must be less than 50 characters and can contain alphanumeric characters and some punctuation
 	 * (currently +/=-.:_).
-	 *
 	 * </code>
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/send-button
+	 *
+	 * public static $send = [
+	 * 'href'              => '',
+	 * 'colorscheme'       => [ 'light', 'dark' ],
+	 * 'kid-directed-site' => [ 'false', 'true' ],
+	 * 'ref'               => '',
+	 * ];
 	 */
-	//static $send
-	//	= [
-	//		'href'              => '',
-	//		'colorscheme'       => [ 'light', 'dark' ],
-	//		'kid-directed-site' => [ 'false', 'true' ],
-	//		'ref'               => '',
-	//	];
+
 	/**
 	 * Group
 	 *
@@ -190,7 +187,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/group-plugin
 	 */
-	static $group
+	public static array $group
 		= [
 			'href'                => '',
 			'show-social-context' => [ 'false', 'true' ],
@@ -216,11 +213,11 @@ class Social_Plugins {
 	 *
 	 * fb-comment-comment ?
 	 */
-	static $comment
+	public static array $comment
 		= [
 			'href'           => '',
 			'width'          => '560',
-			'include-parent' => [ 'false', 'true' ]
+			'include-parent' => [ 'false', 'true' ],
 		];
 	/**
 	 * Embedded Video & Live Video Player
@@ -247,7 +244,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/embedded-video-player/#how-to-get-a-video-posts-url
 	 */
-	static $video
+	public static array $video
 		= [
 			'href'            => '',
 			'allowfullscreen' => [ 'false', 'true' ],
@@ -278,7 +275,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/page-plugin/
 	 */
-	static $page
+	public static array $page
 		= [
 			'href'                  => '',
 			'width'                 => '340',
@@ -319,7 +316,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/comments/
 	 */
-	static $comments
+	public static array $comments
 		= [
 			'href'        => '',
 			'colorscheme' => [ 'light', 'dark' ],
@@ -345,7 +342,7 @@ class Social_Plugins {
 	 *
 	 * @link https://developers.facebook.com/docs/plugins/embedded-posts/
 	 */
-	static $post
+	public static array $post
 		= [
 			'href'      => '',
 			'width'     => '500',
@@ -354,7 +351,7 @@ class Social_Plugins {
 	/**
 	 * Associative array with the default variables interpreted by fb
 	 */
-	private static $defaults = null;
+	private static ?array $defaults = null;
 
 	/**
 	 * Associative array containing links for demos and documentation.
@@ -404,7 +401,7 @@ class Social_Plugins {
 				'docs' => 'plugins/embedded-posts',
 				'demo' => 'social-plugins/post-embed',
 			],
-			'group'     => [
+			'group'    => [
 				'docs' => 'plugins/group-plugin',
 				'demo' => 'social-plugins/group',
 			],
@@ -421,15 +418,15 @@ class Social_Plugins {
 		return $links[ $feature ];
 	}
 
-	static function get_links( $type, $link = true ) {
+	public static function get_links( $type, $link = true ) {
 		$ret = '';
 
 		$doc_link = self::doc_links( $type );
 
 		if ( false !== $doc_link ) {
 			if ( $link ) {
-				$ret = '<small>';
-				$ret .= '<a href="http://www.wpembedfb.com/' . user_trailingslashit( $doc_link['demo'] ) . '" target="_blank" title="WP Embed Facebook Demo">Demo</a> ';
+				$ret  = '<small>';
+				$ret .= '<a href="https://www.wpembedfb.com/' . user_trailingslashit( $doc_link['demo'] ) . '" target="_blank" title="$fb_path Demo">Demo</a> ';
 				$ret .= '<a href="https://developers.facebook.com/docs/' . user_trailingslashit( $doc_link['docs'] ) . '" target="_blank" title="Official FB documentation">Info</a>';
 				$ret .= '</small>';
 			} else {
@@ -440,9 +437,9 @@ class Social_Plugins {
 		return $ret;
 	}
 
-	static function get_defaults( $all_options = false ) {
+	public static function get_defaults( $all_options = false ): ?array {
 
-		if ( self::$defaults === null || $all_options ) {
+		if ( null === self::$defaults || $all_options ) {
 			$vars = get_class_vars( __CLASS__ );
 			unset( $vars['defaults'] );
 			unset( $vars['links'] );
@@ -469,7 +466,11 @@ class Social_Plugins {
 	/**
 	 * Gets the HTML code of any social plugin if any
 	 *
-	 * @see Social_Plugins::$quote
+	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post
+	 * @param array  $options Defaults are Social_Plugins::$type
+	 *
+	 * @return string
+	 *@see Social_Plugins::$quote
 	 * @see Social_Plugins::$save
 	 * @see Social_Plugins::$like
 	 * @see Social_Plugins::$share
@@ -479,18 +480,13 @@ class Social_Plugins {
 	 * @see Social_Plugins::$page
 	 * @see Social_Plugins::$comments
 	 * @see Social_Plugins::$post
-	 *
-	 * @param string $type    = quote|save|like|share|send|comment|video|page|comments|post
-	 * @param array  $options Defaults are Social_Plugins::$type
-	 *
-	 * @return string
 	 */
-	static function get( $type = 'like', $options = [] ) {
-		if ( $type == 'comment' ) {
+	public static function get( string $type = 'like', array $options = [] ): string {
+		if ( 'comment' === $type ) {
 			$type_clean = 'comment-embed';
-		} elseif ( $type == 'comments_count' ) {
+		} elseif ( 'comments_count' === $type ) {
 			$type_clean = 'comments-count';
-		} elseif ( $type == 'share' ) {
+		} elseif ( 'share' === $type ) {
 			$type_clean = 'share-button';
 		} else {
 			$type_clean = $type;
@@ -507,17 +503,17 @@ class Social_Plugins {
 		$settings     = Plugin::get_option();
 		$real_options = $defaults[ $type ];
 		foreach ( $defaults[ $type ] as $key => $def_value ) {
-			if ( in_array( $key, Social_Plugins::$link_types ) ) {
+			if ( in_array( $key, self::$link_types, true ) ) {
 				if ( empty( $options[ $key ] ) ) {
-					$real_options[ $key ] = Helpers::get_true_url();
+					$real_options[ $key ] = esc_url_raw( Helpers::get_true_url() );
 				} else {
-					$real_options[ $key ] = $options[ $key ];
+					$real_options[ $key ] = esc_url_raw( $options[ $key ] );
 				}
 			} else {
-				if ( $settings["{$type}_$key"] != $def_value ) {
-					$def_value = $settings["{$type}_$key"];
+				if ( $settings[ "{$type}_$key" ] !== $def_value ) {
+					$def_value = $settings[ "{$type}_$key" ];
 				}
-				$real_options[ $key ] = isset( $options[ $key ] ) ? $options[ $key ] : $def_value;
+				$real_options[ $key ] = esc_attr( $options[ $key ] ?? $def_value );
 			}
 		}
 
@@ -545,13 +541,18 @@ class Social_Plugins {
 		 *
 		 * @since unknown
 		 */
-		return apply_filters( 'wef_sp_get_filter', "<div class=\"fb-$type_clean\" $extra></div>",
-			$type, $options, $defaults );
+		return apply_filters(
+			'wef_sp_get_filter',
+			"<div class=\"fb-$type_clean\" $extra></div>",
+			$type,
+			$options,
+			$defaults
+		);
 	}
 
-	static function shortcode( $atts = [] ) {
+	public static function shortcode( $atts = [] ) {
 		$type = array_shift( $atts );
-		if ( $type == 'comments-count' ) {
+		if ( 'comments-count' === $type ) {
 			$type = 'comments_count';
 		}
 
@@ -560,15 +561,15 @@ class Social_Plugins {
 		if ( isset( $defaults[ $type ] ) ) {
 
 			if ( isset( $atts['help'] )
-			     || isset( $atts['usage'] )
-			     || ( isset( $atts[0] ) && ( ( $atts[0] == 'help' ) || ( $atts[0] == 'usage' ) ) )
+				|| isset( $atts['usage'] )
+				|| ( isset( $atts[0] ) && ( ( 'help' === $atts[0] ) || ( 'usage' === $atts[0] ) ) )
 			) {
 				return self::usage( $type );
 			}
 
 			$ret = self::get( $type, $atts );
 
-			if ( ( Plugin::get_option( 'enq_when_needed' ) == 'true' ) && ( Plugin::get_option( 'enq_fbjs' ) == 'true' ) ) {
+			if ( ( Plugin::get_option( 'enq_when_needed' ) === 'true' ) && ( Plugin::get_option( 'enq_fbjs' ) === 'true' ) ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 
@@ -579,13 +580,13 @@ class Social_Plugins {
 			 */
 			do_action( 'wef_sp_shortcode_action' );
 
-			if ( isset( $defaults[ $type ]['width'] ) && $type != 'comments' && $type != 'page' ) {
+			if ( isset( $defaults[ $type ]['width'] ) && 'comments' !== $type && 'page' !== $type ) {
 				$default_width = $defaults[ $type ]['width'];
 				if ( isset( $atts['adaptive'] ) ) {
-					if ( $atts['adaptive'] == 'true' ) {
+					if ( 'true' === $atts['adaptive'] ) {
 						$ret = self::add_adaptive( $default_width, $atts ) . $ret;
 					}
-				} elseif ( Plugin::get_option( 'adaptive_fb_plugin' ) == 'true' ) {
+				} elseif ( Plugin::get_option( 'adaptive_fb_plugin' ) === 'true' ) {
 					$ret = self::add_adaptive( $default_width, $atts ) . $ret;
 				}
 			}
@@ -609,14 +610,16 @@ class Social_Plugins {
 
 		ob_start();
 		$types = array_keys( $defaults );
-		echo '<p>' . __( 'Invalid Facebook plugin type use it like this:',
-				'wp-embed-facebook' ) . '</p>';
-		echo '<p>[fb_plugin ' . implode( '|', $types ) . ' help ]</p>';
+		echo '<p>' . esc_html__(
+			'Invalid Facebook plugin type use it like this:',
+			'wp-embed-facebook'
+		) . '</p>';
+		echo '<p>[fb_plugin ' . esc_html( implode( '|', $types ) ) . ' help ]</p>';
 
 		return ob_get_clean();
 	}
 
-	static function debug( $ret, $atts, $type ) {
+	public static function debug( $ret, $atts, $type ): string {
 		$atts_raw        = $atts;
 		$debug           = '';
 		$atts_raw_string = '';
@@ -626,12 +629,12 @@ class Social_Plugins {
 		}
 		$debug .= '<br><pre>';
 		$debug .= '<strong>';
-		$debug .= __( 'Shortcode used:', 'wp-embed-facebook' ) . "<br>";
+		$debug .= __( 'Shortcode used:', 'wp-embed-facebook' ) . '<br>';
 		$debug .= '</strong>';
 		$debug .= esc_html( htmlentities( "[fb_plugin $type $atts_raw_string]" ) );
 		$debug .= '<br>';
 		$debug .= '<strong>';
-		$debug .= __( 'Final code:', 'wp-embed-facebook' ) . "<br>";
+		$debug .= __( 'Final code:', 'wp-embed-facebook' ) . '<br>';
 		$debug .= '</strong>';
 		$debug .= esc_html( htmlentities( $ret, ENT_QUOTES ) );
 		$debug .= '<br>';
@@ -644,7 +647,7 @@ class Social_Plugins {
 		return $debug;
 	}
 
-	static function usage( $type ) {
+	public static function usage( $type ) {
 
 		$all_defaults = self::get_defaults( true );
 
@@ -657,18 +660,17 @@ class Social_Plugins {
 			$string .= "$att=\"$default\" ";
 		}
 		ob_start();
-		echo sprintf( "<p>%s</p>", __( 'Shortcode usage example:', 'wp-embed-facebook' ) );
-		echo sprintf( "<p>[fb_plugin %s%s adaptive=\"false|true\" ]</p>", $type, $string );
-		echo sprintf( "<p>%s %s</p>", __( 'More information:', 'wp-embed-facebook' ), self::get_links( $type ) );
+		printf( '<p>%s</p>', esc_html__( 'Shortcode usage example:', 'wp-embed-facebook' ) );
+		printf( '<p>[fb_plugin %s%s adaptive="false|true" ]</p>', esc_html( $type ), esc_html( $string ) );
+		printf( '<p>%s %s</p>', esc_html__( 'More information:', 'wp-embed-facebook' ), esc_html( self::get_links( $type ) ) );
 
 		return ob_get_clean();
 	}
 
-	private static function add_adaptive( $default_width, $atts ) {
-		$width = isset( $atts['width'] ) ? $atts['width'] : $default_width;
+	private static function add_adaptive( $default_width, $atts ): string {
+		$width = $atts['width'] ?? $default_width;
 		wp_enqueue_script( 'wpemfb' );
-		$ret = '';
-		$ret .= '<div class="wef-measure"';
+		$ret = '<div class="wef-measure"';
 		if ( ! empty( $width ) ) {
 			$ret .= ' style="max-width: ' . $width . 'px;"';
 		}
@@ -676,5 +678,4 @@ class Social_Plugins {
 
 		return $ret;
 	}
-
 }

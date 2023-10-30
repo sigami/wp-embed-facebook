@@ -2,7 +2,7 @@
 /**
  * Embed Helpers.
  *
- * @package WP Embed Facebook
+ * @package $fb_path
  */
 
 namespace SIGAMI\WP_Embed_FB;
@@ -20,10 +20,10 @@ if ( ! defined( 'WPINC' ) ) {
  * @uses WP_Embed_FB_Plugin
  */
 class Magic_Embeds {
-	private static $instance = null;
+	private static ?self $instance = null;
 
-	static function instance() {
-		if ( self::$instance === null ) {
+	public static function instance(): ?self {
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
 
@@ -31,37 +31,39 @@ class Magic_Embeds {
 	}
 
 	private function __construct() {
+	}
 
-		/** @see Magic_Embeds::plugins_loaded */
-		if ( Plugin::get_option( 'auto_embed_active' ) == 'true' ) {
-			add_filter( 'plugins_loaded', __CLASS__ . '::plugins_loaded' );
+	public function hooks() {
+
+		/** @uses static::plugins_loaded */
+		if ( Plugin::get_option( 'auto_embed_active' ) === 'true' ) {
+			add_filter( 'plugins_loaded', [ $this, 'plugins_loaded' ] );
 		}
 
 		/** @see Magic_Embeds::wp_enqueue_scripts */
-		add_action( 'wp_enqueue_scripts', __CLASS__ . '::wp_enqueue_scripts' );
+		add_action( 'wp_enqueue_scripts', [ $this, 'wp_enqueue_scripts' ] );
 
 		/** @see Magic_Embeds::the_content */
-		add_filter( 'the_content', __CLASS__ . '::the_content' );
+		add_filter( 'the_content', [ $this, 'the_content' ] );
 
-		//Deprecate old api versions
-		add_action( 'init', __CLASS__ . '::init', 999 );
+		// Deprecate old api versions
+		add_action( 'init', [ $this, 'init' ], 999 );
 
-		/** @see Embed_FB::shortcode */
+		/** @uses Embed_FB::shortcode */
 		add_shortcode( 'facebook', __NAMESPACE__ . '\Embed_FB::shortcode' );
 		add_shortcode( 'embedfb', __NAMESPACE__ . '\Embed_FB::shortcode' );
 
-		/** @see Social_Plugins::shortcode */
+		/** @uses Social_Plugins::shortcode */
 		add_shortcode( 'fb_plugin', __NAMESPACE__ . '\Social_Plugins::shortcode' );
 
-		add_action( 'widgets_init', __CLASS__ . '::widgets_init' );
-
+		add_action( 'widgets_init', [ $this, 'widgets_init' ] );
 	}
 
-	static function widgets_init() {
+	public function widgets_init() {
 		register_widget( '\SIGAMI\WP_Embed_FB\Widget' );
 	}
 
-	static function init() {
+	public function init() {
 		if ( Helpers::has_fb_app() ) {
 			if ( (float) substr( Plugin::get_option( 'sdk_version' ), 1 ) <= 2.10 ) {
 				$options                = Plugin::get_option();
@@ -78,13 +80,13 @@ class Magic_Embeds {
 	 *
 	 * @return string
 	 */
-	static function the_content( $the_content ) {
+	public function the_content( string $the_content ): string {
 		if ( Plugin::get_option( 'fb_root' ) === 'true' ) {
 			$the_content = '<div id="fb-root"></div>' . PHP_EOL . $the_content;
 		}
 		if ( is_single() && ( Plugin::get_option( 'quote_plugin_active' ) === 'true' ) ) {
 			$array = Helpers::string_to_array( Plugin::get_option( 'quote_post_types' ) );
-			if ( in_array( $GLOBALS['post']->post_type, $array ) ) {
+			if ( in_array( $GLOBALS['post']->post_type, $array, true ) ) {
 				$the_content .= Social_Plugins::get( 'quote' );
 			}
 		}
@@ -95,43 +97,46 @@ class Magic_Embeds {
 	/**
 	 * Adds Embed register handler
 	 */
-	static function plugins_loaded() {
-		wp_embed_register_handler( "wpembedfb", "/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/",
-			__CLASS__ . '::embed_register_handler' );
-		//TODO finish this
-		//add_action('pre_get_posts',__CLASS__.'::pre_get_posts');
-		//add_action('current_screen',__CLASS__.'::pre_get_posts');
+	public function plugins_loaded() {
+		wp_embed_register_handler(
+			'wpembedfb',
+			'/(http|https):\/\/www\.facebook\.com\/([^<\s]*)/',
+			[ $this, 'embed_register_handler' ]
+		);
 	}
 
-	static function pre_get_posts(){
-		if(!self::active_on_post_type()){
-			wp_embed_unregister_handler('wpembedfb');
+	private static function pre_get_posts() {
+		// TODO properly test this view actions: pre_get_posts, current_screen actions.
+		if ( ! self::active_on_post_type() ) {
+			wp_embed_unregister_handler( 'wpembedfb' );
 		}
 	}
 
-	static function active_on_post_type() {
+	private static function active_on_post_type(): bool {
 		global $post_type, $post;
 
 		$allowed_post_types = Plugin::get_option( 'auto_embed_post_types' );
 
-		if ( in_array( $post_type, $allowed_post_types )
-		     || ( ( $post instanceof \WP_Post )
-		          && in_array( $post->post_type, $allowed_post_types ) ) ) {
+		if ( in_array( $post_type, $allowed_post_types, true )
+			|| ( ( $post instanceof \WP_Post )
+					&& in_array( $post->post_type, $allowed_post_types, true ) ) ) {
 			return true;
 		}
 
 		return false;
 	}
 
-	static function embed_register_handler(
-		$match, /** @noinspection PhpUnusedParameterInspection */
-		$attr, $url = null, $atts = null
+	public function embed_register_handler(
+		$url_parts,
+		$attr,
+		$url = null,
+		$attrs = null
 	) {
-		return Embed_FB::fb_embed( $match, $url, $atts );
+		return Embed_FB::fb_embed( $url_parts, $url, $attrs );
 	}
 
-	static function wp_enqueue_scripts() {
-		//Legacy for custom templates previous to version 3.0
+	public function wp_enqueue_scripts() {
+		// Legacy for custom templates previous to version 3.0
 		// now add /plugins/wp-embed-facebook/custom-embeds/ to your theme
 		foreach ( [ 'default', 'classic', 'elegant' ] as $theme ) {
 			$on_theme = locate_template( "/plugins/wp-embed-facebook/$theme/$theme.css" );
@@ -139,13 +144,25 @@ class Magic_Embeds {
 				wp_register_style( 'wpemfb-' . $theme, $on_theme, [], Plugin::VER );
 			}
 		}
-		wp_register_style( 'wpemfb-custom', Plugin::url() . 'templates/custom-embeds/styles.css',
-			[], Plugin::VER );
-		wp_register_style( 'wpemfb-lightbox', Plugin::url() . 'templates/lightbox/css/lightbox.css',
-			[], Plugin::VER );
-		wp_register_script( 'wpemfb-lightbox',
-			Plugin::url() . 'templates/lightbox/js/lightbox.min.js', [ 'jquery' ],
-			Plugin::VER );
+		wp_register_style(
+			'wpemfb-custom',
+			Plugin::url() . 'templates/custom-embeds/styles.css',
+			[],
+			Plugin::VER
+		);
+		wp_register_style(
+			'wpemfb-lightbox',
+			Plugin::url() . 'templates/lightbox/css/lightbox.css',
+			[],
+			Plugin::VER
+		);
+		wp_register_script(
+			'wpemfb-lightbox',
+			Plugin::url() . 'templates/lightbox/js/lightbox.min.js',
+			[ 'jquery' ],
+			Plugin::VER,
+			false
+		);
 		$lb_defaults       = Helpers::get_lb_defaults();
 		$options           = Plugin::get_option();
 		$translation_array = [];
@@ -158,47 +175,52 @@ class Magic_Embeds {
 			wp_localize_script( 'wpemfb-lightbox', 'WEF_LB', $translation_array );
 		}
 
-		$deps = ( $options['adaptive_fb_plugin'] == 'true' ) ? [ 'jquery' ] : [];
+		$deps = ( 'true' === $options['adaptive_fb_plugin'] ) ? [ 'jquery' ] : [];
 
-		wp_register_script( 'wpemfb-fbjs', Plugin::url() . 'inc/js/fb.min.js', $deps,
-			Plugin::VER );
+		wp_register_script(
+			'wpemfb-fbjs',
+			Plugin::url() . 'inc/js/fb.min.js',
+			$deps,
+			Plugin::VER,
+			false
+		);
 		$translation_array = [
-			'local'   => $options['sdk_lang'],
-			'version' => $options['sdk_version'],
-			'fb_id'   => $options['app_id'] == '0' ? '' : $options['app_id']
+			'local'          => $options['sdk_lang'],
+			'version'        => $options['sdk_version'],
+			'fb_id'          => '0' === $options['app_id'] ? '' : $options['app_id'],
+			'comments_nonce' => wp_create_nonce( 'magic_embeds_comments' ),
 		];
-		if ( $options['auto_comments_active'] == 'true' && $options['comments_count_active'] == 'true' ) {
+		if ( 'true' === $options['auto_comments_active'] && 'true' === $options['comments_count_active'] ) {
 			$translation_array = $translation_array + [
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				];
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			];
 		}
-		if ( $options['adaptive_fb_plugin'] == 'true' ) {
+		if ( 'true' === $options['adaptive_fb_plugin'] ) {
 			$translation_array = $translation_array + [
-					'adaptive' => 1,
-				];
+				'adaptive' => 1,
+			];
 		}
 		wp_localize_script( 'wpemfb-fbjs', 'WEF', $translation_array );
 
-		if ( $options['enq_when_needed'] == 'false' ) {
-			if ( $options['enq_lightbox'] == 'true' ) {
+		if ( 'false' === $options['enq_when_needed'] ) {
+			if ( 'true' === $options['enq_lightbox'] ) {
 				wp_enqueue_script( 'wpemfb-lightbox' );
 				wp_enqueue_style( 'wpemfb-lightbox' );
 			}
-			if ( $options['enq_fbjs'] == 'true' ) {
+			if ( 'true' === $options['enq_fbjs'] ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 		}
-		if ( $options['enq_fbjs_global'] == 'true' ) {
+		if ( 'true' === $options['enq_fbjs_global'] ) {
 			wp_enqueue_script( 'wpemfb-fbjs' );
 		}
 
-		if ( ( $options['auto_comments_active'] == 'true' ) && is_single() ) {
+		if ( ( 'true' === $options['auto_comments_active'] ) && is_single() ) {
 			$array          = $options['auto_comments_post_types'];
 			$queried_object = get_queried_object();
-			if ( in_array( $queried_object->post_type, $array ) ) {
+			if ( in_array( $queried_object->post_type, $array, true ) ) {
 				wp_enqueue_script( 'wpemfb-fbjs' );
 			}
 		}
 	}
-
 }

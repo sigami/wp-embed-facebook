@@ -2,7 +2,7 @@
 /**
  * Plugin Helpers.
  *
- * @package WP Embed Facebook
+ * @package $fb_path
  */
 
 namespace SIGAMI\WP_Embed_FB;
@@ -14,22 +14,23 @@ if ( ! defined( 'WPINC' ) ) {
 
 class Helpers {
 
-	static $has_photon  = null;
-	static $wp_timezone = null;
-	static $lb_defaults = null;
+	public static $has_photon  = null;
+	public static $wp_timezone = null;
+	public static $lb_defaults = null;
 
-	static function string_to_array( $string ) {
-		if(is_array($string)){
-			return $string;
+	public static function string_to_array( $text ) {
+		if ( is_array( $text ) ) {
+			return $text;
 		}
-		return explode( ',', trim( $string, ' ,' ) );
+
+		return explode( ',', trim( $text, ' ,' ) );
 	}
 
-	static function has_photon() {
-		if ( self::$has_photon === null ) {
+	public static function has_photon(): ?bool {
+		if ( null === self::$has_photon ) {
 			if ( class_exists( 'Jetpack' )
-			     && method_exists( 'Jetpack', 'get_active_modules' )
-			     && in_array( 'photon', \Jetpack::get_active_modules() ) ) {
+					&& method_exists( 'Jetpack', 'get_active_modules' )
+					&& in_array( 'photon', \Jetpack::get_active_modules(), true ) ) {
 				self::$has_photon = true;
 			} else {
 				self::$has_photon = false;
@@ -39,26 +40,25 @@ class Helpers {
 		return self::$has_photon;
 	}
 
-	static function has_fb_app() {
+	public static function has_fb_app() {
 		$options = Plugin::get_option();
 		$has_app = true;
 		if ( empty( $options['app_secret'] ) || empty( $options['app_id'] ) ) {
 			$has_app = false;
 		}
 
-		return apply_filters('wef_has_fb_app',$has_app);
+		return apply_filters( 'wef_has_fb_app', $has_app );
 	}
 
-	static function get_timezone() {
-		if ( self::$wp_timezone === null ) {
+	public static function get_timezone() {
+		if ( null === self::$wp_timezone ) {
 			$tzstring = get_option( 'timezone_string', '' );
 			if ( empty( $tzstring ) ) {
 				$current_offset = get_option( 'gmt_offset', 0 );
-				if ( 0 == $current_offset ) {
+				if ( 0 === $current_offset ) {
 					$tzstring = 'Etc/GMT';
 				} else {
-					$tzstring = ( $current_offset < 0 ) ? 'Etc/GMT' . $current_offset
-						: 'Etc/GMT+' . $current_offset;
+					$tzstring = ( $current_offset < 0 ) ? 'Etc/GMT' . $current_offset : 'Etc/GMT+' . $current_offset;
 				}
 			}
 			self::$wp_timezone = $tzstring;
@@ -67,7 +67,7 @@ class Helpers {
 		return self::$wp_timezone;
 	}
 
-	static function get_true_url() {
+	public static function get_true_url() {
 		global $wp;
 		if ( is_home() ) {
 			return home_url();
@@ -80,22 +80,30 @@ class Helpers {
 			} else {
 				$query = '/?p=' . $post->ID;
 			}
+		} elseif ( Plugin::get_option( 'permalink_on_social_plugins' ) === 'true' ) {
+			$query = $wp->request;
 		} else {
-			if ( Plugin::get_option( 'permalink_on_social_plugins' ) === 'true' ) {
-				$query = $wp->request;
-			} else {
-				$query = '/?' . $wp->query_string;
-			}
+			$query = '/?' . $wp->query_string;
 		}
 
 		return home_url( $query );
 	}
 
-	static function lightbox_title( $title ) {
-		$clean_title = esc_attr( wp_rel_nofollow( make_clickable( str_replace( [ '"', "'" ], [
-			'&#34;',
-			'&#39;'
-		], $title ) ) ) );
+	public static function lightbox_title( $title ) {
+		$clean_title = esc_attr(
+			wp_rel_nofollow(
+				make_clickable(
+					str_replace(
+						[ '"', "'" ],
+						[
+							'&#34;',
+							'&#39;',
+						],
+						$title
+					)
+				)
+			)
+		);
 
 		/**
 		 * Filter lightbox title.
@@ -108,8 +116,8 @@ class Helpers {
 		return apply_filters( 'wef_lightbox_title', 'data-title="' . $clean_title . '"', $title );
 	}
 
-	static function get_lb_defaults() {
-		if ( self::$lb_defaults === null ) {
+	public static function get_lb_defaults(): ?array {
+		if ( null === self::$lb_defaults ) {
 			$keys              = [
 				'albumLabel',
 				'alwaysShowNavOnTouchDevices',
@@ -122,7 +130,7 @@ class Helpers {
 				'positionFromTop',
 				'resizeDuration',
 				'fadeDuration',
-				'wpGallery'
+				'wpGallery',
 			];
 			self::$lb_defaults = [];
 			$defaults          = Plugin::defaults();
@@ -134,7 +142,7 @@ class Helpers {
 		return self::$lb_defaults;
 	}
 
-	static function make_clickable( $text ) {
+	public static function make_clickable( $text ) {
 		if ( empty( $text ) ) {
 			return $text;
 		}
@@ -142,21 +150,20 @@ class Helpers {
 		return wpautop( self::rel_nofollow( make_clickable( $text ) ) );
 	}
 
-	static function rel_nofollow( $text ) {
+	public static function rel_nofollow( $text ) {
 		$text = stripslashes( $text );
 
-		return preg_replace_callback( /** @lang text */
-			'|<a (.+?)>|i', [ __CLASS__, 'nofollow_callback' ], $text );
+		return preg_replace_callback( /** @lang text */ '|<a (.+?)>|i', [ __CLASS__, 'nofollow_callback' ], $text );
 	}
 
-	static function nofollow_callback( $matches ) {
+	public static function nofollow_callback( $matches ): string {
 		$text = $matches[1];
 		$text = str_replace( [ ' rel="nofollow"', " rel='nofollow'" ], '', $text );
 
 		return "<a $text rel=\"nofollow\">";
 	}
 
-	static function get_api_versions() {
+	public static function get_api_versions(): array {
 		return [
 			//'v2.10' => '2.10',
 			//'v2.11' => '2.11',
@@ -171,7 +178,7 @@ class Helpers {
 		];
 	}
 
-	static function get_fb_locales() {
+	public static function get_fb_locales(): array {
 		return [
 
 			'af_ZA' => 'Afrikaans',
@@ -282,62 +289,43 @@ class Helpers {
 	}
 
 	/**
-	 * Soon to be deprecated
-	 *
-	 * @return array
-	 */
-	static function old_options() {
-		return [
-			'show_posts',
-			'close_warning',
-			'height',
-			'close_warning1',
-			'max_width',
-			'max_photos',
-			'max_posts',
-			'app_id',
-			'app_secret',
-			'proportions',
-			'show_like',
-			'fb_root',
-			'theme',
-			'show_follow',
-			'video_ratio',
-			'video_as_post',
-			'raw_video',
-			'raw_photo',
-			'raw_post',
-			'raw_page',
-			'enqueue_style',
-			'enq_lightbox',
-			'enq_wpemfb',
-			'enq_fbjs',
-			'ev_local_tz',
-			'page_height',
-			'page_show_faces',
-			'page_small_header',
-			'page_hide_cover',
-			'page_show_posts',
-			'sdk_lang',
-			'close_warning2',
-			'force_app_token',
-			'video_download',
-			'sdk_version'
-		];
-	}
-
-	/**
 	 * Get $_POST or $_GET request.
 	 *
-	 * @param string $name    Name of request.
-	 * @param mixed  $default Default value if request not found.
+	 * @param string $name          Name of request.
+	 * @param mixed  $default_value Default value if request not found.
+	 *
 	 * @return mixed
-	 *
-	 * @author Rahul Aryan <rah12@live.com>
-	 *
-	 * @since 3.0.0
+	 * @since  3.0.0
 	 */
-	public static function get_request( $name, $default = null ) {
-		return isset( $_REQUEST[ $name ] ) ? $_REQUEST[ $name ] : $default; // WPCS: input var ok. sanitization ok. CSRF ok.
+	public static function get_request( string $name, $default_value = null ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce verification is not required here.
+		return isset( $_REQUEST[ $name ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ $name ] ) ) : $default_value;
+	}
+
+	public static function notice_kses(): array {
+		return array_merge(
+			[
+				'div' => [
+					'id'    => [],
+					'class' => [],
+				],
+				'h2'  => [],
+				'p'   => [],
+			],
+			self::link_kses()
+		);
+	}
+
+	public static function link_kses(): array {
+		return [
+			'a' => [
+				'href'   => [],
+				'title'  => [],
+				'id'     => [],
+				'class'  => [],
+				'target' => [],
+				'rel'    => [],
+			],
+		];
 	}
 }

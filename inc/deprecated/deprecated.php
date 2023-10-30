@@ -1,53 +1,16 @@
 <?php
+/**
+ * Deprecated functions that exist only for backwards compatibility.
+ *
+ * phpcs:disable Generic.Files.OneObjectStructurePerFile.MultipleFound -- Deprecated classes.
+ *
+ * @noinspection PhpDeprecationInspection
+ * */
 
 use SIGAMI\WP_Embed_FB\Embed_FB;
 use SIGAMI\WP_Embed_FB\FB_API;
 use SIGAMI\WP_Embed_FB\Plugin;
-use SIGAMI\WP_Embed_FB\Helpers;
 
-final class WP_Embed_FB_Options {
-	protected static $instance = null;
-	static function instance(){
-		if(self::$instance === null){
-			self::$instance =  new self;
-		}
-		return self::$instance;
-	}
-	//This runs after plugin activation and update
-	protected function __construct() {
-		$this->remove_old_options();
-		$this->string_options_to_array();
-	}
-
-	function string_options_to_array(){
-		$options = Plugin::get_option();
-		foreach ($options as $key => $value){
-			if(in_array($key,['quote_post_types','auto_comments_post_types']) && is_string($value)){
-				$options[$value] = Helpers::string_to_array($value);
-			}
-		}
-		Plugin::set_options($options);
-	}
-
-	function remove_old_options(){
-		if ( get_option( 'wpemfb_theme' ) ) {
-			//upgrade options
-			$defaults = Plugin::get_option();
-			foreach ( Helpers::old_options() as $old_option ) {
-				if ( isset( $defaults[ $old_option ] ) ) {
-					$defaults[ $old_option ] = get_option( 'wpemfb_' . $old_option, $defaults[ $old_option ] );
-				}
-				delete_option( 'wpemfb_' . $old_option );
-			}
-			Plugin::set_options( $defaults );
-		}
-	}
-}
-
-add_action(Plugin::$option.'_activation','WP_Embed_FB_Options::instance');
-add_action(Plugin::$option.'_update','WP_Embed_FB_Options::instance');
-
-WP_Embed_FB_Options::instance();
 /**
  * Class WP_Embed_FB
  *
@@ -56,13 +19,16 @@ WP_Embed_FB_Options::instance();
 final class WP_Embed_FB extends Embed_FB {
 	/**
 	 * @deprecated use SIGAMI\WP_Embed_FB\Embed_Facebook; Embed_Facebook::get_fbsdk();
-	 *
+	 * @noinspection PhpUnused
 	 */
-	static function get_fbsdk() {
-		_deprecated_function( 'WP_Embed_FB::get_fbsdk()', '3.0',
-			"Example: \n use SIGAMI\WP_Embed_FB\FB_API; \n FB_API::instance()->api('') " );
+	public static function get_fbsdk(): WP_Embed_FB_Deprecated_API {
+		_deprecated_function(
+			'WP_Embed_FB::get_fbsdk()',
+			'3.0',
+			"Example: \n use SIGAMI\WP_Embed_FB\FB_API; \n FB_API::instance()->api('') "
+		);
 
-		return new WP_Embed_FB_Deprecated_API;
+		return new WP_Embed_FB_Deprecated_API();
 	}
 }
 
@@ -74,42 +40,55 @@ final class WP_Embed_FB extends Embed_FB {
 final class WP_Embed_FB_Deprecated_API {
 
 	/**
-	 * @param string $string
+	 * @param string $text
 	 * @param string $method
 	 * @param array  $message
 	 *
 	 * @throws FacebookApiException
 	 */
-	public function api( $string = '', $method = 'GET', $message = [] ) {
+	public function api( string $text = '', string $method = 'GET', array $message = [] ) {
 		if ( ! class_exists( 'FacebookApiException' ) ) {
-			/** @noinspection PhpIncludeInspection */
-			require_once( Plugin::path() . 'inc/deprecated/FacebookApiException.php' );
+			require_once Plugin::path() . 'inc/deprecated/FacebookApiException.php';
 		}
 		try {
-			FB_API::instance()->api( $string, $method, $message );
+			FB_API::instance()->api( $text, $method, $message );
 		} catch ( Exception $e ) {
-			throw new FacebookApiException( [
-				'error_code'        => $e->getCode(),
-				'error_description' => $e->getMessage()
-			] );
+			throw new FacebookApiException(
+				[
+					'error_code'        => esc_html( $e->getCode() ),
+					'error_description' => esc_html( $e->getMessage() ),
+				]
+			);
 		}
 	}
 
-	public function setAccessToken($token){
-		FB_API::instance()->setAccessToken($token);
+	/**
+	 * @param $token
+	 *
+	 * @return void
+	 * @noinspection PhpUnused
+	 */
+	public function setAccessToken( $token ) {
+		FB_API::instance()->setAccessToken( $token );
 	}
 
-	public function getAccessToken(){
+	/**
+	 * @return string|null
+	 * @noinspection PhpUnused
+	 */
+	public function getAccessToken(): ?string {
 		return FB_API::instance()->getAccessToken();
 	}
 
-	public function setExtendedAccessToken() {
+	/**
+	 * @return array
+	 * @noinspection PhpUnused
+	 */
+	public function setExtendedAccessToken(): array {
 		$extended = FB_API::instance()->extendAccessToken( FB_API::instance()->getAccessToken() );
 		if ( ! is_wp_error( $extended ) ) {
-			FB_API::instance()->setAccessToken( $extended['token'] );//TODO test this
+			FB_API::instance()->setAccessToken( $extended['token'] );
 		}
 		return $extended;
 	}
 }
-
-

@@ -2,9 +2,9 @@
 Contributors: poxtron
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=R8Q85GT3Q8Q26
 Tags: Facebook, Social Plugins, embed facebook, facebook video, facebook posts, facebook events, facebook pages, facebook page, Facebook album, Facebook albums, Facebook photos, facebook photo, social,
-Requires at least: 4.5
-Tested up to: 5.5.1
-Requires PHP: 5.4
+Requires at least: 6.3
+Tested up to: 6.4
+Requires PHP: 7.4
 Stable tag: 3.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,7 +12,7 @@ Embed any public Facebook video, page, comment, event, album, photo, profile. Ad
 
 == Description ==
 
-Formerly WP Embed Facebook. Automatically embed any content from Facebook directly into your site just by copying the URL into the editor, using shortcodes or the new embed block.
+Automatically embed any content from Facebook directly into your site just by copying the URL into the editor, using shortcodes or the new embed block.
 
 Replace the WordPress comments system with Facebook comments on selected post types or manually using a shortcode.
 
@@ -110,10 +110,10 @@ Allow your visitors to share text from your site just by selecting it. Activate 
 
 = Extended Embeds Add-On =
 
-* Scrape your shared URL's on Facebook on update or manually on selected post types
+* Scrape your shared URLs on Facebook on update or manually on selected post types
 * Simple Widget for generating custom embeds and social plugin shortcodes
 * Embed single events you have been invited to
-* Embed all upcomming events of your fan page
+* Embed all upcoming events of your fan page
 * Embed the full content of a single event using the shortcode `[fbfullevent url]`
 * Custom embed for fan pages with posts, events and albums tabs using the shortcode `[bfullpage url]`
 * One accessible yearly payment for a license that you can use on all the sites you want :)
@@ -126,8 +126,8 @@ Feel like adding something? Create a pull request to the master branch on [githu
 
 1. Download wp embed facebook plugin from [WordPress](http://wordpress.org/plugins/wp-embed-facebook)
 1. Extract to /wp-content/plugins/ folder, and activate the plugin in /wp-admin/.
-1. Create a Facebook App follow the [step by step guide](https://wpembedfb.com/documentation/creating-a-facebook-app-the-step-by-step-guide/).
-1. Copy the App Id and App Secret to the “Embed Facebook” page under the Settings section.
+1. Create a Facebook App follow the [step-by-step guide](https://wpembedfb.com/documentation/creating-a-facebook-app-the-step-by-step-guide/).
+1. Copy the App ID and App Secret to the “Magic Embeds” page under the Settings section.
 1. Change settings to your liking.
 1. Enjoy and tell someone!
 
@@ -165,7 +165,7 @@ Change the number of embedded photos on settings or use the shortcode like this 
 
 = How to get the correct URL from Facebook? =
 
-Time is the master. Right click on the video, post, album, etc. time of creation and copy the URL.
+Time is the master. Right-click on the video, post, album, etc. time of creation and copy the URL.
 
 Buying the premium extensions helps to keep this project alive.
 
@@ -194,6 +194,10 @@ Buying the premium extensions helps to keep this project alive.
 
 == Changelog ==
 
+= 3.1.0 =
+* Pass through phpcs WordPress rules.
+* Fixes security issues
+
 = 3.0.7 =
 * Plugin Name changed to Magic Embeds to avoid legal issues
 * Fixed broken links
@@ -213,7 +217,7 @@ Buying the premium extensions helps to keep this project alive.
 
 = 3.0.2 =
 * Fixed: Login error for non admin users
-* Removed: Unused code 
+* Removed: Unused code
 * Updated: Framework update action
 * Fixed: Broken links
 
