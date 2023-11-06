@@ -1,25 +1,26 @@
 {
-  "name": "wp-embed-facebook",
-  "version": "3.0.10",
-  "description": "Development version of the Magic Embeds Plugin",
-  "main": "wp-embed-facebook/wp-embed-facebook.php",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/sigami/wp-embed-facebook.git"
-  },
-  "author": "Miguel Sirvent <miguel@sigami.net>",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/sigami/wp-embed-facebook/issues"
-  },
-  "homepage": "http://wpembedfb.com",
-  "private": true,
-  "deployment_host": "wordpress",
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-uglify": "^3.3.0"
-  },
-  "dependencies": {
-    "grunt-contrib-sass": "^1.0.0"
-  }
+	"name": "wp-embed-facebook",
+	"version": "3.0.10",
+	"description": "Development version of the Magic Embeds Plugin",
+	"main": "wp-embed-facebook/wp-embed-facebook.php",
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/sigami/wp-embed-facebook.git"
+	},
+	"author": "Miguel Sirvent <miguel@sigami.net>",
+	"license": "GPL-3.0",
+	"bugs": {
+		"url": "https://github.com/sigami/wp-embed-facebook/issues"
+	},
+	"homepage": "https://wpembedfb.com",
+	"private": true,
+	"deployment_host": "wordpress",
+	"scripts": {
+		"grunt": "grunt"
+	},
+	"devDependencies": {
+		"grunt": "^1.0.1",
+		"grunt-contrib-uglify": "^3.3.0",
+		"grunt-contrib-sass": "^1.0.0"
+	}
 }
