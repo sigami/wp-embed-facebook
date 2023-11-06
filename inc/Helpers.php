@@ -2,7 +2,7 @@
 /**
  * Plugin Helpers.
  *
- * @package $fb_path
+ * @package Magic Embeds
  */
 
 namespace SIGAMI\WP_Embed_FB;
@@ -319,5 +319,25 @@ class Helpers {
 				'rel'    => [],
 			],
 		];
+	}
+
+	public static function get_lightbox_attr(): string {
+		$lightbox_attr = Plugin::get_option( 'lightbox_att' );
+		if ( empty( $lightbox_attr ) ) {
+			return '';
+		}
+
+		$lightbox_attr_array = explode( '=', $lightbox_attr );
+		if ( count( $lightbox_attr_array ) !== 2 ) {
+			return '';
+		}
+
+		$lightbox_attr_array[0] = str_replace( [ '"','"' ], [ '','' ], $lightbox_attr_array[0] );
+		$lightbox_attr_array[1] = str_replace( [ '"','"' ], [ '','' ], $lightbox_attr_array[1] );
+
+		$lightbox_attr_array = array_map( 'esc_attr', $lightbox_attr_array );
+		$lightbox_attr_array = array_map( 'trim', $lightbox_attr_array );
+
+		return sprintf( '%s="%s"', $lightbox_attr_array[0], $lightbox_attr_array[1] );
 	}
 }

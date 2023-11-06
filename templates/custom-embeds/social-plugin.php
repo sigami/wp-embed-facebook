@@ -1,12 +1,20 @@
 <?php
+/**
+ * Data available for template:
+ *
+ * @var array $fb_data Facebook data.
+ * @var string $theme Theme.
+ * @var string $width Width.
+ * @var string $type Width.
+ */
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Social_Plugins;
 ?>
-<div class="wef-measure" style="max-width: <?php echo $width; ?>px;"></div>
+<div class="wef-measure" style="max-width: <?php echo esc_attr( $width ); ?>px;"></div>
 <?php
 switch ( $type ) {
+	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in Social_Plugin::get().
 	case 'page':
-		/** @noinspection PhpUndefinedVariableInspection */
 		echo Social_Plugins::get(
 			'page',
 			[
@@ -16,7 +24,7 @@ switch ( $type ) {
 		);
 		break;
 	case 'video':
-		if ( Plugin::get_option( 'video_as_post' ) == 'true' ) { /** @noinspection PhpUndefinedVariableInspection */
+		if ( Plugin::get_option( 'video_as_post' ) === 'true' ) {
 			echo Social_Plugins::get(
 				'post',
 				[
@@ -25,7 +33,6 @@ switch ( $type ) {
 				]
 			);
 		} else {
-			/** @noinspection PhpUndefinedVariableInspection */
 			echo Social_Plugins::get(
 				'video',
 				[
@@ -36,10 +43,8 @@ switch ( $type ) {
 		}
 
 		break;
-	// case 'photo' :
-	// case 'post' :
+	// Values 'post', 'photo' are default.
 	default:
-		/** @noinspection PhpUndefinedVariableInspection */
 		echo Social_Plugins::get(
 			'post',
 			[
@@ -48,4 +53,5 @@ switch ( $type ) {
 			]
 		);
 		break;
+	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 }

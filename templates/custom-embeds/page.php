@@ -1,12 +1,14 @@
 <?php
 /**
- * @var array  $fb_data Facebook data.
- * @var string $theme   Theme.
- * @var string $width   Width.
+ * Data available for template:
+ *
+ * @var array $fb_data Facebook data.
+ * @var string $theme Theme.
+ * @var string $width Width.
  */
 use SIGAMI\WP_Embed_FB\Plugin;
 use SIGAMI\WP_Embed_FB\Social_Plugins;
-use SIGAMI\WP_Embed_FB\Embed_FB;
+
 ?>
 <div class="wef-container wef-<?php echo esc_attr( $theme ); ?>" style="max-width: <?php echo esc_attr( $width ); ?>px" >
 	<?php if ( isset( $fb_data['cover'] ) ) : ?>

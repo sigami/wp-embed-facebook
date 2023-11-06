@@ -1,10 +1,10 @@
 <?php
 /**
- * Post template.
+ * Data available for template:
  *
- * @var array  $fb_data Facebook data.
- * @var string $theme   Theme.
- * @var string $width   Width.
+ * @var array $fb_data Facebook data.
+ * @var string $theme Theme.
+ * @var string $width Width.
  */
 
 use SIGAMI\WP_Embed_FB\Plugin;

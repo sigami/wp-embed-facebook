@@ -1,6 +1,6 @@
 <?php
 /**
- * Album template.
+ * Data available for template:
  *
  * @var array $fb_data Facebook data.
  * @var string $theme Theme.
@@ -37,7 +37,8 @@ use SIGAMI\WP_Embed_FB\Plugin;
 				foreach ( $fb_data['photos']['data'] as $pic ) {
 					$data_title = $pic['name'] ?? '';
 					?>
-					<a class="wef-album-thumbs" href="<?php echo esc_url_raw( $pic['source'] ); ?>" <?php echo esc_html( Plugin::get_option( 'lightbox_att' ) ); ?> <?php echo esc_html( ! empty( $data_title ) ? Helpers::lightbox_title( $data_title ) : '' ); ?> >
+					<?php //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helpers  ?>
+					<a class="wef-album-thumbs" href="<?php echo esc_url_raw( $pic['source'] ); ?>" <?php echo Helpers::get_lightbox_attr(); ?> <?php echo ! empty( $data_title ) ? Helpers::lightbox_title( $data_title ) : ''; ?> >
 						<span class="wef-album-thumb" style="background-image: url('<?php echo esc_url_raw( $pic['picture'] ); ?>')"></span>
 					</a>
 					<?php

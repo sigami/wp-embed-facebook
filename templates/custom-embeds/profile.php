@@ -1,6 +1,6 @@
 <?php
 /**
- * Album template.
+ * Data available for template:
  *
  * @var array $fb_data Facebook data.
  * @var string $theme Theme.
