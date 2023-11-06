@@ -47,7 +47,11 @@ class Embed_FB {
 	 *
 	 * @return string
 	 */
-	public static function shortcode( array $attrs ) {
+	public static function shortcode( $attrs ) {
+		if ( ! is_array( $attrs ) ) {
+			return '';
+		}
+
 		$compat = [ 'href', 'uri', 'src', 'url', 'link' ];
 
 		foreach ( $compat as $com ) {
@@ -394,13 +398,13 @@ class Embed_FB {
 	/**
 	 * Get data from fb using WP_Embed_FB::$fbsdk->api('/'.$fb_id) :)
 	 *
-	 * @param int    $fb_id   Facebook id
+	 * @param null|string    $fb_id   Facebook id
 	 * @param string $fb_path Facebook url
 	 * @param string $type    Type of embed
 	 *
 	 * @return array|string
 	 */
-	public static function fb_api_get( int $fb_id, string $fb_path, string $type = '' ) {
+	public static function fb_api_get( ?string $fb_id, string $fb_path, string $type = '' ) {
 		if ( Helpers::has_fb_app() ) {
 
 			/**

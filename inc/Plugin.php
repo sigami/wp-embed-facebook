@@ -97,7 +97,7 @@ final class Plugin extends Framework {
 				'app_id'                         => '',
 				'app_secret'                     => '',
 				'theme'                          => 'default',
-				'sdk_version'                    => 'v6.0',
+				'sdk_version'                    => 'v18.0',
 				'show_like'                      => 'true',
 				'fb_root'                        => 'true',
 				'show_follow'                    => 'true',
