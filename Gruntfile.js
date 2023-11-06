@@ -39,5 +39,5 @@ module.exports = function (grunt) {
   //       Deployment only.
   // ---------------------------------
 
-  // grunt.loadTasks("../grunt-helpers/");
+  grunt.loadTasks("../grunt-helpers/");
 };
