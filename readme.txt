@@ -191,7 +191,7 @@ Buying the premium extensions helps to keep this project alive.
 14. Settings
 15. Profile
 
-
+* Updated FB API to the latest version
 == Changelog ==
 
 = 3.1.0 =
