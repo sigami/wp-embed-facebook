@@ -16,9 +16,9 @@ if ( ! defined( 'WPINC' ) ) {
  */
 abstract class Framework {
 
-	//
+	// ===
 	// Replace these variables on Plugin Class constructor as needed #
-	//
+	// ===
 
 	/**
 	 * REQUIRED

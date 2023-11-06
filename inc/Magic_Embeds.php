@@ -2,12 +2,14 @@
 /**
  * Embed Helpers.
  *
- * @package $fb_path
+ * @package Magic Embeds
  */
 
 namespace SIGAMI\WP_Embed_FB;
 
 // If this file is called directly, abort.
+use WP_Post;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -118,7 +120,7 @@ class Magic_Embeds {
 		$allowed_post_types = Plugin::get_option( 'auto_embed_post_types' );
 
 		if ( in_array( $post_type, $allowed_post_types, true )
-			|| ( ( $post instanceof \WP_Post )
+			|| ( ( $post instanceof WP_Post )
 					&& in_array( $post->post_type, $allowed_post_types, true ) ) ) {
 			return true;
 		}

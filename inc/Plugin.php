@@ -2,7 +2,7 @@
 /**
  * Main plugin class.
  *
- * @package $fb_path
+ * @package Magic Embeds
  */
 
 namespace SIGAMI\WP_Embed_FB;

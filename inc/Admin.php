@@ -2,7 +2,7 @@
 /**
  * Adds wp-admin related actions and filters.
  *
- * @package      $fb_path
+ * @package      Magic Embeds
  * @subpackage   Admin
  */
 

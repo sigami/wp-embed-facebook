@@ -4,7 +4,7 @@
  * plugins on WordPress it has no dependencies.
  *
  * @author  Miguel Sirvent & Rahul Aryan
- * @package $fb_path
+ * @package Magic Embeds
  * @subpackage Classes
  */
 
@@ -426,7 +426,7 @@ class Social_Plugins {
 		if ( false !== $doc_link ) {
 			if ( $link ) {
 				$ret  = '<small>';
-				$ret .= '<a href="https://www.wpembedfb.com/' . user_trailingslashit( $doc_link['demo'] ) . '" target="_blank" title="$fb_path Demo">Demo</a> ';
+				$ret .= '<a href="https://www.wpembedfb.com/' . user_trailingslashit( $doc_link['demo'] ) . '" target="_blank" title="Magic Embeds Demo">Demo</a> ';
 				$ret .= '<a href="https://developers.facebook.com/docs/' . user_trailingslashit( $doc_link['docs'] ) . '" target="_blank" title="Official FB documentation">Info</a>';
 				$ret .= '</small>';
 			} else {
