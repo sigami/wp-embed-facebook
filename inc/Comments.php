@@ -132,6 +132,10 @@ class Comments {
 	 * @return WP_Query
 	 */
 	public function pre_get_posts( WP_Query $query ): WP_Query {
+		if ( is_array( $query->get( 'post_type' ) ) ) {
+			return $query;
+		}
+
 		self::$current_post_type = $query->get( 'post_type' );
 
 		if ( self::active_on_post_type()

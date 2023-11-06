@@ -194,6 +194,9 @@ Buying the premium extensions helps to keep this project alive.
 * Updated FB API to the latest version
 == Changelog ==
 
+= 3.1.1 =
+* Fix error on activating some plugins with cpt
+
 = 3.1.0 =
 * Pass through phpcs WordPress rules.
 * Fixes security issues
