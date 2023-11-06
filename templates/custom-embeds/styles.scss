@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 //You may ask why this prefix ? It will help you to white label you custom embeds using custom templates :)
 $pf: wef-;
 
@@ -27,7 +29,7 @@ $max-cols: 12;
 
 		@for $i from 1 through $max-cols {
 			.#{$pf}col-#{$i} {
-				width: $i/$max-cols * 100%;
+				width: math.div($i, $max-cols) * 100%;
 				display: table-cell;
 				float: left;
 			}

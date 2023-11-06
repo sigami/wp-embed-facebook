@@ -11,7 +11,7 @@ module.exports = function (grunt) {
           style: 'compressed'
         },
         files: {
-          'templates/lightbox/css/lightbox.css': 'templates/lightbox/css/lightbox.sass',
+          'templates/lightbox/css/lightbox.css': 'templates/lightbox/css/lightbox.scss',
           'templates/custom-embeds/styles.css': 'templates/custom-embeds/styles.scss',
         }
       }
@@ -39,5 +39,5 @@ module.exports = function (grunt) {
   //       Deployment only.
   // ---------------------------------
 
-  grunt.loadTasks("../grunt-helpers/");
+  // grunt.loadTasks("../grunt-helpers/");
 };
