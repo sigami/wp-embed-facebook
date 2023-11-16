@@ -1,6 +1,6 @@
 {
 	"name": "wp-embed-facebook",
-	"version": "3.1.1",
+	"version": "3.1.2",
 	"description": "Development version of the Magic Embeds Plugin",
 	"main": "wp-embed-facebook/wp-embed-facebook.php",
 	"repository": {
