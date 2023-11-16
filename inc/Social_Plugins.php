@@ -672,7 +672,7 @@ class Social_Plugins {
 		wp_enqueue_script( 'wpemfb' );
 		$ret = '<div class="wef-measure"';
 		if ( ! empty( $width ) ) {
-			$ret .= ' style="max-width: ' . $width . 'px;"';
+			$ret .= ' style="max-width: ' . esc_attr( $width ) . 'px;"';
 		}
 		$ret .= '></div>';
 
