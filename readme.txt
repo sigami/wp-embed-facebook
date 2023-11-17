@@ -194,6 +194,9 @@ Buying the premium extensions helps to keep this project alive.
 * Updated FB API to the latest version
 == Changelog ==
 
+= 3.1.2 =
+* Fix XSS vulnerability on social plugins shortcode.
+
 = 3.1.1 =
 * Fix error on activating some plugins with cpt
 
